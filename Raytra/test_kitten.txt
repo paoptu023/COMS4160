@@ -1,0 +1,22 @@
+/ test scene file, all units in mm.
+ 
+/ red material, w specular hightlight
+m 0.7 0.7 0.7 0.5 0.5 0.5 100. 0.0 0.0 0.0
+ 
+ 
+/ load in the paraboloid obj file
+w ./kitten.obj
+
+/ a grey material with no specular, no reflection
+m 0.3 0.3 0.3 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+ 
+/ a grey ground plane made up of two triangles, no specular, no reflection
+t -500.00 -0.00 500.00 500.00 -0.00 500.00 -500.00 0.00 -500.00
+t -500.00 0.00 -500.00 500.00 -0.00 500.00 500.00 0.00 -500.00
+ 
+/ camera: pointing towards +X, 35mmx25mm "film", 35mm focal length
+/ making 160x117 pixels
+c -5. 0. 0. 1. 0.0 0.0 35.0 35.0 25.0 640 480
+ 
+/ point light, near camera
+l p -30. 15. -10. 100000. 100000. 100000
