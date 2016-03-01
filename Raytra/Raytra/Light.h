@@ -19,7 +19,7 @@ protected:
 public:
     Light(): _rgb(Vector(0.0, 0.0, 0.0)) {}
     
-    virtual Vector getRgb() const{return _rgb;}
+    virtual Vector getRgb() const{return move(_rgb);}
     
     virtual void print(){
         cout << "RGB: " << _rgb[0] << " " << _rgb[1] << " " << _rgb[2] << endl;
@@ -49,7 +49,7 @@ public:
     
     char getType() const{return 'p';}
     
-    Point getPos() const{return _pos;}
+    Point getPos() const{return move(_pos);}
 };
 
 
@@ -77,7 +77,7 @@ public:
     
     char getType() const{return 'd';}
     
-    Vector getDir() const{return _dir;}
+    Vector getDir() const{return move(_dir);}
 };
 
 #endif /* Light_h */

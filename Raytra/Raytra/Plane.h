@@ -23,7 +23,7 @@ public:
 
     bool intersect(const Ray &r, Intersection &it);
     
-    Vector getNormal(){return _n;}
+    Vector getNormal(const Point &p){return move(_n);}
     
     double getDistance() const{return _d;}
     

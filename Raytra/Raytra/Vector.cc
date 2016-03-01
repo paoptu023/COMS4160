@@ -23,7 +23,7 @@ Vector::Vector(const Point &p, const Point &q){
 }
 
 Vector Vector::operator +(const Vector &v) const{
-    return Vector(_xyz[0] + v[0], _xyz[1] + v[1], _xyz[2] + v[2]);
+    return move(Vector(_xyz[0] + v[0], _xyz[1] + v[1], _xyz[2] + v[2]));
 }
 
 Vector & Vector::operator +=(const Vector &v){
@@ -34,11 +34,11 @@ Vector & Vector::operator +=(const Vector &v){
 }
 
 Vector Vector::operator -(const Vector &v) const{
-    return Vector(_xyz[0] - v[0], _xyz[1] - v[1], _xyz[2] - v[2]);
+    return move(Vector(_xyz[0] - v[0], _xyz[1] - v[1], _xyz[2] - v[2]));
 }
 
 Vector Vector::operator *(double k) const{
-    return Vector(_xyz[0] * k, _xyz[1] * k, _xyz[2] * k);
+    return move(Vector(_xyz[0] * k, _xyz[1] * k, _xyz[2] * k));
 }
 
 Vector & Vector::operator *=(double k){
@@ -49,11 +49,11 @@ Vector & Vector::operator *=(double k){
 }
 
 Vector Vector::operator *(const Vector &v) const{
-    return Vector(_xyz[0] * v[0], _xyz[1] * v[1], _xyz[2] * v[2]);
+    return move(Vector(_xyz[0] * v[0], _xyz[1] * v[1], _xyz[2] * v[2]));
 }
 
 Vector Vector::operator /(double k) const{
-    return Vector(_xyz[0] / k, _xyz[1] / k, _xyz[2] / k);
+    return move(Vector(_xyz[0] / k, _xyz[1] / k, _xyz[2] / k));
 }
 
 Vector & Vector::operator /=(double k){
@@ -77,7 +77,7 @@ Vector Vector::cross(const Vector &v) const{
     double x_val = _xyz[1] * v[2] - _xyz[2] * v[1];
     double y_val = _xyz[2] * v[0] - _xyz[0] * v[2];
     double z_val = _xyz[0] * v[1] - _xyz[1] * v[0];
-    return Vector(x_val, y_val, z_val);
+    return move(Vector(x_val, y_val, z_val));
 }
 
 double Vector::getLen() const{

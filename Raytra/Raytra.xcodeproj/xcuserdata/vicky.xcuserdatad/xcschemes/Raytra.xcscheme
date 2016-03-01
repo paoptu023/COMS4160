@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "982828501C653512008DC830"
+               BlueprintIdentifier = "9813F3D31C86404900E1A305"
                BuildableName = "Raytra"
                BlueprintName = "Raytra"
                ReferencedContainer = "container:Raytra.xcodeproj">
@@ -32,7 +32,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "982828501C653512008DC830"
+            BlueprintIdentifier = "9813F3D31C86404900E1A305"
             BuildableName = "Raytra"
             BlueprintName = "Raytra"
             ReferencedContainer = "container:Raytra.xcodeproj">
@@ -55,7 +55,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "982828501C653512008DC830"
+            BlueprintIdentifier = "9813F3D31C86404900E1A305"
             BuildableName = "Raytra"
             BlueprintName = "Raytra"
             ReferencedContainer = "container:Raytra.xcodeproj">
@@ -74,7 +74,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "982828501C653512008DC830"
+            BlueprintIdentifier = "9813F3D31C86404900E1A305"
             BuildableName = "Raytra"
             BlueprintName = "Raytra"
             ReferencedContainer = "container:Raytra.xcodeproj">

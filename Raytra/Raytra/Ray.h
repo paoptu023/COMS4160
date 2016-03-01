@@ -28,9 +28,9 @@ public:
     //Start from p to the direction of v
     Ray(const Point &p, const Point &q): _ori(p), _dir(Vector(p, q)) {}
     
-    Point getOri() const{return _ori;}
+    Point getOri() const{return move(_ori);}
     
-    Vector getDir() const{return _dir;}
+    Vector getDir() const{return move(_dir);}
 };
 
 #endif /* Ray_h */

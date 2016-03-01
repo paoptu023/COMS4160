@@ -27,11 +27,11 @@ public:
     
     bool intersect(const Ray &r, Intersection &it);
     
-    Vector getNormal(const Point &p){return _n;}
+    Vector getNormal(const Point &p){return move(_n);}
     
-    Point &getP1(){return _p1;}
-    Point &getP2(){return _p2;}
-    Point &getP3(){return _p3;}
+    Point getP1(){return _p1;}
+    Point getP2(){return _p2;}
+    Point getP3(){return _p3;}
     
     string getType(){return "triangle";};
 };

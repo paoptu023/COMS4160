@@ -7,23 +7,23 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		982828551C653512008DC830 /* main.cc in Sources */ = {isa = PBXBuildFile; fileRef = 982828541C653512008DC830 /* main.cc */; };
-		9828285C1C653529008DC830 /* readscene.cc in Sources */ = {isa = PBXBuildFile; fileRef = 9828285B1C653529008DC830 /* readscene.cc */; };
-		9828285E1C6535CD008DC830 /* libHalf.12.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9828285D1C6535CD008DC830 /* libHalf.12.dylib */; };
-		982828601C6535D4008DC830 /* libIlmImf-2_2.22.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9828285F1C6535D4008DC830 /* libIlmImf-2_2.22.dylib */; };
-		984FA3EE1C703CB800C60F83 /* Plane.cc in Sources */ = {isa = PBXBuildFile; fileRef = 984FA3ED1C703CB800C60F83 /* Plane.cc */; };
-		9852EBEE1C6E8F0500F8D394 /* Material.cc in Sources */ = {isa = PBXBuildFile; fileRef = 9852EBED1C6E8F0400F8D394 /* Material.cc */; };
-		9852EBF11C6E975200F8D394 /* Intersection.cc in Sources */ = {isa = PBXBuildFile; fileRef = 9852EBEF1C6E975200F8D394 /* Intersection.cc */; };
-		9852EBF41C6EBC6500F8D394 /* Triangle.cc in Sources */ = {isa = PBXBuildFile; fileRef = 9852EBF21C6EBC6500F8D394 /* Triangle.cc */; };
-		985345D61C66600C004B04EE /* Vector.cc in Sources */ = {isa = PBXBuildFile; fileRef = 985345D41C66600C004B04EE /* Vector.cc */; };
-		985345D81C6689C1004B04EE /* Point.cc in Sources */ = {isa = PBXBuildFile; fileRef = 985345D71C6689C1004B04EE /* Point.cc */; };
-		986DD94D1C66AF2000C3C1F1 /* Sphere.cc in Sources */ = {isa = PBXBuildFile; fileRef = 986DD94B1C66AF2000C3C1F1 /* Sphere.cc */; };
-		986DD94F1C66F77900C3C1F1 /* Camera.cc in Sources */ = {isa = PBXBuildFile; fileRef = 986DD94E1C66F77900C3C1F1 /* Camera.cc */; };
-		98ECF7AD1C8118E700EB4EA3 /* obj_file_parser.cc in Sources */ = {isa = PBXBuildFile; fileRef = 98ECF7AC1C8118E700EB4EA3 /* obj_file_parser.cc */; };
+		9813F3DF1C86407900E1A305 /* libHalf.12.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9813F3DE1C86407900E1A305 /* libHalf.12.dylib */; };
+		9813F3E11C8640BA00E1A305 /* libIlmImf-2_2.22.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9813F3E01C8640BA00E1A305 /* libIlmImf-2_2.22.dylib */; };
+		9813F4041C86487A00E1A305 /* Camera.cc in Sources */ = {isa = PBXBuildFile; fileRef = 9813F4031C86487A00E1A305 /* Camera.cc */; };
+		9813F4101C8648B300E1A305 /* Intersection.cc in Sources */ = {isa = PBXBuildFile; fileRef = 9813F4061C8648B300E1A305 /* Intersection.cc */; };
+		9813F4121C8648B300E1A305 /* Material.cc in Sources */ = {isa = PBXBuildFile; fileRef = 9813F40A1C8648B300E1A305 /* Material.cc */; };
+		9813F4131C8648B300E1A305 /* obj_file_parser.cc in Sources */ = {isa = PBXBuildFile; fileRef = 9813F40C1C8648B300E1A305 /* obj_file_parser.cc */; };
+		9813F4141C8648B300E1A305 /* Plane.cc in Sources */ = {isa = PBXBuildFile; fileRef = 9813F40D1C8648B300E1A305 /* Plane.cc */; };
+		9813F4151C8648B300E1A305 /* Point.cc in Sources */ = {isa = PBXBuildFile; fileRef = 9813F40F1C8648B300E1A305 /* Point.cc */; };
+		9813F4201C8648BF00E1A305 /* readscene.cc in Sources */ = {isa = PBXBuildFile; fileRef = 9813F4181C8648BF00E1A305 /* readscene.cc */; };
+		9813F4211C8648BF00E1A305 /* Sphere.cc in Sources */ = {isa = PBXBuildFile; fileRef = 9813F4191C8648BF00E1A305 /* Sphere.cc */; };
+		9813F4221C8648BF00E1A305 /* Triangle.cc in Sources */ = {isa = PBXBuildFile; fileRef = 9813F41C1C8648BF00E1A305 /* Triangle.cc */; };
+		9813F4231C8648BF00E1A305 /* Vector.cc in Sources */ = {isa = PBXBuildFile; fileRef = 9813F41E1C8648BF00E1A305 /* Vector.cc */; };
+		9813F4251C86494300E1A305 /* main.cc in Sources */ = {isa = PBXBuildFile; fileRef = 9813F4241C86494300E1A305 /* main.cc */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		9828284F1C653512008DC830 /* CopyFiles */ = {
+		9813F3D21C86404900E1A305 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = /usr/share/man/man1/;
@@ -35,89 +35,89 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		982828511C653512008DC830 /* Raytra */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Raytra; sourceTree = BUILT_PRODUCTS_DIR; };
-		982828541C653512008DC830 /* main.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cc; sourceTree = "<group>"; };
-		9828285B1C653529008DC830 /* readscene.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = readscene.cc; sourceTree = "<group>"; };
-		9828285D1C6535CD008DC830 /* libHalf.12.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libHalf.12.dylib; path = ../../../../../usr/local/lib/libHalf.12.dylib; sourceTree = "<group>"; };
-		9828285F1C6535D4008DC830 /* libIlmImf-2_2.22.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libIlmImf-2_2.22.dylib"; path = "../../../../../usr/local/lib/libIlmImf-2_2.22.dylib"; sourceTree = "<group>"; };
-		984FA3ED1C703CB800C60F83 /* Plane.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Plane.cc; sourceTree = "<group>"; };
-		9852EBE41C6E709200F8D394 /* Light.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Light.h; sourceTree = "<group>"; };
-		9852EBEB1C6E7D5B00F8D394 /* Plane.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Plane.h; sourceTree = "<group>"; };
-		9852EBEC1C6E8C6600F8D394 /* Material.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Material.h; sourceTree = "<group>"; };
-		9852EBED1C6E8F0400F8D394 /* Material.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Material.cc; sourceTree = "<group>"; };
-		9852EBEF1C6E975200F8D394 /* Intersection.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Intersection.cc; sourceTree = "<group>"; };
-		9852EBF01C6E975200F8D394 /* Intersection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Intersection.h; sourceTree = "<group>"; };
-		9852EBF21C6EBC6500F8D394 /* Triangle.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Triangle.cc; sourceTree = "<group>"; };
-		9852EBF31C6EBC6500F8D394 /* Triangle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Triangle.h; sourceTree = "<group>"; };
-		985345D01C6650B7004B04EE /* Camera.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Camera.h; sourceTree = "<group>"; };
-		985345D21C6658BF004B04EE /* Vector.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Vector.h; sourceTree = "<group>"; };
-		985345D31C665B80004B04EE /* Point.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Point.h; sourceTree = "<group>"; };
-		985345D41C66600C004B04EE /* Vector.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Vector.cc; sourceTree = "<group>"; };
-		985345D71C6689C1004B04EE /* Point.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Point.cc; sourceTree = "<group>"; };
-		985345D91C669C69004B04EE /* Surface.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Surface.h; sourceTree = "<group>"; };
-		985345DA1C66A01D004B04EE /* Sphere.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Sphere.h; sourceTree = "<group>"; };
-		985345DC1C66A7AF004B04EE /* Ray.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Ray.h; sourceTree = "<group>"; };
-		986DD94B1C66AF2000C3C1F1 /* Sphere.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Sphere.cc; sourceTree = "<group>"; };
-		986DD94E1C66F77900C3C1F1 /* Camera.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Camera.cc; sourceTree = "<group>"; };
-		98ECF7AC1C8118E700EB4EA3 /* obj_file_parser.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = obj_file_parser.cc; sourceTree = "<group>"; };
+		9813F3D41C86404900E1A305 /* Raytra */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Raytra; sourceTree = BUILT_PRODUCTS_DIR; };
+		9813F3DE1C86407900E1A305 /* libHalf.12.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libHalf.12.dylib; path = ../../../../../usr/local/lib/libHalf.12.dylib; sourceTree = "<group>"; };
+		9813F3E01C8640BA00E1A305 /* libIlmImf-2_2.22.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libIlmImf-2_2.22.dylib"; path = "../../../../../usr/local/lib/libIlmImf-2_2.22.dylib"; sourceTree = "<group>"; };
+		9813F4031C86487A00E1A305 /* Camera.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Camera.cc; sourceTree = "<group>"; };
+		9813F4051C8648B300E1A305 /* Camera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Camera.h; sourceTree = "<group>"; };
+		9813F4061C8648B300E1A305 /* Intersection.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Intersection.cc; sourceTree = "<group>"; };
+		9813F4071C8648B300E1A305 /* Intersection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Intersection.h; sourceTree = "<group>"; };
+		9813F4081C8648B300E1A305 /* Light.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Light.h; sourceTree = "<group>"; };
+		9813F40A1C8648B300E1A305 /* Material.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Material.cc; sourceTree = "<group>"; };
+		9813F40B1C8648B300E1A305 /* Material.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Material.h; sourceTree = "<group>"; };
+		9813F40C1C8648B300E1A305 /* obj_file_parser.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = obj_file_parser.cc; sourceTree = "<group>"; };
+		9813F40D1C8648B300E1A305 /* Plane.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Plane.cc; sourceTree = "<group>"; };
+		9813F40E1C8648B300E1A305 /* Plane.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Plane.h; sourceTree = "<group>"; };
+		9813F40F1C8648B300E1A305 /* Point.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Point.cc; sourceTree = "<group>"; };
+		9813F4161C8648BF00E1A305 /* Point.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Point.h; sourceTree = "<group>"; };
+		9813F4171C8648BF00E1A305 /* Ray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Ray.h; sourceTree = "<group>"; };
+		9813F4181C8648BF00E1A305 /* readscene.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = readscene.cc; sourceTree = "<group>"; };
+		9813F4191C8648BF00E1A305 /* Sphere.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Sphere.cc; sourceTree = "<group>"; };
+		9813F41A1C8648BF00E1A305 /* Sphere.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Sphere.h; sourceTree = "<group>"; };
+		9813F41B1C8648BF00E1A305 /* Surface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Surface.h; sourceTree = "<group>"; };
+		9813F41C1C8648BF00E1A305 /* Triangle.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Triangle.cc; sourceTree = "<group>"; };
+		9813F41D1C8648BF00E1A305 /* Triangle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Triangle.h; sourceTree = "<group>"; };
+		9813F41E1C8648BF00E1A305 /* Vector.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Vector.cc; sourceTree = "<group>"; };
+		9813F41F1C8648BF00E1A305 /* Vector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Vector.h; sourceTree = "<group>"; };
+		9813F4241C86494300E1A305 /* main.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cc; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		9828284E1C653512008DC830 /* Frameworks */ = {
+		9813F3D11C86404900E1A305 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9828285E1C6535CD008DC830 /* libHalf.12.dylib in Frameworks */,
-				982828601C6535D4008DC830 /* libIlmImf-2_2.22.dylib in Frameworks */,
+				9813F3DF1C86407900E1A305 /* libHalf.12.dylib in Frameworks */,
+				9813F3E11C8640BA00E1A305 /* libIlmImf-2_2.22.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		982828481C653512008DC830 = {
+		9813F3CB1C86404900E1A305 = {
 			isa = PBXGroup;
 			children = (
-				9828285F1C6535D4008DC830 /* libIlmImf-2_2.22.dylib */,
-				9828285D1C6535CD008DC830 /* libHalf.12.dylib */,
-				982828531C653512008DC830 /* Raytra */,
-				982828521C653512008DC830 /* Products */,
+				9813F3E01C8640BA00E1A305 /* libIlmImf-2_2.22.dylib */,
+				9813F3DE1C86407900E1A305 /* libHalf.12.dylib */,
+				9813F3D61C86404900E1A305 /* Raytra */,
+				9813F3D51C86404900E1A305 /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		982828521C653512008DC830 /* Products */ = {
+		9813F3D51C86404900E1A305 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				982828511C653512008DC830 /* Raytra */,
+				9813F3D41C86404900E1A305 /* Raytra */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		982828531C653512008DC830 /* Raytra */ = {
+		9813F3D61C86404900E1A305 /* Raytra */ = {
 			isa = PBXGroup;
 			children = (
-				982828541C653512008DC830 /* main.cc */,
-				9828285B1C653529008DC830 /* readscene.cc */,
-				98ECF7AC1C8118E700EB4EA3 /* obj_file_parser.cc */,
-				9852EBE41C6E709200F8D394 /* Light.h */,
-				985345D01C6650B7004B04EE /* Camera.h */,
-				986DD94E1C66F77900C3C1F1 /* Camera.cc */,
-				985345D21C6658BF004B04EE /* Vector.h */,
-				985345D41C66600C004B04EE /* Vector.cc */,
-				985345D31C665B80004B04EE /* Point.h */,
-				985345D71C6689C1004B04EE /* Point.cc */,
-				985345DC1C66A7AF004B04EE /* Ray.h */,
-				9852EBF01C6E975200F8D394 /* Intersection.h */,
-				9852EBEF1C6E975200F8D394 /* Intersection.cc */,
-				9852EBEC1C6E8C6600F8D394 /* Material.h */,
-				9852EBED1C6E8F0400F8D394 /* Material.cc */,
-				985345D91C669C69004B04EE /* Surface.h */,
-				9852EBEB1C6E7D5B00F8D394 /* Plane.h */,
-				984FA3ED1C703CB800C60F83 /* Plane.cc */,
-				9852EBF31C6EBC6500F8D394 /* Triangle.h */,
-				9852EBF21C6EBC6500F8D394 /* Triangle.cc */,
-				985345DA1C66A01D004B04EE /* Sphere.h */,
-				986DD94B1C66AF2000C3C1F1 /* Sphere.cc */,
+				9813F4241C86494300E1A305 /* main.cc */,
+				9813F4181C8648BF00E1A305 /* readscene.cc */,
+				9813F40C1C8648B300E1A305 /* obj_file_parser.cc */,
+				9813F4051C8648B300E1A305 /* Camera.h */,
+				9813F4031C86487A00E1A305 /* Camera.cc */,
+				9813F4081C8648B300E1A305 /* Light.h */,
+				9813F4071C8648B300E1A305 /* Intersection.h */,
+				9813F4061C8648B300E1A305 /* Intersection.cc */,
+				9813F40B1C8648B300E1A305 /* Material.h */,
+				9813F40A1C8648B300E1A305 /* Material.cc */,
+				9813F4161C8648BF00E1A305 /* Point.h */,
+				9813F40F1C8648B300E1A305 /* Point.cc */,
+				9813F41F1C8648BF00E1A305 /* Vector.h */,
+				9813F41E1C8648BF00E1A305 /* Vector.cc */,
+				9813F4171C8648BF00E1A305 /* Ray.h */,
+				9813F41B1C8648BF00E1A305 /* Surface.h */,
+				9813F41A1C8648BF00E1A305 /* Sphere.h */,
+				9813F4191C8648BF00E1A305 /* Sphere.cc */,
+				9813F41C1C8648BF00E1A305 /* Triangle.cc */,
+				9813F41D1C8648BF00E1A305 /* Triangle.h */,
+				9813F40D1C8648B300E1A305 /* Plane.cc */,
+				9813F40E1C8648B300E1A305 /* Plane.h */,
 			);
 			path = Raytra;
 			sourceTree = "<group>";
@@ -125,13 +125,13 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		982828501C653512008DC830 /* Raytra */ = {
+		9813F3D31C86404900E1A305 /* Raytra */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 982828581C653512008DC830 /* Build configuration list for PBXNativeTarget "Raytra" */;
+			buildConfigurationList = 9813F3DB1C86404900E1A305 /* Build configuration list for PBXNativeTarget "Raytra" */;
 			buildPhases = (
-				9828284D1C653512008DC830 /* Sources */,
-				9828284E1C653512008DC830 /* Frameworks */,
-				9828284F1C653512008DC830 /* CopyFiles */,
+				9813F3D01C86404900E1A305 /* Sources */,
+				9813F3D11C86404900E1A305 /* Frameworks */,
+				9813F3D21C86404900E1A305 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -139,63 +139,63 @@
 			);
 			name = Raytra;
 			productName = Raytra;
-			productReference = 982828511C653512008DC830 /* Raytra */;
+			productReference = 9813F3D41C86404900E1A305 /* Raytra */;
 			productType = "com.apple.product-type.tool";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		982828491C653512008DC830 /* Project object */ = {
+		9813F3CC1C86404900E1A305 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0720;
 				ORGANIZATIONNAME = "Wang Qi";
 				TargetAttributes = {
-					982828501C653512008DC830 = {
-						CreatedOnToolsVersion = 7.2;
+					9813F3D31C86404900E1A305 = {
+						CreatedOnToolsVersion = 7.2.1;
 					};
 				};
 			};
-			buildConfigurationList = 9828284C1C653512008DC830 /* Build configuration list for PBXProject "Raytra" */;
+			buildConfigurationList = 9813F3CF1C86404900E1A305 /* Build configuration list for PBXProject "Raytra" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 			);
-			mainGroup = 982828481C653512008DC830;
-			productRefGroup = 982828521C653512008DC830 /* Products */;
+			mainGroup = 9813F3CB1C86404900E1A305;
+			productRefGroup = 9813F3D51C86404900E1A305 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				982828501C653512008DC830 /* Raytra */,
+				9813F3D31C86404900E1A305 /* Raytra */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
-		9828284D1C653512008DC830 /* Sources */ = {
+		9813F3D01C86404900E1A305 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9852EBF11C6E975200F8D394 /* Intersection.cc in Sources */,
-				985345D81C6689C1004B04EE /* Point.cc in Sources */,
-				984FA3EE1C703CB800C60F83 /* Plane.cc in Sources */,
-				9852EBEE1C6E8F0500F8D394 /* Material.cc in Sources */,
-				9852EBF41C6EBC6500F8D394 /* Triangle.cc in Sources */,
-				9828285C1C653529008DC830 /* readscene.cc in Sources */,
-				98ECF7AD1C8118E700EB4EA3 /* obj_file_parser.cc in Sources */,
-				982828551C653512008DC830 /* main.cc in Sources */,
-				986DD94D1C66AF2000C3C1F1 /* Sphere.cc in Sources */,
-				986DD94F1C66F77900C3C1F1 /* Camera.cc in Sources */,
-				985345D61C66600C004B04EE /* Vector.cc in Sources */,
+				9813F4131C8648B300E1A305 /* obj_file_parser.cc in Sources */,
+				9813F4121C8648B300E1A305 /* Material.cc in Sources */,
+				9813F4251C86494300E1A305 /* main.cc in Sources */,
+				9813F4141C8648B300E1A305 /* Plane.cc in Sources */,
+				9813F4101C8648B300E1A305 /* Intersection.cc in Sources */,
+				9813F4151C8648B300E1A305 /* Point.cc in Sources */,
+				9813F4201C8648BF00E1A305 /* readscene.cc in Sources */,
+				9813F4231C8648BF00E1A305 /* Vector.cc in Sources */,
+				9813F4211C8648BF00E1A305 /* Sphere.cc in Sources */,
+				9813F4041C86487A00E1A305 /* Camera.cc in Sources */,
+				9813F4221C8648BF00E1A305 /* Triangle.cc in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		982828561C653512008DC830 /* Debug */ = {
+		9813F3D91C86404900E1A305 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -238,7 +238,7 @@
 			};
 			name = Debug;
 		};
-		982828571C653512008DC830 /* Release */ = {
+		9813F3DA1C86404900E1A305 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -274,7 +274,7 @@
 			};
 			name = Release;
 		};
-		982828591C653512008DC830 /* Debug */ = {
+		9813F3DC1C86404900E1A305 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				HEADER_SEARCH_PATHS = "/usr/local/include/OpenEXR/**";
@@ -283,7 +283,7 @@
 			};
 			name = Debug;
 		};
-		9828285A1C653512008DC830 /* Release */ = {
+		9813F3DD1C86404900E1A305 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				HEADER_SEARCH_PATHS = "/usr/local/include/OpenEXR/**";
@@ -295,25 +295,24 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		9828284C1C653512008DC830 /* Build configuration list for PBXProject "Raytra" */ = {
+		9813F3CF1C86404900E1A305 /* Build configuration list for PBXProject "Raytra" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				982828561C653512008DC830 /* Debug */,
-				982828571C653512008DC830 /* Release */,
+				9813F3D91C86404900E1A305 /* Debug */,
+				9813F3DA1C86404900E1A305 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		982828581C653512008DC830 /* Build configuration list for PBXNativeTarget "Raytra" */ = {
+		9813F3DB1C86404900E1A305 /* Build configuration list for PBXNativeTarget "Raytra" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				982828591C653512008DC830 /* Debug */,
-				9828285A1C653512008DC830 /* Release */,
+				9813F3DC1C86404900E1A305 /* Debug */,
+				9813F3DD1C86404900E1A305 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = 982828491C653512008DC830 /* Project object */;
+	rootObject = 9813F3CC1C86404900E1A305 /* Project object */;
 }

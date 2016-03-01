@@ -27,7 +27,7 @@ Point & Point::operator +=(const Vector &v){
 }
 
 Point Point::operator -(const Vector &v) const{
-    return Point(_xyz[0] - v[0], _xyz[1] - v[1], _xyz[2] - v[2]);
+    return move(Point(_xyz[0] - v[0], _xyz[1] - v[1], _xyz[2] - v[2]));
 }
 
 Point & Point::operator -=(const Vector &v){

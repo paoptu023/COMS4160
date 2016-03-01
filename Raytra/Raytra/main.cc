@@ -24,8 +24,12 @@ int main(int argc, char * argv[]) {
 //    }
 //    char *scenefile = argv[1];
 //    char *outfile = argv[2];
+    
     clock_t start = clock();
     double duration;
+    
+    char scenefile[] = "/Users/vicky/Desktop/Computer Graphics/hw1.4/test/teapot.txt";
+    char outfile[] = "/Users/vicky/Desktop/Computer Graphics/hw1.4/teapot.exr";
     
     vector<Surface*> objects;
     Camera *myCam = NULL;
@@ -33,17 +37,12 @@ int main(int argc, char * argv[]) {
     AmbientLight *aLight = NULL;
     vector<Light*> lights;
     
-    char scenefile[] = "/Users/vicky/Desktop/Computer Graphics/hw1.4/test/teapot.txt";
-    char outfile[] = "/Users/vicky/Desktop/Computer Graphics/hw1.4/teapot_t.exr";
-    
-    parseSceneFile(scenefile, &myCam, objects,
-                   lights, &aLight, materials);
+    parseSceneFile(scenefile, &myCam, objects, lights, &aLight, materials);
     
     myCam->render(objects, lights, aLight);
     myCam->writeFile(outfile);
     
-    delete myCam;
-    delete aLight;
+    delete myCam; delete aLight;
     
     for(auto obj : objects)
         delete obj;
@@ -51,14 +50,13 @@ int main(int argc, char * argv[]) {
     
     for(auto m : materials)
         delete m;
-    objects.clear();
+    materials.clear();
     
     for(auto li : lights)
         delete li;
-    objects.clear();
+    lights.clear();
     
     duration = ( std::clock() - start ) / (double) CLOCKS_PER_SEC;
     cout<< duration << endl;
-    
     return 0;
 }

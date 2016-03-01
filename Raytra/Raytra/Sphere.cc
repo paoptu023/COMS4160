@@ -38,5 +38,5 @@ bool Sphere::intersect(const Ray &r, Intersection &it){
 Vector Sphere::getNormal(const Point &p){
     Vector n(_center, p);
     n.normalize();
-    return n;
+    return move(n);
 }
