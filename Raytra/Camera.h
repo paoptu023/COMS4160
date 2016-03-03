@@ -54,7 +54,7 @@ public:
     //Recursive ray tracing
     Vector rayColor(const Ray &r, int ray_type, double min_t, double max_t,
                     int recurse_limit, const Light *thisLight,
-                    const vector<Surface*> &objects);
+                    const vector<Surface*> &objects, bool &hit);
     
     bool inShadow(const Point &p, const Vector &i_l,
                   const double &maxLen,

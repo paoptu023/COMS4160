@@ -26,10 +26,9 @@ int main(int argc, char * argv[]) {
 //    char *outfile = argv[2];
     
     clock_t start = clock();
-    double duration;
     
-    char scenefile[] = "/Users/vicky/Desktop/Computer Graphics/hw1.4/test/teapot.txt";
-    char outfile[] = "/Users/vicky/Desktop/Computer Graphics/hw1.4/teapot.exr";
+    char scenefile[] = "/Users/vicky/Desktop/Computer Graphics/hw1.4/test/rainbow.txt";
+    char outfile[] = "/Users/vicky/Desktop/Computer Graphics/hw1.4/test/rainbow.exr";
     
     vector<Surface*> objects;
     Camera *myCam = NULL;
@@ -56,7 +55,7 @@ int main(int argc, char * argv[]) {
         delete li;
     lights.clear();
     
-    duration = ( std::clock() - start ) / (double) CLOCKS_PER_SEC;
-    cout<< duration << endl;
+    double duration = (clock() - start) / (double) CLOCKS_PER_SEC;
+    cout<< duration << "s" << endl;
     return 0;
 }

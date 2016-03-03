@@ -79,14 +79,15 @@ void Camera::render(const vector<Surface*> &objects,
             if(aLight)
                 ambient = aLight->getRgb();
             
+            bool hit = false;
+            
             for(auto li : lights)
                 rgb += rayColor(r, 1, 0.0001, numeric_limits<double>::max(),
-                                20, li, objects);
+                                20, li, objects, hit);
             
-            //ambient shading
-            if(rgb.getLen() < 0.001)
+            if(rgb.getLen() < 0.001 && hit)
                 rgb += ambient * 0.05;
-
+            
             setPixel(x, y, rgb[0], rgb[1], rgb[2]);
         }
     }
@@ -97,7 +98,7 @@ void Camera::render(const vector<Surface*> &objects,
 //ray_type: 1 - primary ray; 2 - shadow ray; 3 - reflected ray; 4 - refracted ray
 Vector Camera::rayColor(const Ray &r, int ray_type, double min_t, double max_t,
                         int recurse_limit, const Light *thisLight,
-                        const vector<Surface*> &objects){
+                        const vector<Surface*> &objects, bool &hit){
     if(recurse_limit == 0)
         return move(Vector(0.0, 0.0, 0.0));
     
@@ -131,6 +132,7 @@ Vector Camera::rayColor(const Ray &r, int ray_type, double min_t, double max_t,
     Vector ret_rgb(0.0, 0.0, 0.0);
     
     if(it.intersect()){
+        hit = true;
         //Normal at intersection
         Vector n = it.getNormal();
         
@@ -149,7 +151,7 @@ Vector Camera::rayColor(const Ray &r, int ray_type, double min_t, double max_t,
             
             Ray s_ray(it.getP1(), i_l);
             
-            Vector l_rgb = rayColor(s_ray, 2, min_t, max_t, 1, thisLight, objects);
+            Vector l_rgb = rayColor(s_ray, 2, min_t, max_t, 1, thisLight, objects, hit);
 
             //not in shadow
             if(l_rgb.getLen() > 0.0){
@@ -169,7 +171,7 @@ Vector Camera::rayColor(const Ray &r, int ray_type, double min_t, double max_t,
             rfl.normalize();
             Ray r_ray(it.getP1(), rfl);
             
-            ret_rgb += km * rayColor(r_ray, 3, 0.0001, max_t, recurse_limit - 1, thisLight, objects);
+            ret_rgb += km * rayColor(r_ray, 3, 0.0001, max_t, recurse_limit - 1, thisLight, objects, hit);
         }
     }
     return move(ret_rgb);
