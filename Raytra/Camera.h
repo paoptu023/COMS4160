@@ -52,13 +52,10 @@ public:
                 const AmbientLight *aLight);
     
     //Recursive ray tracing
-    Vector rayColor(const Ray &r, int ray_type, double min_t, double max_t,
-                    int recurse_limit, const Light *thisLight,
-                    const vector<Surface*> &objects, bool &hit);
-    
-    bool inShadow(const Point &p, const Vector &i_l,
-                  const double &maxLen,
-                  const vector<Surface*> &objects);
+    Vector rayColor(const Ray &r, int ray_type, int recurse_limit,
+                    const vector<Light*> lights,
+                    const AmbientLight *aLight,
+                    const vector<Surface*> &objects);
     
     void setPixel(int x, int y, double r, double g, double b){
         Rgba &px = _pixels[y][x];

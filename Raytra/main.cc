@@ -27,8 +27,8 @@ int main(int argc, char * argv[]) {
     
     clock_t start = clock();
     
-    char scenefile[] = "/Users/vicky/Desktop/Computer Graphics/hw1.4/test/rainbow.txt";
-    char outfile[] = "/Users/vicky/Desktop/Computer Graphics/hw1.4/test/rainbow.exr";
+    char scenefile[] = "/Users/vicky/Desktop/Computer Graphics/hw1.4/test/teapot.txt";
+    char outfile[] = "/Users/vicky/Desktop/Computer Graphics/hw1.4/test/teapot.exr";
     
     vector<Surface*> objects;
     Camera *myCam = NULL;

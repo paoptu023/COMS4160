@@ -72,21 +72,8 @@ void Camera::render(const vector<Surface*> &objects,
     for(int y = 0; y < _ph; ++y){
         for(int x = 0; x < _pw; ++x){
             Ray r = generateRay(x, y);
-            Vector rgb(0.0, 0.0, 0.0);
             
-            //if there is an ambient light
-            Vector ambient(0.0, 0.0, 0.0);
-            if(aLight)
-                ambient = aLight->getRgb();
-            
-            bool hit = false;
-            
-            for(auto li : lights)
-                rgb += rayColor(r, 1, 0.0001, numeric_limits<double>::max(),
-                                20, li, objects, hit);
-            
-            if(rgb.getLen() < 0.001 && hit)
-                rgb += ambient * 0.05;
+            Vector rgb = rayColor(r, 1, 5, lights, aLight, objects);
             
             setPixel(x, y, rgb[0], rgb[1], rgb[2]);
         }
@@ -95,33 +82,21 @@ void Camera::render(const vector<Surface*> &objects,
 }
 
 //Recursive ray tracing
-//ray_type: 1 - primary ray; 2 - shadow ray; 3 - reflected ray; 4 - refracted ray
-Vector Camera::rayColor(const Ray &r, int ray_type, double min_t, double max_t,
-                        int recurse_limit, const Light *thisLight,
-                        const vector<Surface*> &objects, bool &hit){
+//ray_type: 1 - primary ray; 2 - reflected ray; 3 - refracted ray
+Vector Camera::rayColor(const Ray &r, int ray_type, int recurse_limit,
+                        const vector<Light*> lights,
+                        const AmbientLight *aLight,
+                        const vector<Surface*> &objects){
     if(recurse_limit == 0)
         return move(Vector(0.0, 0.0, 0.0));
     
-    Intersection tmp;
-    //shadow ray
-    if(ray_type == 2){
-        for(auto obj : objects){
-            if(obj->intersect(r, tmp)){
-                if(tmp.getT1() > min_t && tmp.getT1() < max_t)
-                    return move(Vector(0.0, 0.0, 0.0));
-            }
-        }
-        return move(thisLight->getRgb());
-    }
-    
-    //regular ray
     //find closest intersection
     Material *m = NULL;
-    Intersection it;
+    Intersection it, tmp;
     
     for(auto obj : objects){
         if(obj->intersect(r, tmp)){
-            if(tmp.getT1() > min_t && tmp.getT1() < it.getT1()){
+            if(tmp.getT1() > 0.0001 && tmp.getT1() < it.getT1()){
                 it = tmp;
                 m = obj->getMaterial();
             }
@@ -132,7 +107,8 @@ Vector Camera::rayColor(const Ray &r, int ray_type, double min_t, double max_t,
     Vector ret_rgb(0.0, 0.0, 0.0);
     
     if(it.intersect()){
-        hit = true;
+        Point p1 = it.getP1();
+        
         //Normal at intersection
         Vector n = it.getNormal();
         
@@ -140,28 +116,42 @@ Vector Camera::rayColor(const Ray &r, int ray_type, double min_t, double max_t,
         Vector i_e = r.getDir();
         i_e *= -1.0;
         
-        //specular and diffuse shading
-        if (thisLight->getType() == 'p'){
-            //Vector from intersection to light position
-            Vector i_l = Vector(it.getP1(), thisLight->getPos());
-            
-            //t should be less than the distance from intersection to light position
-            double max_t = i_l.getLen();
-            i_l.normalize();
-            
-            Ray s_ray(it.getP1(), i_l);
-            
-            Vector l_rgb = rayColor(s_ray, 2, min_t, max_t, 1, thisLight, objects, hit);
+        for(auto li : lights){
+            //bling-phong shading
+            if (li->getType() == 'p'){
+                //Vector from intersection to light position
+                Vector i_l = Vector(p1, li->getPos());
+                
+                //t should be less than the distance from intersection to light position
+                double max_t = i_l.getLen();
+                i_l.normalize();
+                
+                //check shadow
+                Ray s_ray(p1, i_l);
+                bool inShadow = false;
+                
+                for(auto obj : objects){
+                    if(obj->intersect(s_ray, tmp)){
+                        if(tmp.getT1() > 0.0001 && tmp.getT1() < max_t){
+                            inShadow = true;
+                            break;
+                        }
+                    }
+                }
 
-            //not in shadow
-            if(l_rgb.getLen() > 0.0){
                 //Two sided shading
-//                        if (i_e.dot(n) < 0.0)
-//                            n *= -1.0;
-
-                ret_rgb += m->phongShading(i_e, n, i_l, l_rgb);
+//                if (i_e.dot(n) < 0.0)
+//                    n *= -1.0;
+                
+                //not in shadow
+                if(!inShadow)
+                    ret_rgb += m->phongShading(i_e, n, i_l, li->getRgb());
             }
         }
+        
+        //add ambient if needed
+//        if(ret_rgb.getLen() < 0.001 && aLight && ray_type == 1)
+//            ret_rgb += aLight->getRgb() * 0.05;
     
         //ideal specular shading
         Vector km = m->getIdealSpec();
@@ -169,9 +159,9 @@ Vector Camera::rayColor(const Ray &r, int ray_type, double min_t, double max_t,
             //reflected ray
             Vector rfl = n * (2 * n.dot(i_e)) - i_e;
             rfl.normalize();
-            Ray r_ray(it.getP1(), rfl);
+            Ray r_ray(p1, rfl);
             
-            ret_rgb += km * rayColor(r_ray, 3, 0.0001, max_t, recurse_limit - 1, thisLight, objects, hit);
+            ret_rgb += km * rayColor(r_ray, 2, recurse_limit - 1, lights, aLight, objects);
         }
     }
     return move(ret_rgb);

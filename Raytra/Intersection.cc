@@ -20,12 +20,12 @@ void Intersection::set(const double t1, const double t2,
 
 //Operator overload
 Intersection & Intersection::operator =(const Intersection &i){
-    _intersect = i.intersect();
-    _t1 = i.getT1();
-    _t2 = i.getT2();
-    _p1 = i.getP1();
-    _p2 = i.getP2();
-    _n = i.getNormal();
+    _intersect = i._intersect;
+    _t1 = i._t1;
+    _t2 = i._t2;
+    _p1 = i._p1;
+    _p2 = i._p2;
+    _n = i._n;
     return *this;
 }
 
