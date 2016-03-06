@@ -21,12 +21,21 @@ private:
     double _t1, _t2;
     Point _p1, _p2;
     Vector _n;
+    int _id;
 
 public:
     Intersection();
     
     void set(const double t1, const double t2,
              const Ray &r, const Vector &n);
+    
+    //for bounding box
+    void set(const double t1, const double t2, const Ray &r);
+    void setNormal(Vector &n){_n = n;}
+    
+    //for BVH node
+    void setId(const int i){_id = i;}
+    int getId() const{return _id;}
     
     Intersection & operator =(const Intersection &i);
     
@@ -42,10 +51,6 @@ public:
     
     Vector getNormal() const{return _n;}
     
-    void setNormal(Vector &n){_n = n;}
-    
-    void setT1(double k){_t1 = k;}
-    
     void print();
 };
 
@@ -54,6 +59,7 @@ inline Intersection::Intersection(){
     _t1 = _t2 = numeric_limits<double>::max();
     _p1 = _p2 = Point();
     _n = Vector();
+    _id = -1;
 }
 
 #endif /* Intersection_h */

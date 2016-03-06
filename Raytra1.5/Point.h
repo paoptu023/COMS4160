@@ -34,8 +34,12 @@ public:
     Point operator +(const Vector &v) const;
     Point & operator +=(const Vector &v);
     
+    Point operator +(const Point &p) const;
+    
     Point operator -(const Vector &v) const;
     Point & operator -=(const Vector &v);
+    
+    Point operator /(const int k) const;
     
     void print();                             
 };

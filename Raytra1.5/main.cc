@@ -18,17 +18,45 @@ void parseSceneFile (char *filnam, Camera **myCam, vector<Surface*> &objects,
                      vector<Material*> &materials);
 
 int main(int argc, char * argv[]) {
-//    if (argc != 3) {
-//        cerr << "useage: raytra scenefilename" << endl;
-//        return -1;
-//    }
-//    char *scenefile = argv[1];
-//    char *outfile = argv[2];
-    
     clock_t start = clock();
     
-    char scenefile[] = "/Users/vicky/Desktop/Computer Graphics/hw1.4/test/teapot.txt";
-    char outfile[] = "/Users/vicky/Desktop/Computer Graphics/hw1.4/test/teapot.exr";
+    if (argc < 3) {
+        cerr << "useage: raytra scenefilename" << endl;
+        return -1;
+    }
+    char *scenefile = argv[1];
+    char *outfile = argv[2];
+    
+    bool withBbox = true;
+    bool bboxOnly = false;
+    bool bvhLeaf = false;
+    bool withBvh = false;
+    if(argc == 4){
+        int k = atoi(argv[3]);
+        switch(k){
+            case 0:
+                withBbox = false;
+                break;
+            case 1:
+                bboxOnly = true;
+                break;
+            case 2:
+                bvhLeaf = true;
+                break;
+            case 3:
+                withBvh = true;
+                break;
+        }
+    }
+    
+//    bool withBbox = true;
+//    bool bboxOnly = false;
+    
+    if(withBbox)    cout << "bounding box mode" << endl;
+    if(bboxOnly)    cout << "only render bounding boxes" << endl;
+    
+//    char scenefile[] = "/Users/vicky/Desktop/Computer Graphics/hw1.5/test/bunny.txt";
+//    char outfile[] = "/Users/vicky/Desktop/Computer Graphics/hw1.5/test/bunny_box.exr";
     
     vector<Surface*> objects;
     Camera *myCam = NULL;
@@ -38,7 +66,7 @@ int main(int argc, char * argv[]) {
     
     parseSceneFile(scenefile, &myCam, objects, lights, &aLight, materials);
     
-    myCam->render(objects, lights, aLight);
+    myCam->render(objects, lights, aLight, withBbox, bboxOnly);
     myCam->writeFile(outfile);
     
     delete myCam; delete aLight;

@@ -19,13 +19,11 @@ private:
 public:
     Sphere(): _center(Point()), _radius(0.0) {}
 
-    Sphere(Material *m, const Point &p, double r){
-        _m = m;
-        _center = p;
-        _radius = r;
-    }
+    Sphere(Material *m, const Point &p, double r);
     
-    bool intersect(const Ray &r, Intersection &it);
+    bool intersect(const Ray &r, Intersection &it,
+                   const bool &withBbox,
+                   const bool &bboxOnly);
     
     Vector getNormal(const Point &p);
     

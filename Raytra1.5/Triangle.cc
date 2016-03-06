@@ -9,7 +9,6 @@
 #include "Triangle.h"
 
 Triangle::Triangle(){
-    _m = NULL;
     _p1 = _p2 = _p3 = Point();
     _n = Vector();
     _a = _b = _c = _d = _e = _f = 0.0;
@@ -36,11 +35,26 @@ Triangle::Triangle(double x1, double y1, double z1,
     _n.normalize();
 
     _m = m;
+    
+    float minX = min(x1, min(x2, x3));
+    float maxX = max(x1, max(x2, x3));
+    float minY = min(y1, min(y2, y3));
+    float maxY = max(y1, max(y2, y3));
+    float minZ = min(z1, min(z2, z3));
+    float maxZ = max(z1, max(z2, z3));
+    
+    setBbox(Point(minX, minY, minZ), Point(maxX, maxY, maxZ));
 }
 
-bool Triangle::intersect(const Ray &r, Intersection &it){
-    //matrix A
-
+bool Triangle::intersect(const Ray &r, Intersection &it,
+                         const bool &withBbox,
+                         const bool &bboxOnly){
+    if(withBbox && !_bbox.intersect(r, it))
+        return false;
+    
+    if(bboxOnly)
+        return true;
+    
     double g = r._dir._xyz[0];
     double h = r._dir._xyz[1];
     double i = r._dir._xyz[2];

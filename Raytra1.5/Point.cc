@@ -19,6 +19,10 @@ Point Point::operator +(const Vector &v) const{
     return Point(_xyz[0] + v[0], _xyz[1] + v[1], _xyz[2] + v[2]);
 }
 
+Point Point::operator +(const Point &p) const{
+    return Point(_xyz[0] + p[0], _xyz[1] + p[1], _xyz[2] + p[2]);
+}
+
 Point & Point::operator +=(const Vector &v){
     _xyz[0] += v[0];
     _xyz[1] += v[1];
@@ -35,6 +39,10 @@ Point & Point::operator -=(const Vector &v){
     _xyz[1] -= v[1];
     _xyz[2] -= v[2];
     return *this;
+}
+
+Point Point::operator /(const int k) const{
+    return Point(_xyz[0] / k, _xyz[1] / k, _xyz[2] / k);
 }
 
 void Point::print(){

@@ -8,7 +8,25 @@
 
 #include "Sphere.h"
 
-bool Sphere::intersect(const Ray &r, Intersection &it){
+Sphere::Sphere(Material *m, const Point &p, double r){
+    _m = m;
+    _center = p;
+    _radius = r;
+    
+    Point minP(_center - Vector(_radius, _radius, _radius));
+    Point maxP(_center + Vector(_radius, _radius, _radius));
+    setBbox(minP, maxP);
+}
+
+bool Sphere::intersect(const Ray &r, Intersection &it,
+                       const bool &withBbox,
+                       const bool &bboxOnly){
+    if(withBbox && !_bbox.intersect(r, it))
+        return false;
+    
+    if(bboxOnly)
+        return true;
+    
     //Calculate descriminant
     Vector v(getCenter(), r.getOri());
     Vector d = r.getDir();

@@ -20,6 +20,7 @@
 #include "Surface.h"
 #include "Point.h"
 #include "Vector.h"
+#include "BVH.h"
 using namespace Imf;
 using namespace Imath;
 using namespace std;
@@ -47,15 +48,18 @@ public:
     Ray generateRay(double i, double j);
     
     //Render the image
-    void render(const vector<Surface*> &objects,
+    void render(vector<Surface*> &objects,
                 const vector<Light*> &lights,
-                const AmbientLight *aLight);
+                const AmbientLight *aLight,
+                const bool &withBbox,
+                const bool &bboxOnly);
     
     //Recursive ray tracing
     Vector rayColor(const Ray &r, int ray_type, int recurse_limit,
                     const vector<Light*> lights,
-                    const AmbientLight *aLight,
-                    const vector<Surface*> &objects);
+                    const vector<Surface*> objects,
+                    const AmbientLight *aLight, BVH *node,
+                    const bool &withBbox, const bool &bboxOnly);
     
     void setPixel(int x, int y, double r, double g, double b){
         Rgba &px = _pixels[y][x];
