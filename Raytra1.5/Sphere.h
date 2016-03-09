@@ -21,7 +21,7 @@ public:
 
     Sphere(Material *&m, const Point &p, double r);
     
-    bool intersect(const Ray &r, Intersection &it, bool &bboxOnly);
+    bool intersect(const Ray &r, Intersection &it, bool bboxOnly);
     
     Vector getNormal(const Point &p);
 };

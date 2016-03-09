@@ -9,34 +9,28 @@
 #include "Intersection.h"
 
 Intersection::Intersection(){
-    _t1 = _t2 = numeric_limits<double>::max();
-    _p1 = _p2 = Point();
+    _t1 = numeric_limits<double>::max();
+    _p1 = Point();
     _n = Vector();
     _id = -1;
 }
 
-void Intersection::set(double t1, double t2, const Point &p1,
-                       const Point &p2, const Vector &n){
+void Intersection::set(double t1, const Point &p1, const Vector &n){
     _t1 = t1;
-    _t2 = t2;
     _p1 = p1;
-    _p2 = p2;
     _n = n;
 }
 
 //Operator overload
 Intersection & Intersection::operator =(const Intersection &i){
     _t1 = i._t1;
-    _t2 = i._t2;
     _p1 = i._p1;
-    _p2 = i._p2;
     _n = i._n;
     _id = i._id;
     return *this;
 }
 
 void Intersection::print(){
-    cout << "t1: " << _t1 << "t2: " << _t2 << endl;
+    cout << "t1: " << _t1 <<  endl;
     _p1.print();
-    _p2.print();
 }

@@ -42,21 +42,21 @@ Triangle::Triangle(double x1, double y1, double z1,
     float minZ = min(z1, min(z2, z3));
     float maxZ = max(z1, max(z2, z3));
     
-    _min = Point(minX, minY, minZ);
-    _max = Point(maxX, maxY, maxZ);
+    _min = Point(minX - e, minY - e, minZ - e);
+    _max = Point(maxX + e, maxY + e, maxZ + e);
     _bbox = Bbox(_min, _max, -1);
 }
 
-bool Triangle::intersect(const Ray &r, Intersection &it, bool &bboxOnly){
+bool Triangle::intersect(const Ray &r, Intersection &it, bool bboxOnly){
     if(!_bbox.intersect(r, it))
         return false;
     
     if(bboxOnly)
         return true;
     
-    double g = r._dir._xyz[0];
-    double h = r._dir._xyz[1];
-    double i = r._dir._xyz[2];
+    double g = r.getDir()._xyz[0];
+    double h = r.getDir()._xyz[1];
+    double i = r.getDir()._xyz[2];
     
     double ei_hf = _e * i - h * _f;
     double gf_di = g * _f - _d * i;
@@ -67,9 +67,9 @@ bool Triangle::intersect(const Ray &r, Intersection &it, bool &bboxOnly){
     if(M == 0)
         return false;
     else{
-        double j = _p1._xyz[0] - r._ori._xyz[0];
-        double k = _p1._xyz[1] - r._ori._xyz[1];
-        double l = _p1._xyz[2] - r._ori._xyz[2];
+        double j = _p1._xyz[0] - r.getOri()._xyz[0];
+        double k = _p1._xyz[1] - r.getOri()._xyz[1];
+        double l = _p1._xyz[2] - r.getOri()._xyz[2];
         
         double ak_jb = _a * k - j * _b;
         double jc_al = j * _c - _a * l;
@@ -88,7 +88,7 @@ bool Triangle::intersect(const Ray &r, Intersection &it, bool &bboxOnly){
             return false;
         
         Point p = r.getOri() + r.getDir() * t;
-        it.set(t, t, p, p, _n);
+        it.set(t, p, _n);
         return true;
     }
 }

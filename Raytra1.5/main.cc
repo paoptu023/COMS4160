@@ -13,44 +13,51 @@
 #include "Surface.h"
 #include "Camera.h"
 
-void parseSceneFile (char *filnam, Camera **myCam, vector<Surface*> &objects,
-                     vector<Light*> &lights, AmbientLight **aLight, vector<Material*> &materials);
+void parseSceneFile (char *filnam, Camera **myCam,
+                     vector<Surface*> &objects,
+                     vector<Light*> &lights,
+                     AmbientLight **aLight,
+                     vector<Material*> &materials);
+
+void deleteTree(BVH *root){
+    if(root){
+        deleteTree(dynamic_cast<BVH*>(root->left));
+        deleteTree(dynamic_cast<BVH*>(root->right));
+        delete root;
+    }
+}
 
 int main(int argc, char * argv[]) {
     clock_t start = clock();
     
-//    if (argc < 3) {
-//        cerr << "useage: raytra scenefilename" << endl;
-//        return -1;
-//    }
-//    char *scenefile = argv[1];
-//    char *outfile = argv[2];
-//    
-//    bool withBbox = true;
-//    bool bboxOnly = false;
-//    bool withBVH = false;
-//    
-//    if(argc == 4){
-//        int k = atoi(argv[3]);
-//        switch(k){
-//            case 0:
-//                withBbox = false;
-//                break;
-//            case 1:
-//                bboxOnly = true;
-//                break;
-//            case 2:{
-//                withBVH = true;
-//                bboxOnly = true;
-//            }
-//                break;
-//            case 3:
-//                withBVH = true;
-//                break;
-//        }
-//    }
+    //    if (argc < 3) {
+    //        cerr << "useage: raytra scenefilename" << endl;
+    //        return -1;
+    //    }
+    //    char *scenefile = argv[1];
+    //    char *outfile = argv[2];
+    //
+    //    bool bboxOnly = false;
+    //    bool withBVH = false;
+    //
+    //    if(argc == 4){
+    //        int k = atoi(argv[3]);
+    //        switch(k){
+    //            case 1:
+    //                bboxOnly = true;
+    //                break;
+    //            case 2:{
+    //                withBVH = true;
+    //                bboxOnly = true;
+    //            }
+    //                break;
+    //            case 3:
+    //                withBVH = true;
+    //                break;
+    //        }
+    //    }
     
-    bool bboxOnly = false;
+    bool bboxOnly = true;
     bool withBVH = true;
     
     if(bboxOnly)    cout << "only render bounding boxes" << endl;
@@ -60,8 +67,8 @@ int main(int argc, char * argv[]) {
     else
         cout << "just bounding box mode" << endl;
     
-    char scenefile[] = "/Users/vicky/Desktop/Computer Graphics/hw1.5/test/teapot.txt";
-    char outfile[] = "/Users/vicky/Desktop/Computer Graphics/hw1.5/test/teapot.exr";
+    char scenefile[] = "/Users/vicky/Desktop/Computer Graphics/hw1.5/test/scene1.txt";
+    char outfile[] = "/Users/vicky/Desktop/Computer Graphics/hw1.5/test/scene1_box.exr";
     
     vector<Surface*> objects;
     vector<Material*> materials;
@@ -79,8 +86,8 @@ int main(int argc, char * argv[]) {
     myCam->writeFile(outfile);
     
     delete myCam; delete aLight;
-//    if(root)
-//        delete root;
+    
+    deleteTree(root);
     
     for(auto m : materials)
         delete m;

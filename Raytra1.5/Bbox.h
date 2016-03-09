@@ -29,9 +29,6 @@ public:
     
     void setId(int i){_id = i;}
     
-    Point getMin() const{return move(_minP);}
-    Point getMax() const{return move(_maxP);}
-    
     bool intersect(const Ray &r, Intersection &it);
     
     void print();

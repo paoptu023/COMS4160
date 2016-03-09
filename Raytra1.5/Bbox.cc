@@ -45,9 +45,8 @@ bool Bbox::intersect(const Ray &r, Intersection &it){
     tmin = max(tmin, tzmin);
     tmax = min(tmax, tzmax);
     
-    if(tmax > 0){
+    if(tmax > tmin){
         Point p1 = r.getOri() + r.getDir() * tmin;
-        Point p2 = r.getOri() + r.getDir() * tmax;
         Vector n;
         
         double tmpX_min = p1[0] - _minP[0];
@@ -70,7 +69,7 @@ bool Bbox::intersect(const Ray &r, Intersection &it){
         else
             n = Vector(0, 0, 1);
         
-        it.set(tmin, tmax, p1, p2, n);
+        it.set(tmin, p1, n);
         if(_id != -1)
             it.setId(_id);
         

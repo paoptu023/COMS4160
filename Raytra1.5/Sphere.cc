@@ -12,12 +12,12 @@ Sphere::Sphere(Material *&m, const Point &p, double r){
     _m = m;
     _center = p;
     _radius = r;
-    _min = Point(_center - Vector(_radius, _radius, _radius));
-    _max = Point(_center + Vector(_radius, _radius, _radius));
+    _min = Point(_center - Vector(_radius + e, _radius + e, _radius + e));
+    _max = Point(_center + Vector(_radius - e, _radius - e, _radius - e));
     _bbox = Bbox(_min, _max, -1);
 }
 
-bool Sphere::intersect(const Ray &r, Intersection &it, bool &bboxOnly){
+bool Sphere::intersect(const Ray &r, Intersection &it, bool bboxOnly){
     if(!_bbox.intersect(r, it))
         return false;
     
@@ -40,14 +40,14 @@ bool Sphere::intersect(const Ray &r, Intersection &it, bool &bboxOnly){
             t1 = t2 = d_neg.dot(v)/tmp2;
         else{                                       //Two intersection points
             t1 = (d_neg.dot(v) - sqrt(desc))/tmp2;
-            t2 = (d_neg.dot(v) + sqrt(desc))/tmp2;
+//            t2 = (d_neg.dot(v) + sqrt(desc))/tmp2;
         }
 
         Point p1 = r.getOri() + r.getDir() * t1;
-        Point p2 = r.getOri() + r.getDir() * t2;
+//        Point p2 = r.getOri() + r.getDir() * t2;
         Vector n = getNormal(p1);
         
-        it.set(t1, t2, p1, p2, n);
+        it.set(t1, p1, n);
         return true;
     }
     return false;

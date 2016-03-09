@@ -25,7 +25,7 @@ bool Plane::intersect(const Ray &r, Intersection &it){
     double t = numerator / denominator;
     if(t > 0){
         Point p = r.getOri() + r.getDir() * t;
-        it.set(t, t, p, p, _n);
+        it.set(t, p, _n);
         return true;
     }
     return false;

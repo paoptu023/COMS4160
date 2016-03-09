@@ -13,8 +13,6 @@
 #include "Point.h"
 
 class Ray{
-friend class Triangle;
-    
 private:
     Point _ori;
     Vector _dir;
@@ -24,9 +22,6 @@ public:
     
     //Start from p with direction v
     Ray(const Point &p, const Vector &v): _ori(p), _dir(v) {}
-    
-    //Start from p to the direction of v
-    Ray(const Point &p, const Point &q): _ori(p), _dir(Vector(p, q)) {}
     
     Point getOri() const{return move(_ori);}
     

@@ -139,11 +139,17 @@ Vector Camera::rayColor(const Ray &r, int ray_type,
                 Ray s_ray(p1, i_l);
                 bool inShadow = false;
                 
-                for(auto obj : objects){
-                    if(obj->intersect(s_ray, it, bboxOnly)){
-                        if(it.getT1() > 0.0001 && it.getT1() < max_t){
-                            inShadow = true;
-                            break;
+                if(root){
+                    if(root->intersect(s_ray, it, bboxOnly) && it.getT1() < max_t)
+                        inShadow = true;
+                }
+                else{
+                    for(auto obj : objects){
+                        if(obj->intersect(s_ray, it, bboxOnly)){
+                            if(it.getT1() > 0.0001 && it.getT1() < max_t){
+                                inShadow = true;
+                                break;
+                            }
                         }
                     }
                 }

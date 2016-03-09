@@ -25,7 +25,7 @@ public:
              double x2, double y2, double z2,
              double x3, double y3, double z3, Material *&m);
     
-    bool intersect(const Ray &r, Intersection &it, bool &bboxOnly);
+    bool intersect(const Ray &r, Intersection &it, bool bboxOnly);
     
     Vector getNormal(const Point &p){return move(_n);}
 };
