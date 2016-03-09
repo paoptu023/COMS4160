@@ -14,26 +14,19 @@
 #include "Bbox.h"
 
 class Surface{
+friend class BVH;
 protected:
     Material *_m;
+    Point _min, _max;
+    Bbox _bbox;
     
 public:
-    Bbox _bbox;
-    Surface(): _m(NULL), _bbox(Bbox()) {}
     
-    virtual bool intersect(const Ray &r, Intersection &it,
-                           const bool &withBbox,
-                           const bool &bboxOnly){return false;}
+    Surface(): _m(NULL), _min(Point()), _max(Point()), _bbox(Bbox()) {}
     
-    virtual Vector getNormal(){return Vector();}
+    virtual bool intersect(const Ray &r, Intersection &it, bool &bboxOnly){return false;}
     
     Material* getMaterial() const{return _m;}
-    
-    void setBbox(const Point &minP, const Point &maxP){
-        _bbox.set(minP, maxP);
-    }
-    
-    virtual string getType(){return "surface";};
 };
 
 #endif /* Surface_h */

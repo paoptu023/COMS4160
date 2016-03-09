@@ -19,14 +19,15 @@ private:
     int _id;
     
 public:
-    Bbox(): _minP(Point()), _maxP(Point()), _id(-1) {}
+    Bbox(): _minP(Point()), _maxP(Point()), _id(-1){}
     
-    void set(const Point &minP, const Point &maxP){
+    Bbox(const Point &minP, const Point &maxP, int i){
         _minP = minP;
         _maxP = maxP;
+        _id = i;
     }
     
-    void setId(const int ii){_id = ii;}
+    void setId(int i){_id = i;}
     
     Point getMin() const{return move(_minP);}
     Point getMax() const{return move(_maxP);}

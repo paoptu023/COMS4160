@@ -7,68 +7,80 @@
 //
 
 #include "BVH.h"
-static bool compare(const Surface *a, const Surface *b){
-    Point midA = (a->_bbox.getMin() + a->_bbox.getMax()) / 2;
-    Point midB = (b->_bbox.getMin() + b->_bbox.getMax()) / 2;
-    return midA[0] < midB[0];
+void BVH::quickSort(vector<Surface*> &objs, int l, int r, int axis){
+    if(l < r){
+        int pivot = objs[r]->_max[axis];
+        int p = partition(objs, l, r - 1, pivot, axis);
+        swap(objs[++p], objs[r]);
+        quickSort(objs, l, p - 1, axis);
+        quickSort(objs, p + 1, r, axis);
+    }
+}
+
+int BVH::partition(vector<Surface*> &objs, int l, int r, int pivot, int axis){
+    int i = l - 1;
+    for(int j = l; j <= r; ++j){
+        if(objs[j]->_max[axis] < pivot)
+            swap(objs[++i], objs[j]);
+    }
+    return i;
 }
 
 BVH::BVH(vector<Surface*> &objects, int l, int r, int axis){
     if(l == r){
         _left = objects[l];
+        _left->_bbox.setId(l);
         _right = NULL;
-        _bbox = objects[l]->_bbox;
-        _bbox.setId(l);
+        _bbox = Bbox(objects[l]->_min, objects[l]->_max, l);
     }
     else if(l < r){
         surround(objects, l, r);
         if(r == l + 1){
-            _left = new BVH(objects, l, l, axis);
-            _right = new BVH(objects, r, r, axis);
+            _left = objects[l];
+            _left->_bbox.setId(l);
+            _right = objects[r];
+            _right->_bbox.setId(r);
         }
         else{
-            int mid = (r - l + 1)/2;
-            nth_element(objects.begin() + l, objects.begin() + mid, objects.end(), compare);
+            //partition by volume
+            int pivot = (_bbox._minP[axis] + _bbox._maxP[axis]) / 2;
+            int mid = partition(objects, l, r, pivot, axis);
             
-            _left = new BVH(objects, l, l + mid, (axis + 1)%3);
-            _right = new BVH(objects, l + mid + 1, r, (axis + 1)%3);
+            if(mid == l-1 || mid == r){
+                quickSort(objects, l, r, axis);
+                mid = l + (r - l) / 2;
+            }
+            
+            _left = new BVH(objects, l, mid, (axis + 1) % 3);
+            _right = new BVH(objects, mid + 1, r, (axis + 1) % 3);
         }
     }
 }
 
-void BVH::surround(const vector<Surface*> objects, int l, int r){
+void BVH::surround(const vector<Surface*> objs, int l, int r){
     double minX, minY, minZ;
     double maxX, maxY, maxZ;
     
     minX = minY = minZ = numeric_limits<double>::max();
     maxX = maxY = maxZ = numeric_limits<double>::min();
     for(int i = l; i <= r; ++i){
-        minX = min(minX, objects[i]->_bbox._minP[0]);
-        minY = min(minY, objects[i]->_bbox._minP[1]);
-        minZ = min(minZ, objects[i]->_bbox._minP[2]);
+        minX = min(minX, objs[i]->_min[0]);
+        minY = min(minY, objs[i]->_min[1]);
+        minZ = min(minZ, objs[i]->_min[2]);
         
-        maxX = max(maxX, objects[i]->_bbox._maxP[0]);
-        maxY = max(maxY, objects[i]->_bbox._maxP[1]);
-        maxZ = max(maxZ, objects[i]->_bbox._maxP[2]);
+        maxX = max(maxX, objs[i]->_max[0]);
+        maxY = max(maxY, objs[i]->_max[1]);
+        maxZ = max(maxZ, objs[i]->_max[2]);
     }
     
-    _bbox.set(Point(minX, minY, minZ), Point(maxX, maxY, maxZ));
+    _bbox = Bbox(Point(minX, minY, minZ), Point(maxX, maxY, maxZ), -1);
 }
 
-bool BVH::intersect(const Ray &r, Intersection &it,
-                    const bool &withBbox,
-                    const bool &bboxOnly){
+bool BVH::intersect(const Ray &r, Intersection &it, bool &bboxOnly){
     if(_bbox.intersect(r, it)){
-        if(_right == NULL){
-            if(_left->intersect(r, it, withBbox, bboxOnly) && it.getT1() > 0.0001)
-               return true;
-            else
-               return false;
-        }
-        
         Intersection lIt, rIt;
-        bool lHit = _left->intersect(r, lIt, withBbox, bboxOnly);
-        bool rHit = _right->intersect(r, rIt, withBbox, bboxOnly);
+        bool lHit = _left->intersect(r, lIt, bboxOnly) && lIt.getT1() > 0.0001;
+        bool rHit = _right && _right->intersect(r, rIt, bboxOnly) && rIt.getT1() > 0.0001;
         if(!lHit && !rHit)
             return false;
         else{
@@ -82,7 +94,6 @@ bool BVH::intersect(const Ray &r, Intersection &it,
                 it = lIt;
             else
                 it = rIt;
-            
             return true;
         }
     }

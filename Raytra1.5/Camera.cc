@@ -65,58 +65,57 @@ Ray Camera::generateRay(double i, double j){
 void Camera::render(vector<Surface*> &objects,
                     const vector<Light*> &lights,
                     const AmbientLight *aLight,
-                    const bool &withBbox,
-                    const bool &bboxOnly){
+                    BVH *root, bool &bboxOnly){
     cout << "render image." << endl;
-    
-    BVH *root = new BVH(objects, 0, (int)objects.size() - 1, 0);
     
     //for each pixel generate a ray through it
     for(int y = 0; y < _ph; ++y){
         for(int x = 0; x < _pw; ++x){
             Ray r = generateRay(x, y);
             
-            Vector rgb = rayColor(r, 1, 5, lights, objects,
-                                  aLight, root, withBbox, bboxOnly);
+            Vector rgb = rayColor(r, 1, 5, lights, objects, aLight, root, bboxOnly);
             
             setPixel(x, y, rgb[0], rgb[1], rgb[2]);
         }
     }
-    
-    delete root;
     cout << "finished rendering." << endl;
 }
 
 //Recursive ray tracing
 //ray_type: 1 - primary ray; 2 - reflected ray; 3 - refracted ray
-Vector Camera::rayColor(const Ray &r, int ray_type, int recurse_limit,
+Vector Camera::rayColor(const Ray &r, int ray_type,
+                        int recurse_limit,
                         const vector<Light*> lights,
                         const vector<Surface*> objects,
-                        const AmbientLight *aLight, BVH *root,
-                        const bool &withBbox, const bool &bboxOnly){
+                        const AmbientLight *aLight,
+                        BVH *root, bool &bboxOnly){
     if(recurse_limit == 0)
         return move(Vector(0.0, 0.0, 0.0));
     
-    //find closest intersection
-//    Material *m = NULL;
-    Intersection it;
-//    Intersection tmp;
-    
-//    for(auto obj : objects){
-//        if(obj->intersect(r, tmp, withBbox, bboxOnly)){
-//            if(tmp.getT1() > 0.0001 && tmp.getT1() < it.getT1()){
-//                it = tmp;
-//                m = obj->getMaterial();
-//            }
-//        }
-//    }
-    
     //color accumulator
     Vector ret_rgb(0.0, 0.0, 0.0);
+    Material *m = NULL;
+    Intersection it;
     
-    if(root->intersect(r, it, withBbox, bboxOnly)){
-        Material *m = objects[it.getId()]->getMaterial();
-//    if(it.intersect()){
+    //toggle BVH mode
+    if(root){
+        if(root->intersect(r, it, bboxOnly))
+            m = objects[it.getId()]->getMaterial();
+    }
+    else{
+        //find closest intersection as normal
+        Intersection tmp;
+        for(auto obj : objects){
+            if(obj->intersect(r, tmp, bboxOnly)){
+                if(tmp.getT1() > 0.0001 && tmp.getT1() < it.getT1()){
+                    it = tmp;
+                    m = obj->getMaterial();
+                }
+            }
+        }
+    }
+    
+    if(m != NULL){
         Point p1 = it.getP1();
         
         //Normal at intersection
@@ -140,10 +139,9 @@ Vector Camera::rayColor(const Ray &r, int ray_type, int recurse_limit,
                 Ray s_ray(p1, i_l);
                 bool inShadow = false;
                 
-                Intersection tmp;
                 for(auto obj : objects){
-                    if(obj->intersect(s_ray, tmp, withBbox, bboxOnly)){
-                        if(tmp.getT1() > 0.0001 && tmp.getT1() < max_t){
+                    if(obj->intersect(s_ray, it, bboxOnly)){
+                        if(it.getT1() > 0.0001 && it.getT1() < max_t){
                             inShadow = true;
                             break;
                         }
@@ -172,10 +170,11 @@ Vector Camera::rayColor(const Ray &r, int ray_type, int recurse_limit,
             rfl.normalize();
             Ray r_ray(p1, rfl);
             
-            ret_rgb += km * rayColor(r_ray, 2, recurse_limit - 1, lights, objects,
-                                     aLight, root, withBbox, bboxOnly);
+            ret_rgb += km * rayColor(r_ray, 2, recurse_limit - 1, lights,
+                                     objects, aLight, root, bboxOnly);
         }
     }
+//    delete m;
     return move(ret_rgb);
 }
 

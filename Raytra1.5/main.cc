@@ -14,70 +14,81 @@
 #include "Camera.h"
 
 void parseSceneFile (char *filnam, Camera **myCam, vector<Surface*> &objects,
-                     vector<Light*> &lights, AmbientLight **aLight,
-                     vector<Material*> &materials);
+                     vector<Light*> &lights, AmbientLight **aLight, vector<Material*> &materials);
 
 int main(int argc, char * argv[]) {
     clock_t start = clock();
     
-    if (argc < 3) {
-        cerr << "useage: raytra scenefilename" << endl;
-        return -1;
-    }
-    char *scenefile = argv[1];
-    char *outfile = argv[2];
-    
-    bool withBbox = true;
-    bool bboxOnly = false;
-    bool bvhLeaf = false;
-    bool withBvh = false;
-    if(argc == 4){
-        int k = atoi(argv[3]);
-        switch(k){
-            case 0:
-                withBbox = false;
-                break;
-            case 1:
-                bboxOnly = true;
-                break;
-            case 2:
-                bvhLeaf = true;
-                break;
-            case 3:
-                withBvh = true;
-                break;
-        }
-    }
-    
+//    if (argc < 3) {
+//        cerr << "useage: raytra scenefilename" << endl;
+//        return -1;
+//    }
+//    char *scenefile = argv[1];
+//    char *outfile = argv[2];
+//    
 //    bool withBbox = true;
 //    bool bboxOnly = false;
+//    bool withBVH = false;
+//    
+//    if(argc == 4){
+//        int k = atoi(argv[3]);
+//        switch(k){
+//            case 0:
+//                withBbox = false;
+//                break;
+//            case 1:
+//                bboxOnly = true;
+//                break;
+//            case 2:{
+//                withBVH = true;
+//                bboxOnly = true;
+//            }
+//                break;
+//            case 3:
+//                withBVH = true;
+//                break;
+//        }
+//    }
     
-    if(withBbox)    cout << "bounding box mode" << endl;
+    bool bboxOnly = false;
+    bool withBVH = true;
+    
     if(bboxOnly)    cout << "only render bounding boxes" << endl;
     
-//    char scenefile[] = "/Users/vicky/Desktop/Computer Graphics/hw1.5/test/bunny.txt";
-//    char outfile[] = "/Users/vicky/Desktop/Computer Graphics/hw1.5/test/bunny_box.exr";
+    if(withBVH)
+        cout << "BVH mode" << endl;
+    else
+        cout << "just bounding box mode" << endl;
+    
+    char scenefile[] = "/Users/vicky/Desktop/Computer Graphics/hw1.5/test/teapot.txt";
+    char outfile[] = "/Users/vicky/Desktop/Computer Graphics/hw1.5/test/teapot.exr";
     
     vector<Surface*> objects;
-    Camera *myCam = NULL;
     vector<Material*> materials;
-    AmbientLight *aLight = NULL;
     vector<Light*> lights;
+    AmbientLight *aLight = NULL;
+    Camera *myCam = NULL;
+    BVH *root = NULL;
     
     parseSceneFile(scenefile, &myCam, objects, lights, &aLight, materials);
     
-    myCam->render(objects, lights, aLight, withBbox, bboxOnly);
+    if(withBVH)
+        root = new BVH(objects, 0, (int)objects.size() - 1, 0);
+    
+    myCam->render(objects, lights, aLight, root, bboxOnly);
     myCam->writeFile(outfile);
     
     delete myCam; delete aLight;
-    
-    for(auto obj : objects)
-        delete obj;
-    objects.clear();
+//    if(root)
+//        delete root;
     
     for(auto m : materials)
         delete m;
     materials.clear();
+    
+    for(auto obj : objects)
+        delete obj;
+    objects.clear();
     
     for(auto li : lights)
         delete li;

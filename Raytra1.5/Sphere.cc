@@ -8,32 +8,29 @@
 
 #include "Sphere.h"
 
-Sphere::Sphere(Material *m, const Point &p, double r){
+Sphere::Sphere(Material *&m, const Point &p, double r){
     _m = m;
     _center = p;
     _radius = r;
-    
-    Point minP(_center - Vector(_radius, _radius, _radius));
-    Point maxP(_center + Vector(_radius, _radius, _radius));
-    setBbox(minP, maxP);
+    _min = Point(_center - Vector(_radius, _radius, _radius));
+    _max = Point(_center + Vector(_radius, _radius, _radius));
+    _bbox = Bbox(_min, _max, -1);
 }
 
-bool Sphere::intersect(const Ray &r, Intersection &it,
-                       const bool &withBbox,
-                       const bool &bboxOnly){
-    if(withBbox && !_bbox.intersect(r, it))
+bool Sphere::intersect(const Ray &r, Intersection &it, bool &bboxOnly){
+    if(!_bbox.intersect(r, it))
         return false;
     
     if(bboxOnly)
         return true;
     
     //Calculate descriminant
-    Vector v(getCenter(), r.getOri());
+    Vector v(_center, r.getOri());
     Vector d = r.getDir();
 
     double tmp1 = d.dot(v);
     double tmp2 = d.dot(d);
-    double tmp3 = v.dot(v) - getRadius() * getRadius();
+    double tmp3 = v.dot(v) - _radius * _radius;
     double desc = tmp1 * tmp1 - tmp2 * tmp3;
     
     if(desc >= 0){
@@ -45,9 +42,12 @@ bool Sphere::intersect(const Ray &r, Intersection &it,
             t1 = (d_neg.dot(v) - sqrt(desc))/tmp2;
             t2 = (d_neg.dot(v) + sqrt(desc))/tmp2;
         }
-        Point p = r.getOri() + r.getDir() * t1;
-        Vector n = getNormal(p);
-        it.set(t1, t2, r, n);
+
+        Point p1 = r.getOri() + r.getDir() * t1;
+        Point p2 = r.getOri() + r.getDir() * t2;
+        Vector n = getNormal(p1);
+        
+        it.set(t1, t2, p1, p2, n);
         return true;
     }
     return false;

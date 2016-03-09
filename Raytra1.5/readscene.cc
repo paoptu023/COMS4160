@@ -169,7 +169,6 @@ void parseSceneFile (char *filnam, Camera **myCam, vector<Surface*> &objects,
         exit (-1);
     }
     
-    
     // Note: you'll have to keep track of whatever the last material
     // you loaded in was, so you can apply it to any geometry that gets loaded. 
     // So here, you'll have something like:
@@ -196,7 +195,7 @@ void parseSceneFile (char *filnam, Camera **myCam, vector<Surface*> &objects,
                 x = getTokenAsFloat (line, 1); 
                 y = getTokenAsFloat (line, 2); 
                 z = getTokenAsFloat (line, 3); 
-                r = getTokenAsFloat (line, 4); 
+                r = getTokenAsFloat (line, 4);
                 
                 Sphere *mySphere = new Sphere(materials.back(), Point(x, y, z), r);
                 objects.push_back(mySphere);
@@ -244,6 +243,7 @@ void parseSceneFile (char *filnam, Camera **myCam, vector<Surface*> &objects,
                 ny = getTokenAsFloat (line, 2);
                 nz = getTokenAsFloat (line, 3);
                 d = getTokenAsFloat (line, 4);
+
                 Plane *myPlane = new Plane(nx, ny, nz, d, materials.back());
                 objects.push_back(myPlane);
 //                cout << "got a plane with ";
@@ -397,7 +397,8 @@ void parseSceneFile (char *filnam, Camera **myCam, vector<Surface*> &objects,
                     y3 = verts[3 * tris[3 * i + 2] + 1];
                     z3 = verts[3 * tris[3 * i + 2] + 2];
                     
-                    Triangle *myTri = new Triangle(x1, y1, z1, x2, y2, z2, x3, y3, z3, materials.back());
+                    Triangle *myTri = new Triangle(x1, y1, z1, x2, y2, z2, x3, y3, z3,
+                                                   materials.back());
                     objects.push_back(myTri);
                 }
             }

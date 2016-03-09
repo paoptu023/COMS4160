@@ -10,7 +10,6 @@
 #define Material_h
 
 #include "Vector.h"
-#include "Intersection.h"
 #include "Light.h"
 #include <cmath>
 using namespace std;

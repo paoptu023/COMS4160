@@ -11,6 +11,7 @@
 #include "Surface.h"
 #include <vector>
 #include <cmath>
+#include <algorithm>
 
 class BVH : public Surface{
 private:
@@ -24,11 +25,11 @@ public:
     
     void surround(const vector<Surface*> objects, int l, int r);
     
-    bool intersect(const Ray &r, Intersection &it,
-                   const bool &withBbox,
-                   const bool &bboxOnly);
+    bool intersect(const Ray &r, Intersection &it, bool &bboxOnly);
     
-    virtual string getType(){return "BVH";};
+    int partition(vector<Surface*> &objs, int l, int r, int pivot, int axis);
+    
+    void quickSort(vector<Surface*> &objs, int l, int r, int axis);
 };
 
 #endif /* BVH_h */

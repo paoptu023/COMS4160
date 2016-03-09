@@ -8,28 +8,24 @@
 
 #include "Intersection.h"
 
-void Intersection::set(const double t1, const double t2,
-                       const Ray &r, const Vector &n){
-    _intersect = true;
-    _t1 = t1;
-    _t2 = t2;
-    _p1 = r.getOri() + r.getDir() * t1;
-    _p2 = r.getOri() + r.getDir() * t2;
-    _n = n;
+Intersection::Intersection(){
+    _t1 = _t2 = numeric_limits<double>::max();
+    _p1 = _p2 = Point();
+    _n = Vector();
+    _id = -1;
 }
 
-//for bounding box
-void Intersection::set(const double t1, const double t2, const Ray &r){
-    _intersect = true;
+void Intersection::set(double t1, double t2, const Point &p1,
+                       const Point &p2, const Vector &n){
     _t1 = t1;
     _t2 = t2;
-    _p1 = r.getOri() + r.getDir() * t1;
-    _p2 = r.getOri() + r.getDir() * t2;
+    _p1 = p1;
+    _p2 = p2;
+    _n = n;
 }
 
 //Operator overload
 Intersection & Intersection::operator =(const Intersection &i){
-    _intersect = i._intersect;
     _t1 = i._t1;
     _t2 = i._t2;
     _p1 = i._p1;

@@ -13,7 +13,6 @@
 #include "Surface.h"
 
 class Triangle : public Surface{
-    
 private:
     Point _p1, _p2, _p3;
     Vector _n;
@@ -21,21 +20,14 @@ private:
     
 public:
     Triangle();
+    
     Triangle(double x1, double y1, double z1,
              double x2, double y2, double z2,
-             double x3, double y3, double z3, Material *m);
+             double x3, double y3, double z3, Material *&m);
     
-    bool intersect(const Ray &r, Intersection &it,
-                   const bool &withBbox,
-                   const bool &bboxOnly);
+    bool intersect(const Ray &r, Intersection &it, bool &bboxOnly);
     
     Vector getNormal(const Point &p){return move(_n);}
-    
-    Point getP1(){return _p1;}
-    Point getP2(){return _p2;}
-    Point getP3(){return _p3;}
-    
-    string getType(){return "triangle";};
 };
 
 #endif /* Triangle_h */

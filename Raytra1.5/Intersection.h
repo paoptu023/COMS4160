@@ -14,10 +14,10 @@
 #include "Point.h"
 #include "Vector.h"
 #include "Ray.h"
+#include "Material.h"
 
 class Intersection{
 private:
-    bool _intersect;
     double _t1, _t2;
     Point _p1, _p2;
     Vector _n;
@@ -26,40 +26,26 @@ private:
 public:
     Intersection();
     
-    void set(const double t1, const double t2,
-             const Ray &r, const Vector &n);
-    
-    //for bounding box
-    void set(const double t1, const double t2, const Ray &r);
-    void setNormal(Vector &n){_n = n;}
-    
-    //for BVH node
-    void setId(const int i){_id = i;}
-    int getId() const{return _id;}
+    void set(double t1, double t2, const Point &p1,
+             const Point &p2, const Vector &n);
     
     Intersection & operator =(const Intersection &i);
     
-    bool intersect() const{return _intersect;}
-    
     double getT1() const{return _t1;}
-    
-    double getT2() const{return _t2;}
     
     Point getP1() const{return _p1;}
     
-    Point getP2() const{return _p2;}
+    int getId() const{return _id;}
+    
+    void setId(int i){_id = i;}
+//
+//    void setIntersect(){_intersect = true;}
+//    
+//    bool intersect(){return _intersect;}
     
     Vector getNormal() const{return _n;}
     
     void print();
 };
-
-inline Intersection::Intersection(){
-    _intersect = false;
-    _t1 = _t2 = numeric_limits<double>::max();
-    _p1 = _p2 = Point();
-    _n = Vector();
-    _id = -1;
-}
 
 #endif /* Intersection_h */

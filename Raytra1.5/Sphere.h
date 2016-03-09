@@ -13,25 +13,17 @@
 
 class Sphere: public Surface{
 private:
-    Point _center;
     double _radius;
+    Point _center;
     
 public:
-    Sphere(): _center(Point()), _radius(0.0) {}
+    Sphere(): _radius(0.0), _center(Point()) {}
 
-    Sphere(Material *m, const Point &p, double r);
+    Sphere(Material *&m, const Point &p, double r);
     
-    bool intersect(const Ray &r, Intersection &it,
-                   const bool &withBbox,
-                   const bool &bboxOnly);
+    bool intersect(const Ray &r, Intersection &it, bool &bboxOnly);
     
     Vector getNormal(const Point &p);
-    
-    Point getCenter() const{return _center;}
-    
-    double getRadius() const{return _radius;}
-    
-    string getType(){return "sphere";};
 };
 
 #endif /* Sphere_h */

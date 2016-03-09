@@ -19,17 +19,10 @@ private:
     
 public:
     Plane(): _n(Vector()), _d(0.0) {}
-    Plane(double nx, double ny, double nz, double d, Material *m);
+    
+    Plane(double nx, double ny, double nz, double d, Material *&m);
 
-    bool intersect(const Ray &r, Intersection &it,
-                   const bool &withBbox,
-                   const bool &bboxOnly);
-    
-    Vector getNormal(const Point &p){return move(_n);}
-    
-    double getDistance() const{return _d;}
-    
-    string getType(){return "plane";};
+    bool intersect(const Ray &r, Intersection &it);
 };
 
 #endif /* Plane_h */
