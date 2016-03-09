@@ -38,6 +38,8 @@ public:
     
     void setId(int i){_id = i;}
     
+    void setNormal(const Vector &n){_n = n;}
+    
     Vector getNormal() const{return _n;}
     
     void print();

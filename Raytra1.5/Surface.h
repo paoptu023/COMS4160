@@ -12,7 +12,7 @@
 #include "Ray.h"
 #include "Material.h"
 #include "Bbox.h"
-const double e = 0.0000000001;
+const double e = 0.000000001;
 
 class Surface{
 friend class BVH;

@@ -67,8 +67,8 @@ int main(int argc, char * argv[]) {
     else
         cout << "just bounding box mode" << endl;
     
-    char scenefile[] = "/Users/vicky/Desktop/Computer Graphics/hw1.5/test/scene1.txt";
-    char outfile[] = "/Users/vicky/Desktop/Computer Graphics/hw1.5/test/scene1_box.exr";
+    char scenefile[] = "/Users/vicky/Desktop/Computer Graphics/hw1.5/test/colorspheres.txt";
+    char outfile[] = "/Users/vicky/Desktop/Computer Graphics/hw1.5/test/colorspheres_box.exr";
     
     vector<Surface*> objects;
     vector<Material*> materials;

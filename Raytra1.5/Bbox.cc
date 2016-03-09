@@ -46,30 +46,35 @@ bool Bbox::intersect(const Ray &r, Intersection &it){
     tmax = min(tmax, tzmax);
     
     if(tmax > tmin){
-        Point p1 = r.getOri() + r.getDir() * tmin;
+        double px = r.getOri()[0] + r.getDir()[0] * tmin;
+        double py = r.getOri()[1] + r.getDir()[1] * tmin;
+        double pz = r.getOri()[2] + r.getDir()[2] * tmin;
+        
+        double tmpX_min = px - _minP[0];
+        double tmpX_max = px - _maxP[0];
+        double tmpY_min = py - _minP[1];
+        double tmpY_max = py - _maxP[1];
+        double tmpZ_min = pz - _minP[2];
+        double tmpZ_max = pz - _maxP[2];
+
+        
         Vector n;
-        
-        double tmpX_min = p1[0] - _minP[0];
-        double tmpX_max = p1[0] - _maxP[0];
-        double tmpY_min = p1[1] - _minP[1];
-        double tmpY_max = p1[1] - _maxP[1];
-        double tmpZ_min = p1[2] - _minP[2];
-        
-        
-        if(tmpX_min >= -0.001 && tmpX_min <= 0.001)
+        if(tmpX_min > -limit && tmpX_min < limit)
             n = Vector(-1, 0, 0);
-        else if(tmpX_max >= -0.001 && tmpX_max <= 0.001)
+        else if(tmpX_max > -limit && tmpX_max < limit)
             n = Vector(1, 0, 0);
-        else if(tmpY_min >= -0.001 && tmpY_min <= 0.001)
+        else if(tmpY_min > -limit && tmpY_min < limit)
             n = Vector(0, -1, 0);
-        else if(tmpY_max >= -0.001 && tmpY_max <= 0.001)
+        else if(tmpY_max > -limit && tmpY_max < limit)
             n = Vector(0, 1, 0);
-        else if(tmpZ_min >= -0.001 && tmpZ_min <= 0.001)
+        else if(tmpZ_min > -limit && tmpZ_min < limit)
             n = Vector(0, 0, -1);
-        else
+        else if(tmpZ_max > -limit && tmpZ_max < limit)
             n = Vector(0, 0, 1);
+        else
+            return false;
         
-        it.set(tmin, p1, n);
+        it.set(tmin, Point(px, py, pz), n);
         if(_id != -1)
             it.setId(_id);
         
