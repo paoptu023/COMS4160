@@ -37,14 +37,11 @@ bool Sphere::intersect(const Ray &r, Intersection &it, bool bboxOnly){
         double t1, t2;
         Vector d_neg = d * (-1);
         if(desc == 0)                               //One intersection points
-            t1 = t2 = d_neg.dot(v)/tmp2;
-        else{                                       //Two intersection points
+            t1 = d_neg.dot(v)/tmp2;
+        else                                        //Two intersection points
             t1 = (d_neg.dot(v) - sqrt(desc))/tmp2;
-//            t2 = (d_neg.dot(v) + sqrt(desc))/tmp2;
-        }
 
         Point p1 = r.getOri() + r.getDir() * t1;
-//        Point p2 = r.getOri() + r.getDir() * t2;
         Vector n = getNormal(p1);
         
         it.set(t1, p1, n);

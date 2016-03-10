@@ -30,45 +30,43 @@ void deleteTree(BVH *root){
 int main(int argc, char * argv[]) {
     clock_t start = clock();
     
-    //    if (argc < 3) {
-    //        cerr << "useage: raytra scenefilename" << endl;
-    //        return -1;
-    //    }
-    //    char *scenefile = argv[1];
-    //    char *outfile = argv[2];
-    //
-    //    bool bboxOnly = false;
-    //    bool withBVH = false;
-    //
-    //    if(argc == 4){
-    //        int k = atoi(argv[3]);
-    //        switch(k){
-    //            case 1:
-    //                bboxOnly = true;
-    //                break;
-    //            case 2:{
-    //                withBVH = true;
-    //                bboxOnly = true;
-    //            }
-    //                break;
-    //            case 3:
-    //                withBVH = true;
-    //                break;
-    //        }
-    //    }
-    
-    bool bboxOnly = true;
+    if (argc < 3) {
+        cerr << "useage: raytra scenefilename" << endl;
+        return -1;
+    }
+    char *scenefile = argv[1];
+    char *outfile = argv[2];
+
+    bool bboxOnly = false;
     bool withBVH = true;
+
+    if(argc == 4){
+        int k = atoi(argv[3]);
+        switch(k){
+            case 0:
+                withBVH = false;
+                break;
+            case 1:{
+                bboxOnly = true;
+                withBVH = false;
+            }
+                break;
+            case 2:
+                bboxOnly = true;
+                break;
+        }
+    }
     
-    if(bboxOnly)    cout << "only render bounding boxes" << endl;
+    if(bboxOnly)
+        cout << "only render bounding boxes" << endl;
     
     if(withBVH)
-        cout << "BVH mode" << endl;
+        cout << "BVH mode." << endl;
     else
-        cout << "just bounding box mode" << endl;
+        cout << "just bounding box mode." << endl;
     
-    char scenefile[] = "/Users/vicky/Desktop/Computer Graphics/hw1.5/test/colorspheres.txt";
-    char outfile[] = "/Users/vicky/Desktop/Computer Graphics/hw1.5/test/colorspheres_box.exr";
+//    char scenefile[] = "/Users/vicky/Desktop/Computer Graphics/hw1.5/test/colorspheres.txt";
+//    char outfile[] = "/Users/vicky/Desktop/Computer Graphics/hw1.5/test/colorspheres_box.exr";
     
     vector<Surface*> objects;
     vector<Material*> materials;
@@ -85,21 +83,17 @@ int main(int argc, char * argv[]) {
     myCam->render(objects, lights, aLight, root, bboxOnly);
     myCam->writeFile(outfile);
     
-    delete myCam; delete aLight;
-    
-    deleteTree(root);
+    //manually clear memory
+    delete myCam; delete aLight; deleteTree(root);
     
     for(auto m : materials)
         delete m;
-    materials.clear();
     
     for(auto obj : objects)
         delete obj;
-    objects.clear();
     
     for(auto li : lights)
         delete li;
-    lights.clear();
     
     double duration = (clock() - start) / (double) CLOCKS_PER_SEC;
     cout<< duration << "s" << endl;

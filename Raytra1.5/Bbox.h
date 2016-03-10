@@ -10,7 +10,7 @@
 #define Bbox_h
 
 #include "Intersection.h"
-const double limit = 0.001;
+const double eps = 0.001;
 
 class Bbox{
 friend class BVH;

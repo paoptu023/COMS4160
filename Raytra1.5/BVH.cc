@@ -18,6 +18,7 @@ void BVH::quickSort(vector<Surface*> &objs, int l, int r, int axis){
     }
 }
 
+//partial sort
 int BVH::partition(vector<Surface*> &objs, int l, int r, int pivot, int axis){
     int i = l - 1;
     for(int j = l; j <= r; ++j){
@@ -46,6 +47,7 @@ BVH::BVH(vector<Surface*> &objects, int l, int r, int axis){
             int pivot = (_bbox._minP[axis] + _bbox._maxP[axis]) / 2;
             int mid = partition(objects, l, r, pivot, axis);
             
+            //objects are close in space, so partition by number instead
             if(mid == l-1 || mid == r){
                 quickSort(objects, l, r, axis);
                 mid = l + (r - l) / 2;
@@ -89,6 +91,7 @@ bool BVH::intersect(const Ray &r, Intersection &it, bool bboxOnly){
         if(!lHit && !rHit)
             return false;
         else{
+            //find closest intersection
             if (lHit && rHit){
                 if(lIt.getT1() < rIt.getT1())
                     it = lIt;

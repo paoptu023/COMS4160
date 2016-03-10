@@ -95,3 +95,4 @@ bool Triangle::intersect(const Ray &r, Intersection &it, bool bboxOnly){
     }
 }
 
+

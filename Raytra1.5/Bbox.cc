@@ -59,17 +59,17 @@ bool Bbox::intersect(const Ray &r, Intersection &it){
 
         
         Vector n;
-        if(tmpX_min > -limit && tmpX_min < limit)
+        if(tmpX_min > -eps && tmpX_min < eps)
             n = Vector(-1, 0, 0);
-        else if(tmpX_max > -limit && tmpX_max < limit)
+        else if(tmpX_max > -eps && tmpX_max < eps)
             n = Vector(1, 0, 0);
-        else if(tmpY_min > -limit && tmpY_min < limit)
+        else if(tmpY_min > -eps && tmpY_min < eps)
             n = Vector(0, -1, 0);
-        else if(tmpY_max > -limit && tmpY_max < limit)
+        else if(tmpY_max > -eps && tmpY_max < eps)
             n = Vector(0, 1, 0);
-        else if(tmpZ_min > -limit && tmpZ_min < limit)
+        else if(tmpZ_min > -eps && tmpZ_min < eps)
             n = Vector(0, 0, -1);
-        else if(tmpZ_max > -limit && tmpZ_max < limit)
+        else if(tmpZ_max > -eps && tmpZ_max < eps)
             n = Vector(0, 0, 1);
         else
             return false;
