@@ -34,7 +34,7 @@ bool Sphere::intersect(const Ray &r, Intersection &it, bool bboxOnly){
     double desc = tmp1 * tmp1 - tmp2 * tmp3;
     
     if(desc >= 0){
-        double t1, t2;
+        double t1;
         Vector d_neg = d * (-1);
         if(desc == 0)                               //One intersection points
             t1 = d_neg.dot(v)/tmp2;

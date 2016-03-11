@@ -122,8 +122,8 @@ Vector Camera::rayColor(const Ray &r, int ray_type,
         Vector n = it.getNormal();
         
         //Vector from intersection to camera
-        Vector i_e = r.getDir();
-        i_e *= -1.0;
+        Vector e_i = r.getDir();
+        Vector i_e = e_i * (-1.0);
         
         for(auto li : lights){
             //bling-phong shading
@@ -140,7 +140,7 @@ Vector Camera::rayColor(const Ray &r, int ray_type,
                 bool inShadow = false;
                 
                 if(root){
-                    if(root->intersect(s_ray, it, bboxOnly) && it.getT1() < max_t)
+                    if(root->shadowTest(s_ray, it, bboxOnly) && it.getT1() < max_t)
                         inShadow = true;
                 }
                 else{
@@ -180,7 +180,6 @@ Vector Camera::rayColor(const Ray &r, int ray_type,
                                      objects, aLight, root, bboxOnly);
         }
     }
-//    delete m;
     return move(ret_rgb);
 }
 

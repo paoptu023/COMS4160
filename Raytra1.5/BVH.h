@@ -26,6 +26,8 @@ public:
     
     bool intersect(const Ray &r, Intersection &it, bool bboxOnly);
     
+    bool shadowTest(const Ray &r, Intersection &it, bool bboxOnly);
+    
     int partition(vector<Surface*> &objs, int l, int r, int pivot, int axis);
     
     void quickSort(vector<Surface*> &objs, int l, int r, int axis);

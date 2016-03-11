@@ -79,7 +79,7 @@ void BVH::surround(const vector<Surface*> objs, int l, int r){
 }
 
 bool BVH::intersect(const Ray &r, Intersection &it, bool bboxOnly){
-    //leave node
+    //leaf node
     if(right == NULL){
         if(left->intersect(r, it, bboxOnly) && it.getT1() > 0.0001)
             return true;
@@ -104,6 +104,24 @@ bool BVH::intersect(const Ray &r, Intersection &it, bool bboxOnly){
                 it = rIt;
             return true;
         }
+    }
+    return false;
+}
+
+bool BVH::shadowTest(const Ray &r, Intersection &it, bool bboxOnly){
+    //leaf node
+    if(right == NULL){
+        if(left->intersect(r, it, bboxOnly) && it.getT1() > 0.0001)
+            return true;
+    }
+    else if(_bbox.intersect(r, it)){
+        bool hit = left->intersect(r, it, bboxOnly) && it.getT1() > 0.0001;
+        if(hit)
+            return true;
+        
+        hit = right->intersect(r, it, bboxOnly) && it.getT1() > 0.0001;
+        if(hit)
+            return true;
     }
     return false;
 }
