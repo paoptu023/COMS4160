@@ -8,24 +8,16 @@
 
 #include "BVH.h"
 
-void BVH::quickSort(vector<Surface*> &objs, int l, int r, int axis){
-    if(l < r){
-        int pivot = objs[r]->_max[axis];
-        int p = partition(objs, l, r - 1, pivot, axis);
-        swap(objs[++p], objs[r]);
-        quickSort(objs, l, p - 1, axis);
-        quickSort(objs, p + 1, r, axis);
-    }
+static bool compareX(Surface *a, Surface *b){
+    return a->getMaxP()[0] < b->getMaxP()[0];
 }
 
-//partial sort
-int BVH::partition(vector<Surface*> &objs, int l, int r, int pivot, int axis){
-    int i = l - 1;
-    for(int j = l; j <= r; ++j){
-        if(objs[j]->_max[axis] < pivot)
-            swap(objs[++i], objs[j]);
-    }
-    return i;
+static bool compareY(Surface *a, Surface *b){
+    return a->getMaxP()[1] < b->getMaxP()[1];
+}
+
+static bool compareZ(Surface *a, Surface *b){
+    return a->getMaxP()[2] < b->getMaxP()[2];
 }
 
 BVH::BVH(vector<Surface*> &objects, int l, int r, int axis){
@@ -43,14 +35,22 @@ BVH::BVH(vector<Surface*> &objects, int l, int r, int axis){
             right->_bbox.setId(r);
         }
         else{
-            //partition by volume
-            int pivot = (_bbox._minP[axis] + _bbox._maxP[axis]) / 2;
-            int mid = partition(objects, l, r, pivot, axis);
-            
-            //objects are close in space, so partition by number instead
-            if(mid == l-1 || mid == r){
-                quickSort(objects, l, r, axis);
-                mid = l + (r - l) / 2;
+            int mid = l + (r - l) / 2;
+            switch (axis) {
+                case 0:
+                    nth_element(objects.begin() + l, objects.begin() + mid,
+                                objects.begin() + r + 1, compareX);
+                    break;
+
+                case 1:
+                    nth_element(objects.begin() + l, objects.begin() + mid,
+                                objects.begin() + r + 1, compareY);
+                    break;
+
+                case 2:
+                    nth_element(objects.begin() + l, objects.begin() + mid,
+                                objects.begin() + r + 1, compareZ);
+                    break;
             }
             
             left = new BVH(objects, l, mid, (axis + 1) % 3);
@@ -79,12 +79,13 @@ void BVH::surround(const vector<Surface*> objs, int l, int r){
 }
 
 bool BVH::intersect(const Ray &r, Intersection &it, bool bboxOnly){
+    Intersection tmp;
     //leaf node
     if(right == NULL){
         if(left->intersect(r, it, bboxOnly) && it.getT1() > 0.0001)
             return true;
     }
-    else if(_bbox.intersect(r, it)){
+    else if(_bbox.intersect(r, tmp, bboxOnly) && tmp.getT1() < it.getT1()){
         Intersection lIt, rIt;
         bool lHit = left->intersect(r, lIt, bboxOnly) && lIt.getT1() > 0.0001;
         bool rHit = right->intersect(r, rIt, bboxOnly) && rIt.getT1() > 0.0001;
@@ -114,7 +115,7 @@ bool BVH::shadowTest(const Ray &r, Intersection &it, bool bboxOnly){
         if(left->intersect(r, it, bboxOnly) && it.getT1() > 0.0001)
             return true;
     }
-    else if(_bbox.intersect(r, it)){
+    else if(_bbox.intersect(r, it, bboxOnly)){
         bool hit = left->intersect(r, it, bboxOnly) && it.getT1() > 0.0001;
         if(hit)
             return true;

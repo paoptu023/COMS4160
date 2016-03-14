@@ -16,7 +16,7 @@ Plane::Plane(double nx, double ny, double nz,
     _m = m;
 }
 
-bool Plane::intersect(const Ray &r, Intersection &it){
+bool Plane::intersect(const Ray &r, Intersection &it, bool bboxOnly){
     double denominator = r.getDir().dot(_n);
     if(denominator == 0)
         return false;

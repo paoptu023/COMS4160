@@ -22,7 +22,7 @@ public:
     
     Plane(double nx, double ny, double nz, double d, Material *&m);
 
-    bool intersect(const Ray &r, Intersection &it);
+    bool intersect(const Ray &r, Intersection &it, bool bboxOnly);
 };
 
 #endif /* Plane_h */

@@ -16,21 +16,21 @@ class Bbox{
 friend class BVH;
     
 private:
-    Point _minP, _maxP;
     int _id;
+    Point _minP, _maxP;
     
 public:
-    Bbox(): _minP(Point()), _maxP(Point()), _id(-1){}
+    Bbox(): _id(-1), _minP(Point()), _maxP(Point()){}
     
     Bbox(const Point &minP, const Point &maxP, int i){
+        _id = i;
         _minP = minP;
         _maxP = maxP;
-        _id = i;
     }
     
     void setId(int i){_id = i;}
     
-    bool intersect(const Ray &r, Intersection &it);
+    bool intersect(const Ray &r, Intersection &it, bool bboxOnly);
     
     void print();
 };

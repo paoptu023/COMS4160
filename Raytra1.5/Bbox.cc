@@ -8,7 +8,7 @@
 
 #include "Bbox.h"
 
-bool Bbox::intersect(const Ray &r, Intersection &it){
+bool Bbox::intersect(const Ray &r, Intersection &it, bool bboxOnly){
     Point eye = r.getOri();
     
     double dx = 1 / r.getDir()[0];
@@ -46,38 +46,23 @@ bool Bbox::intersect(const Ray &r, Intersection &it){
     tmax = min(tmax, tzmax);
     
     if(tmax > tmin){
-        double px = r.getOri()[0] + r.getDir()[0] * tmin;
-        double py = r.getOri()[1] + r.getDir()[1] * tmin;
-        double pz = r.getOri()[2] + r.getDir()[2] * tmin;
+        if(bboxOnly){
+            Point p = r.getOri() + r.getDir() * tmin;
+            
+            Vector n;
+            if(tmin - txmin > -eps && tmin - txmin < eps)
+                n = dx > 0? Vector(-1, 0, 0) : Vector(1, 0, 0);
+            else if(tmin - tymin > -eps && tmin - tymin < eps)
+                n = dy > 0? Vector(0, -1, 0) : Vector(0, 1, 0);
+            else if(tmin - tzmin > -eps && tmin - tzmin < eps)
+                n = dz > 0? Vector(0, 0, -1) : Vector(0, 0, 1);
+            else
+                return false;
+            
+            it.set(tmin, p, n);
+        }
         
-        double tmpX_min = px - _minP[0];
-        double tmpX_max = px - _maxP[0];
-        double tmpY_min = py - _minP[1];
-        double tmpY_max = py - _maxP[1];
-        double tmpZ_min = pz - _minP[2];
-        double tmpZ_max = pz - _maxP[2];
-
-        
-        Vector n;
-        if(tmpX_min > -eps && tmpX_min < eps)
-            n = Vector(-1, 0, 0);
-        else if(tmpX_max > -eps && tmpX_max < eps)
-            n = Vector(1, 0, 0);
-        else if(tmpY_min > -eps && tmpY_min < eps)
-            n = Vector(0, -1, 0);
-        else if(tmpY_max > -eps && tmpY_max < eps)
-            n = Vector(0, 1, 0);
-        else if(tmpZ_min > -eps && tmpZ_min < eps)
-            n = Vector(0, 0, -1);
-        else if(tmpZ_max > -eps && tmpZ_max < eps)
-            n = Vector(0, 0, 1);
-        else
-            return false;
-        
-        it.set(tmin, Point(px, py, pz), n);
-        if(_id != -1)
-            it.setId(_id);
-        
+        it.setBox(_id, tmin);
         return true;
     }
     return false;

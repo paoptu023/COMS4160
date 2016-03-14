@@ -48,13 +48,11 @@ Triangle::Triangle(double x1, double y1, double z1,
 }
 
 bool Triangle::intersect(const Ray &r, Intersection &it, bool bboxOnly){
-    if(!_bbox.intersect(r, it))
+    if(!_bbox.intersect(r, it, bboxOnly))
         return false;
     
-    if(bboxOnly){
-        it.setNormal(_n);
+    if(bboxOnly)
         return true;
-    }
     
     double g = r.getDir()._xyz[0];
     double h = r.getDir()._xyz[1];

@@ -20,13 +20,15 @@ friend class BVH;
 protected:
     Material *_m;
     Point _min, _max;
-    Bbox _bbox;
     
 public:
+    Bbox _bbox;
     
     Surface(): _m(NULL), _min(Point()), _max(Point()), _bbox(Bbox()) {}
     
     virtual bool intersect(const Ray &r, Intersection &it, bool bboxOnly){return false;}
+    
+    Point getMaxP() const {return move(_max);}
     
     Material* getMaterial() const{return _m;}
 };

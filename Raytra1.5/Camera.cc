@@ -73,7 +73,7 @@ void Camera::render(vector<Surface*> &objects,
         for(int x = 0; x < _pw; ++x){
             Ray r = generateRay(x, y);
             
-            Vector rgb = rayColor(r, 1, 5, lights, objects, aLight, root, bboxOnly);
+            Vector rgb = rayColor(r, 1, 10, lights, objects, aLight, root, bboxOnly);
             
             setPixel(x, y, rgb[0], rgb[1], rgb[2]);
         }

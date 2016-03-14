@@ -36,9 +36,7 @@ public:
     
     int getId() const{return _id;}
     
-    void setId(int i){_id = i;}
-    
-    void setNormal(const Vector &n){_n = n;}
+    void setBox(int i, double t1){_id = i; _t1 = t1;}
     
     Vector getNormal() const{return _n;}
     

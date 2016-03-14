@@ -18,7 +18,7 @@ Sphere::Sphere(Material *&m, const Point &p, double r){
 }
 
 bool Sphere::intersect(const Ray &r, Intersection &it, bool bboxOnly){
-    if(!_bbox.intersect(r, it))
+    if(!_bbox.intersect(r, it, bboxOnly))
         return false;
     
     if(bboxOnly)
