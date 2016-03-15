@@ -15,7 +15,7 @@ Intersection::Intersection(){
     _m = NULL;
 }
 
-void Intersection::set(double t1, const Point &p1,
+void Intersection::set(const double &t1, const Point &p1,
                        const Vector &n, Material *&m){
     _t1 = t1;
     _p1 = p1;

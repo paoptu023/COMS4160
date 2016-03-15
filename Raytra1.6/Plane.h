@@ -20,7 +20,8 @@ private:
 public:
     Plane(): _n(Vector()), _d(0.0) {}
     
-    Plane(double nx, double ny, double nz, double d, Material *&m);
+    Plane(const double &nx, const double &ny,
+          const double &nz, const double &d, Material *&m);
 
     bool intersect(const Ray &r, Intersection &it);
 };

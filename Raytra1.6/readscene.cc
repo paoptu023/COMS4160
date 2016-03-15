@@ -182,6 +182,8 @@ void parseSceneFile (char *filnam, Camera **myCam, vector<Surface*> &objects,
         
         getline (inFile, line); // get the line
         
+        double x, y, z, r, g, b, vx, vy, vz, d;
+        
         switch (line[0])  {     // we'll decide which command based on the first character
             
             //
@@ -191,10 +193,9 @@ void parseSceneFile (char *filnam, Camera **myCam, vector<Surface*> &objects,
             // be "lastMaterialLoaded"
             //
             case 's':{ //sphere
-                double x, y, z, r;
-                x = getTokenAsFloat (line, 1); 
-                y = getTokenAsFloat (line, 2); 
-                z = getTokenAsFloat (line, 3); 
+                x = getTokenAsFloat (line, 1);
+                y = getTokenAsFloat (line, 2);
+                z = getTokenAsFloat (line, 3);
                 r = getTokenAsFloat (line, 4);
                 
                 Sphere *mySphere = new Sphere(materials.back(), Point(x, y, z), r);
@@ -217,16 +218,15 @@ void parseSceneFile (char *filnam, Camera **myCam, vector<Surface*> &objects,
                 break;
             
             case 't':{ // triangle
-                double x1, y1, z1, x2, y2, z2, x3, y3, z3;
-                x1 = getTokenAsFloat (line, 1);
-                y1 = getTokenAsFloat (line, 2);
-                z1 = getTokenAsFloat (line, 3);
-                x2 = getTokenAsFloat (line, 4);
-                y2 = getTokenAsFloat (line, 5);
-                z2 = getTokenAsFloat (line, 6);
-                x3 = getTokenAsFloat (line, 7);
-                y3 = getTokenAsFloat (line, 8);
-                z3 = getTokenAsFloat (line, 9);
+                double x1 = getTokenAsFloat (line, 1);
+                double y1 = getTokenAsFloat (line, 2);
+                double z1 = getTokenAsFloat (line, 3);
+                double x2 = getTokenAsFloat (line, 4);
+                double y2 = getTokenAsFloat (line, 5);
+                double z2 = getTokenAsFloat (line, 6);
+                double x3 = getTokenAsFloat (line, 7);
+                double y3 = getTokenAsFloat (line, 8);
+                double z3 = getTokenAsFloat (line, 9);
                 
                 Triangle *myTri = new Triangle(x1, y1, z1, x2, y2, z2, x3, y3, z3, materials.back());
                 objects.push_back(myTri);
@@ -238,13 +238,12 @@ void parseSceneFile (char *filnam, Camera **myCam, vector<Surface*> &objects,
                 break;
                 
             case 'p':{ // plane
-                double nx, ny, nz, d;
-                nx = getTokenAsFloat (line, 1);
-                ny = getTokenAsFloat (line, 2);
-                nz = getTokenAsFloat (line, 3);
+                x = getTokenAsFloat (line, 1);
+                y = getTokenAsFloat (line, 2);
+                z = getTokenAsFloat (line, 3);
                 d = getTokenAsFloat (line, 4);
 
-                Plane *myPlane = new Plane(nx, ny, nz, d, materials.back());
+                Plane *myPlane = new Plane(x, y, z, d, materials.back());
                 objects.push_back(myPlane);
 //                cout << "got a plane with ";
 //                cout << "parameters: " << nx << " " << ny << " " << nz << " " << d << endl;
@@ -257,8 +256,6 @@ void parseSceneFile (char *filnam, Camera **myCam, vector<Surface*> &objects,
             case 'c':{
                 // one trick here: the cameras pixel count (width, height) are integers,
                 // so cast them.
-                double x, y, z, vx, vy, vz, d, iw, ih;
-                int pw, ph;
                 x = getTokenAsFloat (line, 1);
                 y = getTokenAsFloat (line, 2);
                 z = getTokenAsFloat (line, 3);
@@ -266,10 +263,10 @@ void parseSceneFile (char *filnam, Camera **myCam, vector<Surface*> &objects,
                 vy = getTokenAsFloat (line, 5);
                 vz = getTokenAsFloat (line, 6);
                 d = getTokenAsFloat (line, 7);
-                iw = getTokenAsFloat (line, 8);
-                ih = getTokenAsFloat (line, 9);
-                pw = (int) getTokenAsFloat (line, 10);
-                ph = (int) getTokenAsFloat (line, 11);
+                double iw = getTokenAsFloat (line, 8);
+                double ih = getTokenAsFloat (line, 9);
+                int pw = (int) getTokenAsFloat (line, 10);
+                int ph = (int) getTokenAsFloat (line, 11);
                 
                 *myCam = new Camera(Point(x, y, z), Vector(vx, vy, vz), d, iw, ih, pw, ph);
 //                cout << "got a camera with ";
@@ -288,7 +285,6 @@ void parseSceneFile (char *filnam, Camera **myCam, vector<Surface*> &objects,
                 // which is at the third position on the line:
                 switch (line[2]) {
                     case 'p':{   // point light
-                        double x, y, z, r, g, b;
                         x = getTokenAsFloat (line, 2);
                         y = getTokenAsFloat (line, 3);
                         z = getTokenAsFloat (line, 4);
@@ -305,7 +301,6 @@ void parseSceneFile (char *filnam, Camera **myCam, vector<Surface*> &objects,
                         break;
                         
                     case 'd':{   // directional light
-                        double x, y, z, r, g, b;
                         x = getTokenAsFloat (line, 2);
                         y = getTokenAsFloat (line, 3);
                         z = getTokenAsFloat (line, 4);
@@ -319,14 +314,33 @@ void parseSceneFile (char *filnam, Camera **myCam, vector<Surface*> &objects,
                         break;
                         
                     case 'a':{   // ambient light
-                        double r, g, b;
                         r = getTokenAsFloat (line, 2);
                         g = getTokenAsFloat (line, 3);
                         b = getTokenAsFloat (line, 4);
                         *aLight = new AmbientLight(r, g, b);
                     }
                         break;
+                    
+                    case 's':{
+                        x = getTokenAsFloat (line, 2);
+                        y = getTokenAsFloat (line, 3);
+                        z = getTokenAsFloat (line, 4);
+                        vx = getTokenAsFloat (line, 5);
+                        vy = getTokenAsFloat (line, 6);
+                        vz = getTokenAsFloat (line, 7);
+                        double ux = getTokenAsFloat (line, 8);
+                        double uy = getTokenAsFloat (line, 9);
+                        double uz = getTokenAsFloat (line, 10);
+                        double len = getTokenAsFloat (line, 11);
+                        r = getTokenAsFloat (line, 12);
+                        g = getTokenAsFloat (line, 13);
+                        b = getTokenAsFloat(line, 14);
                         
+                        AreaLight *arl = new AreaLight(x, y, z, Vector(vx, vy, vz),
+                                                       Vector(ux, uy, uz), len, r, g, b);
+                        lights.push_back(arl);
+                    }
+                        break;
                 }
                 break;
             
@@ -341,17 +355,16 @@ void parseSceneFile (char *filnam, Camera **myCam, vector<Surface*> &objects,
                 //  1. read in the 10 material parameters: dr, dg, db, sr, sg, sb, r, ir, ig, ib
                 //  2. call lastMaterialLoaded->setMaterial(dr, dg, db,...);
                 //
-                double dr, dg, db, sr, sg, sb, r, ir, ig, ib;
-                dr = getTokenAsFloat (line, 1);
-                dg = getTokenAsFloat (line, 2);
-                db = getTokenAsFloat (line, 3);
-                sr = getTokenAsFloat (line, 4);
-                sg = getTokenAsFloat (line, 5);
-                sb = getTokenAsFloat (line, 6);
-                r = getTokenAsFloat (line, 7);
-                ir = getTokenAsFloat (line, 8);
-                ig = getTokenAsFloat (line, 9);
-                ib = getTokenAsFloat (line, 10);
+                double dr = getTokenAsFloat (line, 1);
+                double dg = getTokenAsFloat (line, 2);
+                double db = getTokenAsFloat (line, 3);
+                double sr = getTokenAsFloat (line, 4);
+                double sg = getTokenAsFloat (line, 5);
+                double sb = getTokenAsFloat (line, 6);
+                double r = getTokenAsFloat (line, 7);
+                double ir = getTokenAsFloat (line, 8);
+                double ig = getTokenAsFloat (line, 9);
+                double ib = getTokenAsFloat (line, 10);
                 
                 Material *m = new Material(dr, dg, db, sr, sg, sb, r, ir, ig, ib);
                 

@@ -30,17 +30,17 @@ void deleteTree(BVH *root){
 int main(int argc, char * argv[]) {
     clock_t start = clock();
     
-//    if (argc != 5) {
-//        cerr << "useage: raytra scenefilename" << endl;
-//        return -1;
-//    }
-//    int p_num = atoi(argv[3]);
-//    int s_num = atoi(argv[4]);
+    if (argc != 5) {
+        cerr << "useage: not enough raytra arguements" << endl;
+        return -1;
+    }
+    int p_num = atoi(argv[3]);
+    int s_num = atoi(argv[4]);
     
-    int p_num = 3;
-    int s_num = 1;
-    char scenefile[] = "/Users/vicky/Desktop/Computer Graphics/hw1.6/test/lichichi.txt";
-    char outfile[] = "/Users/vicky/Desktop/Computer Graphics/hw1.6/test/lich.exr";
+//    int p_num = 2;
+//    int s_num = 3;
+//    char scenefile[] = "/Users/vicky/Desktop/Computer Graphics/hw1.6/test/colorspheres.txt";
+//    char outfile[] = "/Users/vicky/Desktop/Computer Graphics/hw1.6/test/colorspheres.exr";
     
     vector<Surface*> objects;
     vector<Material*> materials;
@@ -48,14 +48,15 @@ int main(int argc, char * argv[]) {
     AmbientLight *aLight = NULL;
     Camera *myCam = NULL;
     
-//    parseSceneFile(argv[1], &myCam, objects, lights, &aLight, materials);
-    parseSceneFile(scenefile, &myCam, objects, lights, &aLight, materials);
+    parseSceneFile(argv[1], &myCam, objects, lights, &aLight, materials);
+//    parseSceneFile(scenefile, &myCam, objects, lights, &aLight, materials);
     
     BVH *root = new BVH(objects, 0, (int)objects.size() - 1, 0);
+    cout << "constructed BVH tree" << endl;
     
-    myCam->render(root, p_num, s_num, lights);
-//    myCam->writeFile(argv[2]);
-    myCam->writeFile(outfile);
+    myCam->render(root, p_num, s_num, aLight, lights);
+    myCam->writeFile(argv[2]);
+//    myCam->writeFile(outfile);
     
     //manually clear memory
     delete myCam; delete aLight;

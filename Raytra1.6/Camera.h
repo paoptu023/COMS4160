@@ -12,6 +12,7 @@
 #include <stdlib.h>
 #include <vector>
 #include <limits>
+#include <time.h>
 #include <ImfRgbaFile.h>
 #include <ImfStringAttribute.h>
 #include <ImfMatrixAttribute.h>
@@ -49,16 +50,17 @@ public:
     Ray generateRay(double i, double j);
     
     //Render the image
-    void render(BVH *&root, int p_num, int s_num,
-//                const AmbientLight * const aLight,
+    void render(BVH *&root, const int &p_num,
+                const int &s_num,
+                const AmbientLight * const aLight,
                 const vector<Light*> &lights);
+//                const AmbientLight * const aLight
     
     //Recursive ray tracing
-    Vector rayColor(const Ray &r, BVH *&root,
-                    int recurse_limit,
-                    const vector<Light*> &lights,
-//                    const AmbientLight * const aLight,
-                    int p_num, int s_num);
+    Vector rayColor(const Ray &r, BVH *&root, const int &recurse_limit,
+                    const int &s_num, const vector<Light*> &lights);
+    
+    bool inShadow(BVH *root, const Point &pi, Vector &i_l);
     
     void setPixel(int x, int y, double r, double g, double b){
         Rgba &px = pixels[y][x];

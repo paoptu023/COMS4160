@@ -10,6 +10,8 @@
 #define Light_h
 
 #include "Point.h"
+#include <vector>
+#include <time.h>
 using namespace std;
 
 class Light{
@@ -19,19 +21,13 @@ protected:
 public:
     Light(): _rgb(Vector(0.0, 0.0, 0.0)) {}
     
-    virtual Vector getRgb() const{return move(_rgb);}
+    Vector getRgb() const{return move(_rgb);}
     
-    virtual void print(){
+    void print(){
         cout << "RGB: " << _rgb[0] << " " << _rgb[1] << " " << _rgb[2] << endl;
     }
     
-    virtual void setRgb(double k){_rgb *= k;}
-    
-    virtual char getType() const{return 'l';}
-    
-    virtual Point getPos() const{return Point();}
-    
-    virtual Vector getDir() const{return Vector();}
+    virtual int getType() const{return 0;}
 };
 
 
@@ -42,16 +38,36 @@ private:
 public:
     PointLight(): _pos(Point()) {}
 
-    PointLight(const Point &p, double r, double g, double b){
-        _pos = p;
-        _rgb = Vector(r, g, b);
-    }
+    PointLight(const Point &p, double r, double g, double b);
     
-    char getType() const{return 'p';}
+    int getType() const{return 1;}
     
     Point getPos() const{return move(_pos);}
 };
 
+class AreaLight : public Light{
+private:
+    Point _corner;
+    Vector _dir, _u, _v;
+    double _len;
+    
+public:
+    AreaLight(){
+        _corner = Point();
+        _dir = _u = _v = Vector();
+        _len = 0.0;
+    }
+    
+    AreaLight(double x, double y, double z,
+              const Vector &v, const Vector &u,
+              double len, double r, double g, double b);
+    
+    void generateSample(const int &s_num, vector<Point> &samples);
+    
+    Point getCenter() const{return move(_corner + (_u + _v) * 0.5 * _len);}
+    
+    int getType() const{return 2;}
+};
 
 class AmbientLight : public Light{
 public:
@@ -59,7 +75,7 @@ public:
         _rgb = Vector(r, g, b);
     }
     
-    char getType() const{return 'a';}
+    int getType() const{return 3;}
 };
 
 class DirectionLight : public Light{
@@ -69,13 +85,9 @@ private:
 public:
     DirectionLight(): _dir(Vector()) {}
     
-    DirectionLight(double x, double y, double z, double r, double g, double b){
-        _dir = Vector(x, y, z);
-        _dir.normalize();
-        _rgb = Vector(r, g, b);
-    }
+    DirectionLight(double x, double y, double z, double r, double g, double b);
     
-    char getType() const{return 'd';}
+    int getType() const{return 4;}
     
     Vector getDir() const{return move(_dir);}
 };

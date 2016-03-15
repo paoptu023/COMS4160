@@ -20,7 +20,8 @@ static bool compareZ(Surface *a, Surface *b){
     return a->getMaxP()[2] < b->getMaxP()[2];
 }
 
-BVH::BVH(vector<Surface*> &objects, int l, int r, int axis){
+BVH::BVH(vector<Surface*> &objects, const int &l,
+         const int &r, const int &axis){
     if(l == r){
         left = objects[l];
         right = NULL;
@@ -55,7 +56,8 @@ BVH::BVH(vector<Surface*> &objects, int l, int r, int axis){
     }
 }
 
-void BVH::surround(const vector<Surface*> &objs, int l, int r){
+void BVH::surround(const vector<Surface*> &objs,
+                   const int &l, const int &r){
     double minX, minY, minZ;
     double maxX, maxY, maxZ;
     

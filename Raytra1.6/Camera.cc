@@ -62,44 +62,62 @@ Ray Camera::generateRay(double i, double j){
 }
 
 //Render the image
-void Camera::render(BVH *&root, int p_num, int s_num,
-//                    const AmbientLight * const aLight,
+void Camera::render(BVH *&root, const int &p_num,
+                    const int &s_num,
+                    const AmbientLight * const aLight,
                     const vector<Light*> &lights){
     cout << "render image." << endl;
+    srand((unsigned)time(NULL));
+    
+//    int print = _ph * _pw / 10.0;
     
     //for each pixel generate a ray through it
-    for(int y = 0; y < _ph; ++y){
-        for(int x = 0; x < _pw; ++x){
-            Ray r = generateRay(x, y);
+    for(int x = 0; x < _pw; ++x){
+        for(int y = 0; y < _ph; ++y){
+//            if ((y * _pw + x) % print == 0)
+//                cout << ".";
             
-            Vector rgb = rayColor(r, root, 10, lights, p_num, s_num);
+            Vector rgb(0.0, 0.0, 0.0);
+            if(p_num > 1){
+                //Stratified(jittered) sampling when num > 1
+                for(int i = 0; i < p_num; ++i){
+                    for(int j = 0; j < p_num; ++j){
+                        Ray r = generateRay(x + (i + (double)rand()/RAND_MAX) / p_num,
+                                            y + (j + (double)rand()/RAND_MAX) / p_num);
+                        rgb += rayColor(r, root, 10, s_num, lights);
+                    }
+                }
+                rgb /= p_num * p_num;
+            }
+            else{
+                Ray r = generateRay(x, y);
+                rgb = rayColor(r, root, 10, s_num, lights);
+            }
+            
+//            if(rgb.getLen() < 0.001 && aLight)
+//                rgb += aLight->getRgb() * 0.08;
             
             setPixel(x, y, rgb[0], rgb[1], rgb[2]);
         }
     }
-    cout << "finished rendering." << endl;
+    cout << endl << "finished rendering." << endl;
 }
 
 //Recursive ray tracing
 //ray_type: 1 - primary ray; 2 - reflected ray; 3 - refracted ray
-Vector Camera::rayColor(const Ray &r, BVH * &root,
-                        int recurse_limit,
-                        const vector<Light*> &lights,
-//                        const AmbientLight * const aLight,
-                        int p_num, int s_num){
+Vector Camera::rayColor(const Ray &r, BVH *&root, const int &recurse_limit,
+                        const int &s_num, const vector<Light*> &lights){
+//                        const AmbientLight * const aLight
     if(recurse_limit == 0)
         return move(Vector(0.0, 0.0, 0.0));
     
     //color accumulator
     Vector ret_rgb(0.0, 0.0, 0.0);
-    Material *m = NULL;
     Intersection it;
-    
-    if(root->intersect(r, it))
-        m = it.getMaterial();
-    
-    if(m != NULL){
-        Point p1 = it.getP1();
+
+    if(root->intersect(r, it)){
+        Material *m = it.getMaterial();
+        Point pi = it.getP1();
         
         //Normal at intersection
         Vector n = it.getNormal();
@@ -110,30 +128,36 @@ Vector Camera::rayColor(const Ray &r, BVH * &root,
         
         for(auto li : lights){
             //bling-phong shading
-            if (li->getType() == 'p'){
+            //point light
+            if (li->getType() == 1){
                 //Vector from intersection to light position
-                Vector i_l = Vector(p1, li->getPos());
-                
-                //t should be less than the distance from intersection to light position
-                double max_t = i_l.getLen();
-                i_l.normalize();
-                
-                //check shadow
-                Ray s_ray(p1, i_l);
-                bool inShadow = false;
-                
-                Intersection tmp;
-                if(root->intersect(s_ray, tmp) && tmp.getT1() < max_t){
-                    inShadow = true;
-                }
-
+                Vector i_l = Vector(pi, dynamic_cast<PointLight*>(li)->getPos());
                 //Two sided shading
 //                if (i_e.dot(n) < 0.0)
 //                    n *= -1.0;
-                
-                //not in shadow
-                if(!inShadow)
-                    ret_rgb += m->phongShading(i_e, n, i_l, li->getRgb());
+
+                if(!inShadow(root, pi, i_l))
+                    ret_rgb += m->phongShading(i_e, n, Vector(), li->getRgb());
+            }
+            //area light
+            else if(li->getType() == 2){
+                if(s_num > 1){
+                    vector<Point> samples;
+                    dynamic_cast<AreaLight*>(li)->generateSample(s_num, samples);
+                    
+                    for(auto pl : samples){
+                        Vector i_l = Vector(pi, pl);
+                        if(!inShadow(root, pi, i_l))
+                            ret_rgb += m->phongShading(i_e, n, i_l, li->getRgb());
+                    }
+                    ret_rgb /= s_num * s_num;
+                }
+                else{
+                    Point pl = dynamic_cast<AreaLight*>(li)->getCenter();
+                    Vector i_l = Vector(pi, pl);
+                    if(!inShadow(root, pi, i_l))
+                        ret_rgb += m->phongShading(i_e, n, i_l, li->getRgb());
+                }
             }
         }
         
@@ -147,12 +171,23 @@ Vector Camera::rayColor(const Ray &r, BVH * &root,
             //reflected ray
             Vector rfl = n * (2 * n.dot(i_e)) - i_e;
             rfl.normalize();
-            Ray r_ray(p1, rfl);
+            Ray r_ray(pi, rfl);
             
-            ret_rgb += km * rayColor(r_ray, root, recurse_limit - 1, lights, p_num, s_num);
+            ret_rgb += km * rayColor(r_ray, root, recurse_limit - 1, s_num, lights);
         }
     }
     return move(ret_rgb);
+}
+
+bool Camera::inShadow(BVH *root, const Point &pi, Vector &i_l){
+    //t should be less than the distance from intersection to light position
+    double max_t = i_l.getLen();
+    i_l.normalize();
+    
+    //check shadow
+    Ray s_ray(pi, i_l);
+    Intersection tmp;
+    return root->intersect(s_ray, tmp) && tmp.getT1() < max_t;
 }
 
 //Write result to output file

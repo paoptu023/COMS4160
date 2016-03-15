@@ -14,9 +14,9 @@ Triangle::Triangle(){
     _a = _b = _c = _d = _e = _f = 0.0;
 }
 
-Triangle::Triangle(double x1, double y1, double z1,
-                   double x2, double y2, double z2,
-                   double x3, double y3, double z3, Material *&m){
+Triangle::Triangle(const double &x1, const double &y1, const double &z1,
+                   const double &x2, const double &y2, const double &z2,
+                   const double &x3, const double &y3, const double &z3, Material *&m){
     _p1 = Point(x1, y1, z1);
     _p2 = Point(x2, y2, z2);
     _p3 = Point(x3, y3, z3);

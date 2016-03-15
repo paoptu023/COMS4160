@@ -1,0 +1,22 @@
+/a blue material, w/ white specular highlight, no reflection
+m 0.0 0.0 0.678 0.7 0.7 0.7 100. 0.0 0.0 0.0
+
+/one sphere in the above material
+s 50. 10. 0. 10.
+  
+/ a black material with no specular, no reflection
+m 0.0 0.0 0.0 0.7 0.7 0.7 100. 0.0 0.0 0.0
+w ./test/blacksquares_40.obj
+
+/ a white material with no specular, no reflection
+m 1.0 1.0 1.0 0.7 0.7 0.7 100. 0.0 0.0 0.0
+w ./test/whitesquares_40.obj
+    
+/ one point light, white
+/l p -80. 120. -46.6 1.0 1.0 1.0
+/l a 0.001 0.001 0.001
+l s 50. 50. 0. 0.0 -1.0 0.0 1.0 0.0 0.0 5. 1. 1. 1.
+    
+/ camera: pointing towards X, 35mmx25mm "film", 35mm focal length
+/ making 160x120 pixels
+c -20.0 10.0 0.0 1.0 0.0 0.0 35.0 35.0 25.0 640 480

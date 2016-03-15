@@ -12,8 +12,8 @@ p 0.25 0 1 100
 
 /Lich model
 m 0.47 0.75 0.84 0.1 0.1 0.1 5. 0 0 0
-w /Users/vicky/Desktop/Computer Graphics/hw1.4/test/lich3.obj
+w ./test/lich3.obj
 
 /Trophy and pedestal
 m 0.956863 0.811765 0.345098 0.5 0.5 0.5 10.0 0.1 0.1 0.1
-w /Users/vicky/Desktop/Computer Graphics/hw1.4/test/lichobjects.obj
+w ./test/lichobjects.obj

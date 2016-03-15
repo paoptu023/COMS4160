@@ -19,7 +19,7 @@ private:
 public:
     Bbox(): _minP(Point()), _maxP(Point()){}
     
-    Bbox(const Point &minP, const Point &maxP, int i){
+    Bbox(const Point &minP, const Point &maxP, const int &i){
         _minP = minP;
         _maxP = maxP;
     }

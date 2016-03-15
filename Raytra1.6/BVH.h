@@ -20,9 +20,11 @@ public:
     
     BVH(): left(NULL), right(NULL) {}
     
-    BVH(vector<Surface*> &objects, int l, int r, int axis);
+    BVH(vector<Surface*> &objects, const int &l,
+        const int &r, const int &axis);
     
-    void surround(const vector<Surface*> &objects, int l, int r);
+    void surround(const vector<Surface*> &objects,
+                  const int &l, const int &r);
     
     bool intersect(const Ray &r, Intersection &it);
     

@@ -19,7 +19,7 @@ private:
 public:
     Sphere(): _radius(0.0), _center(Point()) {}
 
-    Sphere(Material *&m, const Point &p, double r);
+    Sphere(Material *&m, const Point &p, const double &r);
     
     bool intersect(const Ray &r, Intersection &it);
     

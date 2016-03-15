@@ -5,6 +5,6 @@ p 0 1 0 1.
 m .7 .7 .7 0 0 0 0 0 0 0
 p .975 0 .24 36
 
-w /Users/vicky/Desktop/Computer Graphics/hw1.4/test/lamp.obj
+w ./lamp.obj
 
 / 775s
