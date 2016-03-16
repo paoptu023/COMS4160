@@ -93,3 +93,10 @@ bool BVH::intersect(const Ray &r, Intersection &it){
     }
     return false;
 }
+
+BVH::~BVH() {
+    if (left)
+        delete left;
+    if (right)
+        delete right;
+}

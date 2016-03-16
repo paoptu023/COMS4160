@@ -40,11 +40,11 @@ void AreaLight::generateSample(const int &s_num, vector<Point> &samples){
     }
     
     //shuffle sample array
-    for(int i = s_num * s_num; i > 0; --i){
-        int id1 = rand() % i;
-        int id2 = rand() % i;
-        swap(samples[id1], samples[id2]);
-    }
+//    for(int i = s_num * s_num; i > 0; --i){
+//        int id1 = rand() % i;
+//        int id2 = rand() % i;
+//        swap(samples[id1], samples[id2]);
+//    }
 }
 
 DirectionLight::DirectionLight(double x, double y, double z, double r, double g, double b){

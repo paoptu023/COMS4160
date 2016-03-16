@@ -20,6 +20,8 @@ public:
     
     BVH(): left(NULL), right(NULL) {}
     
+    ~BVH();
+    
     BVH(vector<Surface*> &objects, const int &l,
         const int &r, const int &axis);
     

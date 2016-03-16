@@ -19,13 +19,13 @@ void parseSceneFile (char *filnam, Camera **myCam,
                      AmbientLight **aLight,
                      vector<Material*> &materials);
 
-void deleteTree(BVH *root){
-    if(root){
-        deleteTree(dynamic_cast<BVH*>(root->left));
-        deleteTree(dynamic_cast<BVH*>(root->right));
-        delete root;
-    }
-}
+//void deleteTree(BVH *root){
+//    if(root){
+//        deleteTree(dynamic_cast<BVH*>(root->left));
+//        deleteTree(dynamic_cast<BVH*>(root->right));
+//        delete root;
+//    }
+//}
 
 int main(int argc, char * argv[]) {
     clock_t start = clock();
@@ -60,7 +60,7 @@ int main(int argc, char * argv[]) {
     
     //manually clear memory
     delete myCam; delete aLight;
-    deleteTree(root);
+    delete root;
     
     for(auto m : materials)
         delete m;

@@ -69,13 +69,13 @@ void Camera::render(BVH *&root, const int &p_num,
     cout << "render image." << endl;
     srand((unsigned)time(NULL));
     
-//    int print = _ph * _pw / 10.0;
+    int print = _ph * _pw / 10.0;
     
     //for each pixel generate a ray through it
     for(int x = 0; x < _pw; ++x){
         for(int y = 0; y < _ph; ++y){
-//            if ((y * _pw + x) % print == 0)
-//                cout << ".";
+            if ((y * _pw + x) % print == 0)
+                cout << ".";
             
             Vector rgb(0.0, 0.0, 0.0);
             if(p_num > 1){
@@ -145,12 +145,13 @@ Vector Camera::rayColor(const Ray &r, BVH *&root, const int &recurse_limit,
                     vector<Point> samples;
                     dynamic_cast<AreaLight*>(li)->generateSample(s_num, samples);
                     
+                    Vector tmp_rgb(0.0, 0.0, 0.0);
                     for(auto pl : samples){
                         Vector i_l = Vector(pi, pl);
                         if(!inShadow(root, pi, i_l))
-                            ret_rgb += m->phongShading(i_e, n, i_l, li->getRgb());
+                            tmp_rgb += m->phongShading(i_e, n, i_l, li->getRgb());
                     }
-                    ret_rgb /= s_num * s_num;
+                    ret_rgb += tmp_rgb / (s_num * s_num);
                 }
                 else{
                     Point pl = dynamic_cast<AreaLight*>(li)->getCenter();
