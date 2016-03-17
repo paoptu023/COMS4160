@@ -72,8 +72,8 @@ void Camera::render(BVH *&root, const int &p_num,
     int print = _ph * _pw / 10.0;
     
     //for each pixel generate a ray through it
-    for(int x = 0; x < _pw; ++x){
-        for(int y = 0; y < _ph; ++y){
+    for(int y = 0; y < _ph; ++y){
+        for(int x = 0; x < _pw; ++x){
             if ((y * _pw + x) % print == 0)
                 cout << ".";
             
@@ -126,7 +126,7 @@ Vector Camera::rayColor(const Ray &r, BVH *&root, const int &recurse_limit,
         Vector e_i = r.getDir();
         Vector i_e = e_i * (-1.0);
         
-        for(auto li : lights){
+        for(auto const li : lights){
             //bling-phong shading
             //point light
             if (li->getType() == 1){
@@ -137,7 +137,7 @@ Vector Camera::rayColor(const Ray &r, BVH *&root, const int &recurse_limit,
 //                    n *= -1.0;
 
                 if(!inShadow(root, pi, i_l))
-                    ret_rgb += m->phongShading(i_e, n, Vector(), li->getRgb());
+                    ret_rgb += m->phongShading(i_e, n, i_l, li->getRgb());
             }
             //area light
             else if(li->getType() == 2){
@@ -146,7 +146,7 @@ Vector Camera::rayColor(const Ray &r, BVH *&root, const int &recurse_limit,
                     dynamic_cast<AreaLight*>(li)->generateSample(s_num, samples);
                     
                     Vector tmp_rgb(0.0, 0.0, 0.0);
-                    for(auto pl : samples){
+                    for(auto const &pl : samples){
                         Vector i_l = Vector(pi, pl);
                         if(!inShadow(root, pi, i_l))
                             tmp_rgb += m->phongShading(i_e, n, i_l, li->getRgb());
@@ -161,10 +161,6 @@ Vector Camera::rayColor(const Ray &r, BVH *&root, const int &recurse_limit,
                 }
             }
         }
-        
-        //add ambient if needed
-//        if(ret_rgb.getLen() < 0.001 && aLight && ray_type == 1)
-//            ret_rgb += aLight->getRgb() * 0.05;
     
         //ideal specular shading
         Vector km = m->getIdealSpec();
