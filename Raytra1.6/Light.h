@@ -15,9 +15,6 @@
 using namespace std;
 
 class Light{
-protected:
-    Vector _rgb;
-    
 public:
     Light(): _rgb(Vector(0.0, 0.0, 0.0)) {}
     
@@ -28,29 +25,27 @@ public:
     }
     
     virtual int getType() const{return 0;}
+    
+protected:
+    Vector _rgb;
 };
 
 
 class PointLight : public Light{
-private:
-    Point _pos;
-    
 public:
     PointLight(): _pos(Point()) {}
-
+    
     PointLight(const Point &p, double r, double g, double b);
     
     int getType() const{return 1;}
     
     Point getPos() const{return move(_pos);}
+    
+private:
+    Point _pos;
 };
 
 class AreaLight : public Light{
-private:
-    Point _corner;
-    Vector _dir, _u, _v;
-    double _len;
-    
 public:
     AreaLight(){
         _corner = Point();
@@ -67,6 +62,11 @@ public:
     Point getCenter() const{return move(_corner + (_u + _v) * 0.5 * _len);}
     
     int getType() const{return 2;}
+    
+private:
+    Point _corner;
+    Vector _dir, _u, _v;
+    double _len;
 };
 
 class AmbientLight : public Light{
@@ -79,9 +79,6 @@ public:
 };
 
 class DirectionLight : public Light{
-private:
-    Vector _dir;
-    
 public:
     DirectionLight(): _dir(Vector()) {}
     
@@ -90,6 +87,9 @@ public:
     int getType() const{return 4;}
     
     Vector getDir() const{return move(_dir);}
+    
+private:
+    Vector _dir;
 };
 
 #endif /* Light_h */

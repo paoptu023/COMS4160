@@ -8,28 +8,27 @@
 
 #include "Bbox.h"
 
-bool Bbox::intersect(const Ray &r, Intersection &it) const{
+pair<bool, double> Bbox::intersect(const Ray &r) const{
+    pair<bool, double> ret{false, 0.0};
     Point eye = r.getOri();
     
     double dx = 1 / r.getDir()[0];
     double dy = 1 / r.getDir()[1];
     
-    double txmin, txmax, tymin, tymax;
+    double txmin, txmax;
     txmin = (_minP[0] - eye[0]) * dx;
     txmax = (_maxP[0] - eye[0]) * dx;
     if(dx < 0)
         swap(txmin, txmax);
     
+    double tymin, tymax;
     tymin = (_minP[1] - eye[1]) * dy;
     tymax = (_maxP[1] - eye[1]) * dy;
     if(dy < 0)
         swap(tymin, tymax);
     
     if(txmin > tymax || tymin > txmax)
-        return false;
-    
-    double tmin = max(txmin, tymin);
-    double tmax = min(txmax, tymax);
+        return move(ret);
     
     double dz = 1 / r.getDir()[2];
     double tzmin, tzmax;
@@ -39,13 +38,10 @@ bool Bbox::intersect(const Ray &r, Intersection &it) const{
     if(dz < 0)
         swap(tzmin, tzmax);
     
-    if(tmin > tzmax || tzmin > tmax)
-        return false;
+    double tmin = max(max(txmin, tymin), tzmin);
+    double tmax = min(min(txmax, tymax), tzmax);
     
-    tmin = max(tmin, tzmin);
-    tmax = min(tmax, tzmax);
-    
-    if(tmin < tmax){
+//    if(tmin < tmax){
 //        if(bboxOnly){
 //            Point p = r.getOri() + r.getDir() * tmin;
 //            
@@ -61,10 +57,10 @@ bool Bbox::intersect(const Ray &r, Intersection &it) const{
 //            
 //            it.set(tmin, p, n);
 //        }
-        it.setT1(tmin);
-        return true;
-    }
-    return false;
+//        it.setT1(tmin);
+    ret.first = tmin < tmax;
+    ret.second = tmin;
+    return move(ret);
 }
 
 void Bbox::print(){

@@ -12,27 +12,24 @@
 #include "Ray.h"
 #include "Material.h"
 #include "Bbox.h"
-const double e = 0.000000001;
+const double eps = 0.000000001;
 
 class Surface{
 friend class BVH;
+friend class Sorter;
+    
+public:
+    
+    Surface(): _m(nullptr), _bbox(Bbox()) {}
+    
+    virtual bool intersect(const Ray &r,
+                           Intersection &it){return false;}
+    
+    Material* getMaterial() const{return _m;}
     
 protected:
     Material *_m;
-    Point _min, _max;
-    
-public:
     Bbox _bbox;
-    
-    Surface(): _m(NULL), _min(Point()), _max(Point()), _bbox(Bbox()) {}
-    
-    virtual bool intersect(const Ray &r, Intersection &it){
-        return false;
-    }
-    
-    Point getMaxP() const{return move(_max);}
-    
-    Material* getMaterial() const{return _m;}
 };
 
 #endif /* Surface_h */

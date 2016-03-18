@@ -16,7 +16,7 @@ Triangle::Triangle(){
 
 Triangle::Triangle(const double &x1, const double &y1, const double &z1,
                    const double &x2, const double &y2, const double &z2,
-                   const double &x3, const double &y3, const double &z3, Material *&m){
+                   const double &x3, const double &y3, const double &z3, Material *m){
     _p1 = Point(x1, y1, z1);
     _p2 = Point(x2, y2, z2);
     _p3 = Point(x3, y3, z3);
@@ -42,14 +42,14 @@ Triangle::Triangle(const double &x1, const double &y1, const double &z1,
     float minZ = min(z1, min(z2, z3));
     float maxZ = max(z1, max(z2, z3));
     
-    _min = Point(minX - e, minY - e, minZ - e);
-    _max = Point(maxX + e, maxY + e, maxZ + e);
-    _bbox = Bbox(_min, _max, -1);
+    Point minP(minX - eps, minY - eps, minZ - eps);
+    Point maxP(maxX + eps, maxY + eps, maxZ + eps);
+    _bbox = Bbox(minP, maxP);
 }
 
 bool Triangle::intersect(const Ray &r, Intersection &it){
-    Intersection tmp;
-    if(!_bbox.intersect(r, tmp) || tmp.getT1() > it.getT1())
+    pair<bool, double> ret = _bbox.intersect(r);
+    if(!ret.first || ret.second > it.getT1())
         return false;
     
     double g = r.getDir()._xyz[0];
@@ -84,9 +84,8 @@ bool Triangle::intersect(const Ray &r, Intersection &it){
         double beta = (j * ei_hf + k * gf_di + l * dh_eg)/M;
         if(beta < 0 || beta > 1 - gamma)
             return false;
-        
-        Point p = r.getOri() + r.getDir() * t;
-        it.set(t, p, _n, _m);
+
+        it.set(t, _n, _m);
         return true;
     }
 }

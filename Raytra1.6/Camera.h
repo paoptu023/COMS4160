@@ -28,14 +28,6 @@ using namespace Imath;
 using namespace std;
 
 class Camera{
-private:
-    Point _eye;
-    double _f;
-    double _iw, _ih;
-    int _pw, _ph;
-    Vector _u, _v, _w;
-    Array2D<Rgba> pixels;
-    
 public:
     Camera();
     
@@ -52,15 +44,15 @@ public:
     //Render the image
     void render(BVH *&root, const int &p_num,
                 const int &s_num,
-                const AmbientLight * const aLight,
-                const vector<Light*> &lights);
-//                const AmbientLight * const aLight
+                const AmbientLight * const aLit,
+                const vector<Light*> &lits);
+    //                const AmbientLight * const aLit
     
     //Recursive ray tracing
     Vector rayColor(const Ray &r, BVH *&root, const int &recurse_limit,
-                    const int &s_num, const vector<Light*> &lights);
+                    const int &s_num, const vector<Light*> &lits);
     
-    bool inShadow(BVH *root, const Point &pi, Vector &i_l);
+    bool inShadow(BVH *&root, const Point &pi, Vector &i_l);
     
     void setPixel(int x, int y, double r, double g, double b){
         Rgba &px = pixels[y][x];
@@ -68,7 +60,15 @@ public:
     }
     
     //Write result to output file
-    void writeFile(const char fileName[]);
+    void writeFile(const char outfile[]);
+    
+private:
+    Point _eye;
+    double _f;
+    double _iw, _ih;
+    int _pw, _ph;
+    Vector _u, _v, _w;
+    Array2D<Rgba> pixels;
 };
 
 #endif /* Camera_h */

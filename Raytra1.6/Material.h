@@ -15,15 +15,6 @@
 using namespace std;
 
 class Material{
-private:
-    Vector _diffuse;      //Diffuse components
-    Vector _specular;     //Specular components
-    Vector _idealSpec;    //Ideal specular components
-    double _r;            //Phong exponent
-    
-    double _ni;           //Refraction index
-    Vector _attenuate;    //Attenuation constant
-    
 public:
     Material();
     
@@ -49,6 +40,15 @@ public:
     double getRefIndex() const{return _ni;}
     
     Vector getAttenuate() const{return _attenuate;}
+    
+private:
+    Vector _diffuse;      //Diffuse components
+    Vector _specular;     //Specular components
+    Vector _idealSpec;    //Ideal specular components
+    double _r;            //Phong exponent
+    
+    double _ni;           //Refraction index
+    Vector _attenuate;    //Attenuation constant
 };
 
 #endif /* Material_h */

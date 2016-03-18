@@ -64,8 +64,8 @@ Ray Camera::generateRay(double i, double j){
 //Render the image
 void Camera::render(BVH *&root, const int &p_num,
                     const int &s_num,
-                    const AmbientLight * const aLight,
-                    const vector<Light*> &lights){
+                    const AmbientLight * const aLit,
+                    const vector<Light*> &lits){
     cout << "render image." << endl;
     srand((unsigned)time(NULL));
     
@@ -84,18 +84,18 @@ void Camera::render(BVH *&root, const int &p_num,
                     for(int j = 0; j < p_num; ++j){
                         Ray r = generateRay(x + (i + (double)rand()/RAND_MAX) / p_num,
                                             y + (j + (double)rand()/RAND_MAX) / p_num);
-                        rgb += rayColor(r, root, 10, s_num, lights);
+                        rgb += rayColor(r, root, 10, s_num, lits);
                     }
                 }
                 rgb /= p_num * p_num;
             }
             else{
                 Ray r = generateRay(x, y);
-                rgb = rayColor(r, root, 10, s_num, lights);
+                rgb = rayColor(r, root, 10, s_num, lits);
             }
             
-//            if(rgb.getLen() < 0.001 && aLight)
-//                rgb += aLight->getRgb() * 0.08;
+//            if(rgb.getLen() < 0.001 && aLit)
+//                rgb += aLit->getRgb() * 0.08;
             
             setPixel(x, y, rgb[0], rgb[1], rgb[2]);
         }
@@ -106,8 +106,8 @@ void Camera::render(BVH *&root, const int &p_num,
 //Recursive ray tracing
 //ray_type: 1 - primary ray; 2 - reflected ray; 3 - refracted ray
 Vector Camera::rayColor(const Ray &r, BVH *&root, const int &recurse_limit,
-                        const int &s_num, const vector<Light*> &lights){
-//                        const AmbientLight * const aLight
+                        const int &s_num, const vector<Light*> &lits){
+//                        const AmbientLight * const aLit
     if(recurse_limit == 0)
         return move(Vector(0.0, 0.0, 0.0));
     
@@ -117,7 +117,7 @@ Vector Camera::rayColor(const Ray &r, BVH *&root, const int &recurse_limit,
 
     if(root->intersect(r, it)){
         Material *m = it.getMaterial();
-        Point pi = it.getP1();
+        Point pi = r.getOri() + r.getDir() * it.getT1();
         
         //Normal at intersection
         Vector n = it.getNormal();
@@ -126,38 +126,38 @@ Vector Camera::rayColor(const Ray &r, BVH *&root, const int &recurse_limit,
         Vector e_i = r.getDir();
         Vector i_e = e_i * (-1.0);
         
-        for(auto const li : lights){
+        for(int i = 0; i < (int)lits.size(); ++i){
             //bling-phong shading
             //point light
-            if (li->getType() == 1){
+            if (lits[i]->getType() == 1){
                 //Vector from intersection to light position
-                Vector i_l = Vector(pi, dynamic_cast<PointLight*>(li)->getPos());
+                Vector i_l = Vector(pi, dynamic_cast<PointLight*>(lits[i])->getPos());
                 //Two sided shading
 //                if (i_e.dot(n) < 0.0)
 //                    n *= -1.0;
 
                 if(!inShadow(root, pi, i_l))
-                    ret_rgb += m->phongShading(i_e, n, i_l, li->getRgb());
+                    ret_rgb += m->phongShading(i_e, n, i_l, lits[i]->getRgb());
             }
             //area light
-            else if(li->getType() == 2){
+            else if(lits[i]->getType() == 2){
                 if(s_num > 1){
                     vector<Point> samples;
-                    dynamic_cast<AreaLight*>(li)->generateSample(s_num, samples);
+                    dynamic_cast<AreaLight*>(lits[i])->generateSample(s_num, samples);
                     
                     Vector tmp_rgb(0.0, 0.0, 0.0);
                     for(auto const &pl : samples){
                         Vector i_l = Vector(pi, pl);
                         if(!inShadow(root, pi, i_l))
-                            tmp_rgb += m->phongShading(i_e, n, i_l, li->getRgb());
+                            tmp_rgb += m->phongShading(i_e, n, i_l, lits[i]->getRgb());
                     }
                     ret_rgb += tmp_rgb / (s_num * s_num);
                 }
                 else{
-                    Point pl = dynamic_cast<AreaLight*>(li)->getCenter();
+                    Point pl = dynamic_cast<AreaLight*>(lits[i])->getCenter();
                     Vector i_l = Vector(pi, pl);
                     if(!inShadow(root, pi, i_l))
-                        ret_rgb += m->phongShading(i_e, n, i_l, li->getRgb());
+                        ret_rgb += m->phongShading(i_e, n, i_l, lits[i]->getRgb());
                 }
             }
         }
@@ -170,13 +170,13 @@ Vector Camera::rayColor(const Ray &r, BVH *&root, const int &recurse_limit,
             rfl.normalize();
             Ray r_ray(pi, rfl);
             
-            ret_rgb += km * rayColor(r_ray, root, recurse_limit - 1, s_num, lights);
+            ret_rgb += km * rayColor(r_ray, root, recurse_limit - 1, s_num, lits);
         }
     }
     return move(ret_rgb);
 }
 
-bool Camera::inShadow(BVH *root, const Point &pi, Vector &i_l){
+bool Camera::inShadow(BVH *&root, const Point &pi, Vector &i_l){
     //t should be less than the distance from intersection to light position
     double max_t = i_l.getLen();
     i_l.normalize();

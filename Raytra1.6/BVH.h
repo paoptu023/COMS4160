@@ -13,24 +13,34 @@
 #include <cmath>
 #include <algorithm>
 
+class Sorter{
+public:
+    Sorter(int axis): _axis(axis) {}
+    bool operator() (Surface *&a, Surface *&b){
+        return a->_bbox._minP[_axis] < b->_bbox._minP[_axis];
+    }
+    
+private:
+    int _axis;
+};
+
 class BVH : public Surface{
 public:
-    Surface *left;
-    Surface *right;
-    
-    BVH(): left(NULL), right(NULL) {}
+    BVH(): _left(nullptr), _right(nullptr) {}
     
     ~BVH();
     
-    BVH(vector<Surface*> &objects, const int &l,
+    BVH(vector<Surface*> &objs, const int &l,
         const int &r, const int &axis);
     
-    void surround(const vector<Surface*> &objects,
+    void surround(const vector<Surface*> &objs,
                   const int &l, const int &r);
     
     bool intersect(const Ray &r, Intersection &it);
     
-    bool shadowTest(const Ray &r, Intersection &it);
+private:
+    Surface *_left;
+    Surface *_right;
 };
 
 #endif /* BVH_h */

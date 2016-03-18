@@ -10,23 +10,25 @@
 #define Bbox_h
 
 #include "Intersection.h"
+#include "Point.h"
+#include "Ray.h"
+
 class Bbox{
 friend class BVH;
+friend class Sorter;
+    
+public:
+    Bbox(): _minP(Point()), _maxP(Point()) {}
+    
+    Bbox(const Point &minP,
+         const Point &maxP): _minP(minP), _maxP(maxP) {}
+    
+    pair<bool, double> intersect(const Ray &r) const;
+    
+    void print();
     
 private:
     Point _minP, _maxP;
-    
-public:
-    Bbox(): _minP(Point()), _maxP(Point()){}
-    
-    Bbox(const Point &minP, const Point &maxP, const int &i){
-        _minP = minP;
-        _maxP = maxP;
-    }
-    
-    bool intersect(const Ray &r, Intersection &it) const;
-    
-    void print();
 };
 
 #endif /* Bbox_h */

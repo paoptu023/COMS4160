@@ -12,14 +12,14 @@ Sphere::Sphere(Material *&m, const Point &p, const double &r){
     _m = m;
     _center = p;
     _radius = r;
-    _min = Point(_center - Vector(_radius + e, _radius + e, _radius + e));
-    _max = Point(_center + Vector(_radius - e, _radius - e, _radius - e));
-    _bbox = Bbox(_min, _max, -1);
+    Point minP(_center - Vector(_radius + eps, _radius + eps, _radius + eps));
+    Point maxP(_center + Vector(_radius - eps, _radius - eps, _radius - eps));
+    _bbox = Bbox(minP, maxP);
 }
 
 bool Sphere::intersect(const Ray &r, Intersection &it){
-    Intersection tmp;
-    if(!_bbox.intersect(r, tmp) || tmp.getT1() > it.getT1())
+    pair<bool, double> ret = _bbox.intersect(r);
+    if(!ret.first || ret.second > it.getT1())
         return false;
     
     //Calculate descriminant
@@ -42,8 +42,7 @@ bool Sphere::intersect(const Ray &r, Intersection &it){
         if(t1 > 0.0001 && t1 < it.getT1()){
             Point p1 = r.getOri() + r.getDir() * t1;
             Vector n = getNormal(p1);
-            
-            it.set(t1, p1, n, _m);
+            it.set(t1, n, _m);
             return true;
         }
         return false;

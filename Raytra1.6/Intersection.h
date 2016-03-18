@@ -13,21 +13,13 @@
 #include <limits>
 #include "Point.h"
 #include "Vector.h"
-#include "Ray.h"
 #include "Material.h"
 
 class Intersection{
-private:
-    double _t1;
-    Point _p1;
-    Vector _n;
-    Material *_m;
-
 public:
     Intersection();
     
-    void set(const double &t1, const Point &p1,
-             const Vector &n, Material *&m);
+    void set(const double &t1, const Vector &n, Material *&m);
     
     Intersection & operator =(const Intersection &i);
     
@@ -35,13 +27,14 @@ public:
     
     double getT1() const{return _t1;}
     
-    Point getP1() const{return _p1;}
-    
     Material* getMaterial() const{return _m;}
     
     Vector getNormal() const{return _n;}
     
-    void print();
+private:
+    double _t1;
+    Vector _n;
+    Material *_m;
 };
 
 #endif /* Intersection_h */

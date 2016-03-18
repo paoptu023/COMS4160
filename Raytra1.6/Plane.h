@@ -13,17 +13,17 @@
 #include "Vector.h"
 
 class Plane : public Surface{
-private:
-    Vector _n;
-    double _d;
-    
 public:
     Plane(): _n(Vector()), _d(0.0) {}
     
     Plane(const double &nx, const double &ny,
-          const double &nz, const double &d, Material *&m);
-
+          const double &nz, const double &d, Material *m);
+    
     bool intersect(const Ray &r, Intersection &it);
+    
+private:
+    Vector _n;
+    double _d;
 };
 
 #endif /* Plane_h */

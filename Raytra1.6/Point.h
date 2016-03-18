@@ -18,14 +18,12 @@ using namespace std;
 
 class Point{
 friend class Triangle;
-    
-private:
-    double _xyz[3];
-    
 public:
     Point(){_xyz[0] = _xyz[1] = _xyz[2] = 0.0;}
     
-    Point(double x, double y, double z);
+    Point(double x, double y, double z){
+        _xyz[0] = x; _xyz[1] = y; _xyz[2] = z;
+    }
     
     double operator[] (const int i) const{return _xyz[i];}
     
@@ -41,13 +39,10 @@ public:
     
     Point operator /(const int k) const;
     
-    void print();                             
+    void print();
+    
+private:
+    double _xyz[3];
 };
-
-inline Point::Point(double x, double y, double z){
-    _xyz[0] = x;
-    _xyz[1] = y;
-    _xyz[2] = z;
-}
 
 #endif /* Point_h */

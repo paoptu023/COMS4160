@@ -12,18 +12,18 @@
 #include "Surface.h"
 
 class Sphere: public Surface{
-private:
-    double _radius;
-    Point _center;
-    
 public:
     Sphere(): _radius(0.0), _center(Point()) {}
-
+    
     Sphere(Material *&m, const Point &p, const double &r);
     
     bool intersect(const Ray &r, Intersection &it);
     
     Vector getNormal(const Point &p) const;
+    
+private:
+    double _radius;
+    Point _center;
 };
 
 #endif /* Sphere_h */

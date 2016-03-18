@@ -18,10 +18,6 @@ using namespace std;
 
 class Vector{
 friend class Triangle;
-    
-private:
-    double _xyz[3];
-
 public:
     Vector(){_xyz[0] = _xyz[1] = _xyz[2] = 0.0;}
     
@@ -53,10 +49,13 @@ public:
     Vector cross(const Vector &v) const;
     
     void normalize();
-
+    
     double getLen() const;
     
-    void print();                              
+    void print();
+    
+private:
+    double _xyz[3];
 };
 
 inline Vector::Vector(double x, double y, double z){

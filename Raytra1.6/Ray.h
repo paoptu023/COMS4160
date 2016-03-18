@@ -13,10 +13,6 @@
 #include "Point.h"
 
 class Ray{
-private:
-    Point _ori;
-    Vector _dir;
-    
 public:
     Ray(): _ori(Point()), _dir(Vector()) {}
     
@@ -26,6 +22,10 @@ public:
     Point getOri() const{return move(_ori);}
     
     Vector getDir() const{return move(_dir);}
+    
+private:
+    Point _ori;
+    Vector _dir;
 };
 
 #endif /* Ray_h */
