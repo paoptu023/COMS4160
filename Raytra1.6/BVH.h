@@ -16,7 +16,7 @@
 class Sorter{
 public:
     Sorter(int axis): _axis(axis) {}
-    bool operator() (Surface *&a, Surface *&b){
+    bool operator() (Surface* const a, Surface* const b){
         return a->_bbox._minP[_axis] < b->_bbox._minP[_axis];
     }
     

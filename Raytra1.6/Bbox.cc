@@ -9,7 +9,7 @@
 #include "Bbox.h"
 
 pair<bool, double> Bbox::intersect(const Ray &r) const{
-    pair<bool, double> ret{false, 0.0};
+    pair<bool, double> ret(false, 0.0);
     Point eye = r.getOri();
     
     double dx = 1 / r.getDir()[0];
