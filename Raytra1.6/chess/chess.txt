@@ -1,10 +1,10 @@
 / camera at position [x y z] looking in direction [vx vy vz], with focal length d,
 / an image plane sized iw by ih (width, height) and number of pixels pw ph.
 / c x y z vx vy vz d iw ih pw ph
-c -50 50 50 1 -1 -1 50.0 35.0 35.0 1000 1000
+c -50 50 50 1 -1 -1 50.0 35.0 35.0 500 500
 
 / Lights
-l s -150 50 50 0 -1 0 1 0 0 1.5 1.0 1.0 1.0
+l s -150 50 50 0 -1 0 1 0 0 1.5 100000.0 100000.0 100000.0
 /l a 0.2 0.2 0.2
 
 / A ground plane made up of two triangles:
@@ -22,9 +22,9 @@ m 0.95 0.82 0.45 0.1 0.1 0.1 5. 0 0 0
 w ./chess/whitesquares.obj
 
 / Chess pieces
-m 0.04 0.04 0.09 0.1 0.1 0.1 5. 0 0 0
+/m 0.04 0.04 0.09 0.1 0.1 0.1 5. 0 0 0
 
-w ./chess/blackpieces.obj
+/w ./chess/blackpieces.obj
 
 m 0.95 0.82 0.45 0.1 0.1 0.1 5. 0 0 0
 

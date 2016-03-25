@@ -36,6 +36,12 @@ public:
     
     bool intersect(const Ray &r, Intersection &it);
     
+    int getVolumeMid(const vector<Surface*> &objs,
+                        const int l, const int r);
+    
+    double computeVolume(const vector<Surface*> &objs,
+                         const int l, const int r);
+    
     Surface* left() const{return _left;}
     Surface* right() const{return _right;}
     
