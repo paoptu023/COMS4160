@@ -28,15 +28,16 @@ class BVH : public Surface{
 public:
     BVH(): _left(nullptr), _right(nullptr) {}
     
-    ~BVH();
-    
-    BVH(vector<Surface*> &objs, const int &l,
-        const int &r, const int &axis);
+    BVH(vector<Surface*> &objs, const int l,
+        const int r, const int axis);
     
     void surround(const vector<Surface*> &objs,
-                  const int &l, const int &r);
+                  const int l, const int r);
     
     bool intersect(const Ray &r, Intersection &it);
+    
+    Surface* left() const{return _left;}
+    Surface* right() const{return _right;}
     
 private:
     Surface *_left;

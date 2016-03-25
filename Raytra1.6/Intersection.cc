@@ -14,7 +14,7 @@ Intersection::Intersection(){
     _m = nullptr;
 }
 
-void Intersection::set(const double &t1, const Vector &n, Material *&m){
+void Intersection::set(const double t1, const Vector &n, Material *m){
     _t1 = t1;
     _n = n;
     _m = m;

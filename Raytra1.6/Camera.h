@@ -42,17 +42,17 @@ public:
     Ray generateRay(double i, double j);
     
     //Render the image
-    void render(BVH *&root, const int &p_num,
-                const int &s_num,
+    void render(BVH *root, const int p_num,
+                const int s_num,
                 const AmbientLight * const aLit,
                 const vector<Light*> &lits);
     //                const AmbientLight * const aLit
     
     //Recursive ray tracing
-    Vector rayColor(const Ray &r, BVH *&root, const int &recurse_limit,
-                    const int &s_num, const vector<Light*> &lits);
+    Vector rayColor(const Ray &r, BVH *root, const int recurse_limit,
+                    const int s_num, const vector<Light*> &lits);
     
-    bool inShadow(BVH *&root, const Point &pi, Vector &i_l);
+    bool inShadow(BVH *root, const Point &pi, Vector &i_l);
     
     void setPixel(int x, int y, double r, double g, double b){
         Rgba &px = pixels[y][x];

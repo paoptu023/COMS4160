@@ -30,7 +30,7 @@ AreaLight::AreaLight(double x, double y, double z,
     _rgb = Vector(r, g, b);
 }
 
-void AreaLight::generateSample(const int &s_num, vector<Point> &samples){
+void AreaLight::generateSample(const int s_num, vector<Point> &samples){
     for(int i = 0; i < s_num; ++i){
         for(int j = 0; j < s_num; ++j){
             Point p = _corner + _u * _len * (i + (double)rand()/RAND_MAX) / s_num +

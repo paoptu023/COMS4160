@@ -8,8 +8,8 @@
 
 #include "Plane.h"
 
-Plane::Plane(const double &nx, const double &ny,
-             const double &nz, const double &d, Material *m){
+Plane::Plane(const double nx, const double ny,
+             const double nz, const double d, Material *m){
     _n = Vector(nx, ny, nz);
     _n.normalize();
     _d = d;

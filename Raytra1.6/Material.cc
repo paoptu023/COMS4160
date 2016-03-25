@@ -40,7 +40,7 @@ Vector Material::phongShading(const Vector &i_e, const Vector &n,
     double cosnh = max(0.0, n.dot(h));
     
     rgb += (_diffuse * l_Rgb) * cosnl + (_specular * l_Rgb) * pow(cosnh, _r);
-    return rgb;
+    return move(rgb);
 }
 
 //Diffuse shading
@@ -50,11 +50,11 @@ Vector Material::lambertianShading(const Vector &n, const Vector &l,
     
     double cosnl = max(0.0, n.dot(l));
     rgb += (_diffuse * l_Rgb) * cosnl;
-    return rgb;
+    return move(rgb);
 }
 
 //Ambient shading
 Vector Material::ambientShading(const Vector &l_Rgb){
     Vector rgb = Vector(_diffuse[0] * l_Rgb[0], _diffuse[1] * l_Rgb[1], _diffuse[2] * l_Rgb[2]);
-    return rgb * 0.01;
+    return move(rgb * 0.01);
 }

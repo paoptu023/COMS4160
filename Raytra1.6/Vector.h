@@ -26,7 +26,7 @@ public:
     Vector(const Point &p);                     //Construct from one point
     Vector(const Point &p, const Point &q);     //Construct from two points
     
-    double operator[] (const int i) const{return move(_xyz[i]);}
+    double operator[] (const int i) const{return _xyz[i];}
     
     Vector & operator =(const Vector &v);
     

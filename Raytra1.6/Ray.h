@@ -19,9 +19,9 @@ public:
     //Start from p with direction v
     Ray(const Point &p, const Vector &v): _ori(p), _dir(v) {}
     
-    Point getOri() const{return move(_ori);}
+    Point getOri() const{return _ori;}
     
-    Vector getDir() const{return move(_dir);}
+    Vector getDir() const{return _dir;}
     
 private:
     Point _ori;

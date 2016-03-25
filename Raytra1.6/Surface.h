@@ -19,8 +19,9 @@ friend class BVH;
 friend class Sorter;
     
 public:
-    
     Surface(): _m(nullptr), _bbox(Bbox()) {}
+    
+    virtual ~Surface() {}
     
     virtual bool intersect(const Ray &r,
                            Intersection &it){return false;}

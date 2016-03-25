@@ -16,8 +16,8 @@ class Plane : public Surface{
 public:
     Plane(): _n(Vector()), _d(0.0) {}
     
-    Plane(const double &nx, const double &ny,
-          const double &nz, const double &d, Material *m);
+    Plane(const double nx, const double ny,
+          const double nz, const double d, Material *m);
     
     bool intersect(const Ray &r, Intersection &it);
     

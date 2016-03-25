@@ -8,8 +8,8 @@
 
 #include "BVH.h"
 
-BVH::BVH(vector<Surface*> &objs, const int &l,
-         const int &r, const int &axis){
+BVH::BVH(vector<Surface*> &objs, const int l,
+         const int r, const int axis){
     if(l == r){
         _left = objs[l];
         _right = nullptr;
@@ -23,7 +23,8 @@ BVH::BVH(vector<Surface*> &objs, const int &l,
         else{
             int mid = l + (r - l) / 2;
             Sorter compare(axis);
-            nth_element(objs.begin() + l, objs.begin() + mid, objs.begin() + r + 1, compare);
+//            nth_element(objs.begin() + l, objs.begin() + mid, objs.begin() + r + 1, compare);
+            sort(objs.begin() + l, objs.begin() + r + 1, compare);
             _left = new BVH(objs, l, mid, (axis + 1) % 3);
             _right = new BVH(objs, mid + 1, r, (axis + 1) % 3);
         }
@@ -31,7 +32,7 @@ BVH::BVH(vector<Surface*> &objs, const int &l,
 }
 
 void BVH::surround(const vector<Surface*> &objs,
-                   const int &l, const int &r){
+                   const int l, const int r){
     double minX, minY, minZ;
     double maxX, maxY, maxZ;
     
@@ -67,11 +68,4 @@ bool BVH::intersect(const Ray &r, Intersection &it){
         }
     }
     return false;
-}
-
-BVH::~BVH() {
-    if (_left)
-        delete _left;
-    if (_right)
-        delete _right;
 }

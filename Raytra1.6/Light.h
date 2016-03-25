@@ -18,7 +18,9 @@ class Light{
 public:
     Light(): _rgb(Vector(0.0, 0.0, 0.0)) {}
     
-    Vector getRgb() const{return move(_rgb);}
+    virtual ~Light() {}
+    
+    Vector getRgb() const{return _rgb;}
     
     void print(){
         cout << "RGB: " << _rgb[0] << " " << _rgb[1] << " " << _rgb[2] << endl;
@@ -39,7 +41,7 @@ public:
     
     int getType() const{return 1;}
     
-    Point getPos() const{return move(_pos);}
+    Point getPos() const{return _pos;}
     
 private:
     Point _pos;
@@ -57,7 +59,9 @@ public:
               const Vector &v, const Vector &u,
               double len, double r, double g, double b);
     
-    void generateSample(const int &s_num, vector<Point> &samples);
+    void generateSample(const int s_num, vector<Point> &samples);
+    
+    Vector getDir() const{return _dir;}
     
     Point getCenter() const{return move(_corner + (_u + _v) * 0.5 * _len);}
     
@@ -86,7 +90,7 @@ public:
     
     int getType() const{return 4;}
     
-    Vector getDir() const{return move(_dir);}
+    Vector getDir() const{return _dir;}
     
 private:
     Vector _dir;

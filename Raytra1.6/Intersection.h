@@ -19,11 +19,11 @@ class Intersection{
 public:
     Intersection();
     
-    void set(const double &t1, const Vector &n, Material *&m);
+    void set(const double t1, const Vector &n, Material *m);
     
     Intersection & operator =(const Intersection &i);
     
-    void setT1(const double &t1){_t1 = t1;}
+    void setT1(const double t1){_t1 = t1;}
     
     double getT1() const{return _t1;}
     

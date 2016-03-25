@@ -9,6 +9,7 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <queue>
 #include "Light.h"
 #include "Surface.h"
 #include "Camera.h"
@@ -45,17 +46,27 @@ int main(int argc, char * argv[]) {
     
     //clean up
     delete myCam; delete aLit;
+    queue<Surface*> q;
+    q.push(root);
+    while (!q.empty()) {
+        Surface *temp = q.front();
+        q.pop();
+        if (BVH *node = dynamic_cast<BVH*>(temp)) {
+            if (node->left()) {
+                q.push(node->left());
+            }
+            if (node->right()) {
+                q.push(node->right());
+            }
+        }
+        delete temp;
+    }
     
     for(int i = 0; i < (int)mats.size(); ++i)
         delete mats[i];
     
-    for(int i = 0; i < (int)objs.size(); ++i)
-        delete objs[i];
-    
     for(int i = 0; i < (int)lits.size(); ++i)
         delete lits[i];
-    
-    delete root;
     
     double duration = (clock() - start) / (double) CLOCKS_PER_SEC;
     cout<< duration << "s" << endl;

@@ -62,8 +62,8 @@ Ray Camera::generateRay(double i, double j){
 }
 
 //Render the image
-void Camera::render(BVH *&root, const int &p_num,
-                    const int &s_num,
+void Camera::render(BVH *root, const int p_num,
+                    const int s_num,
                     const AmbientLight * const aLit,
                     const vector<Light*> &lits){
     cout << "render image." << endl;
@@ -105,8 +105,8 @@ void Camera::render(BVH *&root, const int &p_num,
 
 //Recursive ray tracing
 //ray_type: 1 - primary ray; 2 - reflected ray; 3 - refracted ray
-Vector Camera::rayColor(const Ray &r, BVH *&root, const int &recurse_limit,
-                        const int &s_num, const vector<Light*> &lits){
+Vector Camera::rayColor(const Ray &r, BVH *root, const int recurse_limit,
+                        const int s_num, const vector<Light*> &lits){
 //                        const AmbientLight * const aLit
     if(recurse_limit == 0)
         return move(Vector(0.0, 0.0, 0.0));
@@ -127,20 +127,21 @@ Vector Camera::rayColor(const Ray &r, BVH *&root, const int &recurse_limit,
         Vector i_e = e_i * (-1.0);
         
         for(int i = 0; i < (int)lits.size(); ++i){
-            //bling-phong shading
+            //blinn-phong shading
             //point light
             if (lits[i]->getType() == 1){
                 //Vector from intersection to light position
                 Vector i_l = Vector(pi, dynamic_cast<PointLight*>(lits[i])->getPos());
-                //Two sided shading
-//                if (i_e.dot(n) < 0.0)
-//                    n *= -1.0;
-
-                if(!inShadow(root, pi, i_l))
+                if(!inShadow(root, pi, i_l)){
+                    //Two sided shading
+//                    if (i_e.dot(n) < 0.0)
+//                        n *= -1.0;
                     ret_rgb += m->phongShading(i_e, n, i_l, lits[i]->getRgb());
+                }
             }
             //area light
             else if(lits[i]->getType() == 2){
+                Vector light_dir = dynamic_cast<AreaLight*>(lits[i])->getDir();
                 if(s_num > 1){
                     vector<Point> samples;
                     dynamic_cast<AreaLight*>(lits[i])->generateSample(s_num, samples);
@@ -148,16 +149,24 @@ Vector Camera::rayColor(const Ray &r, BVH *&root, const int &recurse_limit,
                     Vector tmp_rgb(0.0, 0.0, 0.0);
                     for(auto const &pl : samples){
                         Vector i_l = Vector(pi, pl);
-                        if(!inShadow(root, pi, i_l))
-                            tmp_rgb += m->phongShading(i_e, n, i_l, lits[i]->getRgb());
+                        double d = i_l.getLen();
+                        
+                        if(!inShadow(root, pi, i_l)){
+                            double weight = light_dir.dot(i_l * (-1)) / pow(d + 1, 2);
+                            tmp_rgb += m->phongShading(i_e, n, i_l, lits[i]->getRgb()) * weight;
+                        }
                     }
                     ret_rgb += tmp_rgb / (s_num * s_num);
                 }
                 else{
                     Point pl = dynamic_cast<AreaLight*>(lits[i])->getCenter();
                     Vector i_l = Vector(pi, pl);
-                    if(!inShadow(root, pi, i_l))
-                        ret_rgb += m->phongShading(i_e, n, i_l, lits[i]->getRgb());
+                    double d = i_l.getLen();
+                    
+                    if(!inShadow(root, pi, i_l)){
+                        double weight = light_dir.dot(i_l * (-1)) / pow(d + 1, 2);
+                        ret_rgb += m->phongShading(i_e, n, i_l, lits[i]->getRgb()) * weight;
+                    }
                 }
             }
         }
@@ -176,7 +185,7 @@ Vector Camera::rayColor(const Ray &r, BVH *&root, const int &recurse_limit,
     return move(ret_rgb);
 }
 
-bool Camera::inShadow(BVH *&root, const Point &pi, Vector &i_l){
+bool Camera::inShadow(BVH *root, const Point &pi, Vector &i_l){
     //t should be less than the distance from intersection to light position
     double max_t = i_l.getLen();
     i_l.normalize();

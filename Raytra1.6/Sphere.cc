@@ -8,7 +8,7 @@
 
 #include "Sphere.h"
 
-Sphere::Sphere(Material *&m, const Point &p, const double &r){
+Sphere::Sphere(Material *m, const Point &p, const double r){
     _m = m;
     _center = p;
     _radius = r;
