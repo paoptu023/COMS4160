@@ -1,4 +1,4 @@
-# CS4160
+# COMS4160
 Computer Graphics 
 ray tracer
 
