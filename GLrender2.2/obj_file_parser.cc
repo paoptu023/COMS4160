@@ -7,8 +7,8 @@
 
 typedef amath::vec4  point4;
 
-void read_wavefront_file (const char *file,
-                          std::vector<point4> &vertices){
+void read_wavefront_file (const char *file, std::vector<point4> &vertices,
+                          std::vector<vec4> &norms){
     std::ifstream in(file);
     char buffer[1025];
     std::string cmd;
@@ -65,25 +65,39 @@ void read_wavefront_file (const char *file,
     std::cout << "found this many tris, verts: " << tris.size () / 3.0 << "  "
     << verts.size () / 3 << std::endl;
     
+    std::vector<vec4> verts_norms = std::vector<vec4>(verts.size() / 3, vec4(0.0, 0.0, 0.0, 0.0));
     float x1, y1, z1, x2, y2, z2, x3, y3, z3;
-    for(int i = 0; i < (int)tris.size() / 3; ++i){
-        //verts[3*tris[3*i]], verts[3*tris[3*i]+1], verts[3*tris[3*i]+2],
-        //verts[3*tris[3*i+1]], verts[3*tris[3*i+1]+1], verts[3*tris[3*i+1]+2],
-        //verts[3*tris[3*i+2]], verts[3*tris[3*i+2]+1], verts[3*tris[3*i+2]+2]
-        x1 = verts[3 * tris[3 * i]];
-        y1 = verts[3 * tris[3 * i] + 1];
-        z1 = verts[3 * tris[3 * i] + 2];
+    for(int i = 0; i < (int)tris.size(); i += 3){
+        x1 = verts[3 * tris[i]];
+        y1 = verts[3 * tris[i] + 1];
+        z1 = verts[3 * tris[i] + 2];
         
-        x2 = verts[3 * tris[3 * i + 1]];
-        y2 = verts[3 * tris[3 * i + 1] + 1];
-        z2 = verts[3 * tris[3 * i + 1] + 2];
+        x2 = verts[3 * tris[i + 1]];
+        y2 = verts[3 * tris[i + 1] + 1];
+        z2 = verts[3 * tris[i + 1] + 2];
         
-        x3 = verts[3 * tris[3 * i + 2]];
-        y3 = verts[3 * tris[3 * i + 2] + 1];
-        z3 = verts[3 * tris[3 * i + 2] + 2];
+        x3 = verts[3 * tris[i + 2]];
+        y3 = verts[3 * tris[i + 2] + 1];
+        z3 = verts[3 * tris[i + 2] + 2];
         
         vertices.push_back(point4(x1, y1, z1, 1.0));
         vertices.push_back(point4(x2, y2, z2, 1.0));
         vertices.push_back(point4(x3, y3, z3, 1.0));
+        
+        vec4 norm = normalize(vec4(cross(vertices[i + 1] - vertices[i],
+                                         vertices[i + 2] - vertices[i + 1]), 0.0));
+        verts_norms[tris[i]] += norm;
+        verts_norms[tris[i + 1]] += norm;
+        verts_norms[tris[i + 2]] += norm;
+    }
+    
+    for(int i = 0; i < (int)verts_norms.size(); ++i)
+        verts_norms[i] = normalize(verts_norms[i]);
+    
+    norms = std::vector<vec4>(vertices.size(), vec4(0.0, 0.0, 0.0, 0.0));
+    for (int i = 0; i < (int)tris.size(); i += 3){
+        norms[i] = verts_norms[tris[i]];
+        norms[i + 1] = verts_norms[tris[i + 1]];
+        norms[i + 2] = verts_norms[tris[i + 2]];
     }
 }

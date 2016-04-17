@@ -11,10 +11,10 @@ std::vector<vec4> norms;
 
 // Camera position
 point4 eye;
-// Up vector
-vec4 up;
-// Transformation matrix from world space to camera space
-mat4 View;
+
+int lastx = 0;
+int lasty = 0;
+bool firstMove = true;
 
 // Location of program objects
 GLuint eye_pos;
@@ -24,39 +24,10 @@ GLuint projection;
 //shaders
 GLuint program;
 
-//void tri()
-//{
-//    for(int i = 0; i < (int)vertices.size() / 3; ++i){
-//        // compute the lighting at each vertex, then set it as the color there:
-//        vec3 n1 = normalize(cross(ctm * vertices[3 * i + 1] - ctm * vertices[3 * i],
-//                                  ctm * vertices[3 * i + 2] - ctm * vertices[3 * i + 1]));
-//        vec4 n = vec4(n1[0], n1[1], n1[2], 0.0);
-//        vec4 half = normalize(light_position+viewer);
-//        color4 ambient_color, diffuse_color, specular_color;
-//        
-//        ambient_color = product(material_ambient, light_ambient);
-//        float dd = dot(light_position, n);
-//        
-//        if(dd>0.0) diffuse_color = dd * product(light_diffuse, material_diffuse);
-//        else diffuse_color =  color4(0.0, 0.0, 0.0, 1.0);
-//        
-//        dd = dot(half, n);
-//        if(dd > 0.0) specular_color = exp(material_shininess * log(dd)) * product(light_specular, material_specular);
-//        else specular_color = vec4(0.0, 0.0, 0.0, 1.0);
-//        
-//        
-//        // now transform the vertices according to the ctm transformation matrix,
-//        // and set the colors for each of them as well. as we are going to give
-//        // flat shading, we will ingore the specular component for now.
-//        colors[3 * i] = ambient_color + diffuse_color;
-//        colors[3 * i + 1] = ambient_color + diffuse_color;
-//        colors[3 * i + 2] = ambient_color + diffuse_color;
-//    }
-//}
-
-
 // initialization: set up a Vertex Array Object (VAO) and then
 void init() {
+    eye = point4(0.0, 0.0, r, 1.0);
+    
     // create a vertex array object - this defines mameory that is stored
     // directly on the GPU
     GLuint vao;
@@ -84,13 +55,13 @@ void init() {
     // tell the VBO to get the data from the vertices array and the colors array:
     glBufferSubData(GL_ARRAY_BUFFER, 0, vertices.size() * sizeof(point4), &vertices[0]);
     glBufferSubData(GL_ARRAY_BUFFER, vertices.size() * sizeof(point4),
-                    norms.size() * sizeof(point4), &norms[0]);
+                    norms.size() * sizeof(vec4), &norms[0]);
     
     // load in these two shaders...  (note: InitShader is defined in the
     // accompanying initshader.c code).
     // the shaders themselves must be text glsl files in the same directory
     // as we are running this program:
-    program = InitShader("vshader_passthrough.glsl", "fshader_passthrough.glsl");
+    program = InitShader("vshader.glsl", "fshader.glsl");
  
     // ...and set them to be active
     glUseProgram(program);
@@ -106,7 +77,7 @@ void init() {
     // beginning of the buffer
     glVertexAttribPointer(loc, 4, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
 
-    GLuint loc2 = glGetAttribLocation(program, "vColor");
+    GLuint loc2 = glGetAttribLocation(program, "vNorm");
     glEnableVertexAttribArray(loc2);
 
     // the vColor attribute is a series of 4-vecs of floats, starting just after
@@ -128,20 +99,17 @@ void display( void ) {
     // for this example).
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
-    // based on where the mouse has moved to, construct a transformation matrix:
-    // compute new eye and up vector
-    GLfloat lat = DegreesToRadians * thetaLat;
-    GLfloat lng = DegreesToRadians * thetaLng;
+    // based on where the mouse has moved to, compute new eye position
+    GLfloat lng = DegreesToRadians * theta;
+    GLfloat lat = DegreesToRadians * alpha;
     
-    eye = point4(r * sin(lng) * sin(lat), r * cos(lng), r * sin(lng) * cos(lat), 1.0);
-    vec4 eye_dir = normalize(eye - at);
-    vec4 ortho = normalize(cross(upY, eye_dir));
-    up = normalize(vec4(cross(eye_dir, ortho), 0.0));
+    eye = point4(r * sin(lng) * sin(lat), r * cos(lat), r * sin(lat) * cos(lng), 1.0);
     
     // specify the value of uniform variables
     glUniform4fv(eye_pos, 1, eye);
-    glUniformMatrix4fv(view, 1, GL_FALSE, LookAt(eye, at, up));
-    glUniformMatrix4fv(projection, 1, GL_FALSE, Perspective(45.0, 1.0, 1.0, 50.0));
+    // If transpose is GL_TRUE, each matrix is assumed to be supplied in row major order.
+    glUniformMatrix4fv(view, 1, GL_TRUE, LookAt(eye, at, upY));
+    glUniformMatrix4fv(projection, 1, GL_TRUE, Perspective(45.0, 1.0, 0.1, 50.0));
     
     // draw the VAO:
     glDrawArrays(GL_TRIANGLES, 0, (int)vertices.size());
@@ -157,32 +125,36 @@ void display( void ) {
 // to generate the transformation, ctm, that is applied
 // to all the vertices before they are displayed:
 void mouse_move_rotate (int x, int y) {
-    // keep track of where the mouse was last:
-    static int lastx = 0;
-    static int lasty = 0;
-    
-    int amntX = x - lastx;
-    int amntY = y - lasty;
-    
-    if (amntX != 0) {
-        thetaLat +=  amntX;
-        if (thetaLat > 360.0 ) thetaLat -= 360.0;
-        if (thetaLat < 0.0 ) thetaLat += 360.0;
-        
+    // avoid jumping of mouse position
+    if(firstMove){
         lastx = x;
-    }
-
-    if (amntY != 0) {
-        thetaLng += amntY;
-        if (thetaLng > ZENITH) thetaLng = ZENITH;
-        if (thetaLng < NADIR) thetaLng = NADIR;
-        
         lasty = y;
+        firstMove = false;
     }
-
-    // force the display routine to be called as soon as possible:
-    glutPostRedisplay();
-    
+    else{
+        // keep track of where the mouse was last:
+        int amntX = x - lastx;
+        int amntY = y - lasty;
+        
+        if (amntX != 0) {
+            theta +=  amntX;
+            if (theta > 360.0 ) theta -= 360.0;
+            if (theta < 0.0 ) theta += 360.0;
+            
+            lastx = x;
+        }
+        
+        if (amntY != 0) {
+            alpha += amntY;
+            if (alpha < ZENITH) alpha = ZENITH;
+            if (alpha > NADIR) alpha = NADIR;
+            
+            lasty = y;
+        }
+        
+        // force the display routine to be called as soon as possible:
+        glutPostRedisplay();
+    }
 }
 
 
@@ -193,27 +165,42 @@ void mykey(unsigned char key, int mousex, int mousey) {
     
     // and r resets the view:
     if (key =='r') {
-        thetaLat = 0.0;
-        thetaLng = 90.0;
+        firstMove = true;
+        theta = 0.0;
+        alpha = 90.0;
+        r = 3.0;
         eye = point4(0.0, 0.0, r, 1.0);
-        up = upY;
-        View = LookAt(eye, at, up);
+        glUniform4fv(eye_pos, 1, eye);
+        glUniformMatrix4fv(view, 1, GL_TRUE, LookAt(eye, at, upY));
+        glUniformMatrix4fv(projection, 1, GL_TRUE, Perspective(45.0, 1.0, 0.1, 50.0));
+        glutPostRedisplay();
+    }
+    
+    // z moves the camera closer
+    if (key == 'z' && r > RMIN) {
+        r -= 1.0;
+        glutPostRedisplay();
+    }
+    
+    // x moves the view farther
+    if (key == 'x' && r < RMAX) {
+        r += 1.0;
         glutPostRedisplay();
     }
 }
 
-void read_wavefront_file (const char *file, std::vector<point4> &vertices);
+void read_wavefront_file (const char *file, std::vector<point4> &vertices,
+                          std::vector<vec4> &norms);
 
 int main(int argc, char** argv) {
-//    if (argc != 2) {
-//        std::cerr << "useage: not enough glrender arguements" << std::endl;
-//        return -1;
-//    }
-    char file[] = "kitten.obj";
+    if (argc != 2) {
+        std::cerr << "useage: not enough glrender arguements" << std::endl;
+        return -1;
+    }
+//    char file[] = "kitten.obj";
     
-//    read_wavefront_file(argv[1], vertices);
-    read_wavefront_file(file, vertices);
-    norms = std::vector<point4>(vertices.size(), point4(0.0, 0.5f, 0.0, 1.0));
+    read_wavefront_file(argv[1], vertices, norms);
+//    read_wavefront_file(file, vertices, norms);
     
     // initialize glut, and set the display modes
     glutInit(&argc, argv);
