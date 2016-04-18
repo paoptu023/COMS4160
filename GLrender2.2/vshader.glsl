@@ -40,7 +40,7 @@ struct material {
 
 material m = material(vec4(1.0, 0.0, 1.0, 1.0),
                       vec4(1.0, 0.8, 0.0, 1.0),
-                      vec4(1.0, 1.0, 1.0, 1.0),
+                      vec4(1.0, 0.8, 0.0, 1.0),
                       100.0);
 
 void main() {
@@ -60,6 +60,6 @@ void main() {
     float cosnh = max(0.0, dot(vNorm, half_vec));
     specular = (m.specular * l.specular) * pow(cosnh, m.shininess);
 
-    color = diffuse + specular;
+    color = diffuse + specular + ambient;
     gl_Position = projection * view * vPosition;
 } 
