@@ -21,7 +21,7 @@ const vec4 upY = vec4(0.0, 1.0, 0.0, 0.0);
 const point4 at = vec4(0.0, 0.0, 0.0, 1.0);
 
 float theta = 0.0;  // rotation around Y axis
-float alpha = 90.0; // rotation around X axis
+float phi = 90.0; // rotation around X axis
 float r = 3.0; // distance from center
 const float ZENITH = 5.0;
 const float NADIR = 175.0;

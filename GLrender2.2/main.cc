@@ -101,7 +101,7 @@ void display( void ) {
     
     // based on where the mouse has moved to, compute new eye position
     GLfloat lng = DegreesToRadians * theta;
-    GLfloat lat = DegreesToRadians * alpha;
+    GLfloat lat = DegreesToRadians * phi;
     
     eye = point4(r * sin(lng) * sin(lat), r * cos(lat), r * sin(lat) * cos(lng), 1.0);
     
@@ -145,9 +145,9 @@ void mouse_move_rotate (int x, int y) {
         }
         
         if (amntY != 0) {
-            alpha += amntY;
-            if (alpha < ZENITH) alpha = ZENITH;
-            if (alpha > NADIR) alpha = NADIR;
+            phi += amntY;
+            if (phi < ZENITH) phi = ZENITH;
+            if (phi > NADIR) phi = NADIR;
             
             lasty = y;
         }
@@ -167,7 +167,7 @@ void mykey(unsigned char key, int mousex, int mousey) {
     if (key =='r') {
         firstMove = true;
         theta = 0.0;
-        alpha = 90.0;
+        phi = 90.0;
         r = 3.0;
         eye = point4(0.0, 0.0, r, 1.0);
         glUniform4fv(eye_pos, 1, eye);
