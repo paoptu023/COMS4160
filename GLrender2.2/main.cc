@@ -14,7 +14,6 @@ point4 eye;
 
 int lastx = 0;
 int lasty = 0;
-bool firstMove = true;
 
 // Location of program objects
 GLuint eye_pos;
@@ -120,41 +119,42 @@ void display( void ) {
 }
 
 
+void mouse_click (int button, int state, int x, int y) {
+    // if both a mouse button, and the ALT key, are pressed then
+    if (state == GLUT_DOWN && button == GLUT_LEFT_BUTTON){
+        lastx = x;
+        lasty = y;
+    }
+}
+
+
 // use this motionfunc to demonstrate rotation - it adjusts "theta" based
 // on how the mouse has moved. Theta is then used the the display callback
 // to generate the transformation, ctm, that is applied
 // to all the vertices before they are displayed:
 void mouse_move_rotate (int x, int y) {
-    // avoid jumping of mouse position
-    if(firstMove){
+    // keep track of where the mouse was last:
+    int amntX = x - lastx;
+    int amntY = y - lasty;
+    
+    if (amntX != 0) {
+        theta +=  amntX;
+        if (theta > 360.0 ) theta -= 360.0;
+        if (theta < 0.0 ) theta += 360.0;
+        
         lastx = x;
+    }
+    
+    if (amntY != 0) {
+        phi += amntY;
+        if (phi < ZENITH) phi = ZENITH;
+        if (phi > NADIR) phi = NADIR;
+        
         lasty = y;
-        firstMove = false;
     }
-    else{
-        // keep track of where the mouse was last:
-        int amntX = x - lastx;
-        int amntY = y - lasty;
-        
-        if (amntX != 0) {
-            theta +=  amntX;
-            if (theta > 360.0 ) theta -= 360.0;
-            if (theta < 0.0 ) theta += 360.0;
-            
-            lastx = x;
-        }
-        
-        if (amntY != 0) {
-            phi += amntY;
-            if (phi < ZENITH) phi = ZENITH;
-            if (phi > NADIR) phi = NADIR;
-            
-            lasty = y;
-        }
-        
-        // force the display routine to be called as soon as possible:
-        glutPostRedisplay();
-    }
+    
+    // force the display routine to be called as soon as possible:
+    glutPostRedisplay();
 }
 
 
@@ -165,7 +165,6 @@ void mykey(unsigned char key, int mousex, int mousey) {
     
     // and r resets the view:
     if (key =='r') {
-        firstMove = true;
         theta = 0.0;
         phi = 90.0;
         r = 3.0;
@@ -213,8 +212,8 @@ int main(int argc, char** argv) {
     // for displaying things, here is the callback specification:
     glutDisplayFunc(display);
     
+    glutMouseFunc(mouse_click);
     // when the mouse is moved, call this function!
-    // you can change this to mouse_move_translate to see how it works
     glutMotionFunc(mouse_move_rotate);
  
     // for any keyboard activity, here is the callback:
