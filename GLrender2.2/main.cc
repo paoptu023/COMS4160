@@ -11,6 +11,7 @@ std::vector<vec4> norms;
 
 // Camera position
 point4 eye;
+vec4 up;
 
 int lastx = 0;
 int lasty = 0;
@@ -104,10 +105,14 @@ void display( void ) {
     
     eye = point4(r * sin(lng) * sin(lat), r * cos(lat), r * sin(lat) * cos(lng), 1.0);
     
+    vec4 eye_dir = normalize(eye - at);
+    vec4 side = normalize(vec4(cross(upY, eye_dir), 0.0));
+    up = normalize(vec4(cross(eye_dir, side), 0.0));
+    
     // specify the value of uniform variables
     glUniform4fv(eye_pos, 1, eye);
     // If transpose is GL_TRUE, each matrix is assumed to be supplied in row major order.
-    glUniformMatrix4fv(view, 1, GL_TRUE, LookAt(eye, at, upY));
+    glUniformMatrix4fv(view, 1, GL_TRUE, LookAt(eye, at, up));
     glUniformMatrix4fv(projection, 1, GL_TRUE, Perspective(45.0, 1.0, 0.1, 50.0));
     
     // draw the VAO:
@@ -171,7 +176,7 @@ void mykey(unsigned char key, int mousex, int mousey) {
         eye = point4(0.0, 0.0, r, 1.0);
         glUniform4fv(eye_pos, 1, eye);
         glUniformMatrix4fv(view, 1, GL_TRUE, LookAt(eye, at, upY));
-        glUniformMatrix4fv(projection, 1, GL_TRUE, Perspective(45.0, 1.0, 0.1, 50.0));
+        glUniformMatrix4fv(projection, 1, GL_TRUE, Perspective(40.0, 1.0, 1.0, 50.0));
         glutPostRedisplay();
     }
     
