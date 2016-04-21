@@ -24,7 +24,7 @@ GLuint projection;
 GLuint light_p;
 GLuint light_a;
 GLuint light_d;
-Gluint light_s;
+GLuint light_s;
 
 GLuint material_a;
 GLuint material_d;
