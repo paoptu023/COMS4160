@@ -28,4 +28,15 @@ const float NADIR = 175.0;
 const float RMAX = 50.0;
 const float RMIN = 2.0;
 
+// light & material definitions, again for lighting calculations:
+vec4 light_position = vec4(100.0, 100.0, 100.0, 1.0);
+vec4 light_ambient = vec4(0.2, 0.2, 0.2, 1.0);
+vec4 light_diffuse = vec4(1.0, 1.0, 1.0, 1.0);
+vec4 light_specular = vec4(1.0, 1.0, 1.0, 1.0);
+
+vec4 material_ambient = vec4(1.0, 0.0, 1.0, 1.0);
+vec4 material_diffuse = vec4(1.0, 0.8, 0.0, 1.0);
+vec4 material_specular = vec4(1.0, 0.8, 0.0, 1.0);
+float material_shininess = 100.0;
+
 #endif /* glrender_h */

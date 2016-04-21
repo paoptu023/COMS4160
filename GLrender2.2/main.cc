@@ -21,6 +21,16 @@ GLuint eye_pos;
 GLuint view;
 GLuint projection;
 
+GLuint light_p;
+GLuint light_a;
+GLuint light_d;
+GLuint light_s;
+
+GLuint material_a;
+GLuint material_d;
+GLuint material_s;
+GLuint material_sh;
+
 //shaders
 GLuint program;
 
@@ -66,7 +76,6 @@ void init() {
     // ...and set them to be active
     glUseProgram(program);
     
-    
     // this time, we are sending TWO attributes through: the position of each
     // transformed vertex, and the color we have calculated in tri()
     
@@ -88,6 +97,25 @@ void init() {
     eye_pos = glGetUniformLocation(program, "eye");
     view = glGetUniformLocation(program, "view");
     projection = glGetUniformLocation(program, "projection");
+
+    light_p = glGetUniformLocation(program, "light_position");
+    light_a = glGetUniformLocation(program, "light_ambient");
+    light_d = glGetUniformLocation(program, "light_diffuse");
+    light_s = glGetUniformLocation(program, "light_specular");
+
+    material_a = glGetUniformLocation(program, "material_ambient");
+    material_d = glGetUniformLocation(program, "material_diffuse");
+    material_s = glGetUniformLocation(program, "material_specular");
+    material_sh = glGetUniformLocation(program, "material_shininess");
+
+    glUniform4fv(light_p, 1, light_position);
+    glUniform4fv(light_a, 1, light_ambient);
+    glUniform4fv(light_d, 1, light_diffuse);
+    glUniform4fv(light_s, 1, light_specular);
+    glUniform4fv(material_a, 1, material_ambient);
+    glUniform4fv(material_d, 1, material_diffuse);
+    glUniform4fv(material_s, 1, material_specular);
+    glUniform1f(material_sh, material_shininess);
     
     // set the background color (white)
     glClearColor(1.0, 1.0, 1.0, 1.0);
@@ -182,13 +210,13 @@ void mykey(unsigned char key, int mousex, int mousey) {
     
     // z moves the camera closer
     if (key == 'z' && r > RMIN) {
-        r -= 1.0;
+        r -= 0.1;
         glutPostRedisplay();
     }
     
     // x moves the view farther
     if (key == 'x' && r < RMAX) {
-        r += 1.0;
+        r += 0.1;
         glutPostRedisplay();
     }
 }
