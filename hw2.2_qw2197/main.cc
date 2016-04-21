@@ -115,7 +115,7 @@ void init() {
     glUniform4fv(material_a, 1, material_ambient);
     glUniform4fv(material_d, 1, material_diffuse);
     glUniform4fv(material_s, 1, material_specular);
-    glUniform1f(material_sh, 1, material_shininess);
+    glUniform1f(material_sh, material_shininess);
     
     // set the background color (white)
     glClearColor(1.0, 1.0, 1.0, 1.0);
