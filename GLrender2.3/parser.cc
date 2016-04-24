@@ -1,8 +1,37 @@
 #include "parser.h"
 
+bool is_wavefront_file(const char *file) {
+    ifstream in(file);
+    char buffer[1025];
+    string cmd;
+    vector<float> verts;
+    vector<int> tris;
+    
+    for (int line=1; in.good(); line++) {
+        in.getline(buffer,1024);
+        buffer[in.gcount()]=0;
+        
+        cmd="";
+        
+        istringstream iss (buffer);
+        
+        iss >> cmd;
+        
+        if (cmd[0]=='#' || cmd[0] == 'g' || cmd.empty()) {
+            // ignore comments or blank lines
+            continue;
+        }
+        else if (cmd=="v")
+            return true;
+        else
+            return false;
+    }
+    return false;
+}
+
 void read_wavefront_file (const char *file,
                           vector<point4> &vertices,
-                          vector<vec4> &norms){
+                          vector<vec4> &norms) {
     ifstream in(file);
     char buffer[1025];
     string cmd;
@@ -143,7 +172,6 @@ void makeTris (vector<Bezier> &surfaces, vector<point4> &vertices,
     norms.clear();
     // Triangulate
     int disp = 0;
-    int k = 0;
     for (int i = 0; i < (int) surfaces.size(); ++i) {
         int samples_u = surfaces[i].getUdegree() * sample_level;
         int samples_v = surfaces[i].getVdegree() * sample_level;
@@ -153,26 +181,28 @@ void makeTris (vector<Bezier> &surfaces, vector<point4> &vertices,
             for (int u = 0; u < samples_u - 1; ++u) {
                 // triange 1
                 // 6 * k, 6 * k + 1, 6 * k + 2
-                vertices.push_back(uv_verts[disp + v * samples_u + u]);
-                norms.push_back(uv_norms[disp + v * samples_u + u]);
+                int p1 = disp + v * samples_u + u;
+                vertices.push_back(uv_verts[p1]);
+                norms.push_back(uv_norms[p1]);
                 
-                vertices.push_back(uv_verts[disp + v * samples_u + u + 1]);
-                norms.push_back(uv_norms[disp + v * samples_u + u + 1]);
+                int p2 = disp + v * samples_u + u + 1;
+                vertices.push_back(uv_verts[p2]);
+                norms.push_back(uv_norms[p2]);
                 
-                vertices.push_back(uv_verts[disp + (v + 1) * samples_u + u + 1]);
-                norms.push_back(uv_norms[disp + (v + 1) * samples_u + u + 1]);
+                int p3 = disp + (v + 1) * samples_u + u + 1;
+                vertices.push_back(uv_verts[p3]);
+                norms.push_back(uv_norms[p3]);
                 
                 // triangle 2
-                vertices.push_back(vertices[6 * k]);
-                norms.push_back(norms[6 * k]);
+                vertices.push_back(uv_verts[p1]);
+                norms.push_back(uv_norms[p1]);
                 
-                vertices.push_back(vertices[6 * k + 2]);
-                norms.push_back(norms[6 * k + 2]);
+                vertices.push_back(uv_verts[p3]);
+                norms.push_back(uv_norms[p3]);
                 
-                vertices.push_back(uv_verts[disp + (v + 1) * samples_u + u]);
-                norms.push_back(uv_norms[disp + (v + 1) * samples_u + u]);
-                
-                ++k;
+                int p4 = disp + (v + 1) * samples_u + u;
+                vertices.push_back(uv_verts[p4]);
+                norms.push_back(uv_norms[p4]);
             }
         }
         disp += jump;

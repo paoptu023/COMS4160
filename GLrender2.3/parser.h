@@ -20,6 +20,8 @@ using namespace std;
 
 typedef vec4 point4;
 
+bool is_wavefront_file(const char *file);
+
 void read_wavefront_file (const char *file,
                           vector<point4> &vertices,
                           vector<vec4> &norms);
