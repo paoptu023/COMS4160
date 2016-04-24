@@ -12,12 +12,13 @@ Bezier::Bezier(vector<point4> &pnts, int u, int v){
     u_deg = u;
     v_deg = v;
     // v starts from bottom
+    vector<point4> row;
     for (int i = v; i >= 0; --i) {
-        vector<point4> row;
         for (int j = 0; j <= u; ++j){
             row.push_back(pnts[i * (u + 1) + j]);
         }
         ctr_pnts.push_back(row);
+        row.clear();
     }
 }
 
@@ -28,25 +29,26 @@ void Bezier::sample(int sample_level, vector<point4> &uv_verts, vector<vec4> &uv
         int samples_v = v_deg * sample_level;
         float spacing_u = 1.0 / (samples_u - 1);
         float spacing_v = 1.0 / (samples_v - 1);
-        float t_u = 0;
-        float t_v = 0;
+        float t_u = 0, t_v = 0;
         
-        point4 point;
-        vec4 norm;
         for (int i = 0; i < samples_v; ++i, t_v += spacing_v) {
             for (int j = 0; j < samples_u; ++j, t_u += spacing_u) {
-                evaluate(t_v, t_u, point, norm);
+                point4 point;
+                vec4 norm;
+                evaluate(t_u, t_v, point, norm);
                 uv_verts.push_back(point);
                 uv_norms.push_back(norm);
             }
+            t_u = 0;
         }
+        for(int i = 0; i < (int) uv_verts.size(); ++i)
+            printv(uv_verts[i]);
     }
 }
 
 // first use de Casteljau on all the rows of ctrpnts, then columns
-void Bezier::evaluate(float t_v, float t_u, point4 &point, vec4 &norm){
+void Bezier::evaluate(float t_u, float t_v, point4 &point, vec4 &norm){
     vector<point4> res_vctrs;
-    
     vec4 tmp;
     for (int i = 0; i <= v_deg; ++i) {
         vector<point4> ctr_row = getCtrRow(i);

@@ -2,6 +2,9 @@
 
 // initialization: set up a Vertex Array Object (VAO) and then
 void init() {
+    theta = 0.0;  
+    phi = 90.0;
+    r = DEFAULT_R; 
     eye = point4(0.0, 0.0, r, 1.0);
     
     // create a vertex array object - this defines mameory that is stored
@@ -101,7 +104,7 @@ void display( void ) {
     glUniform4fv(eye_pos, 1, eye);
     // If transpose is GL_TRUE, each matrix is assumed to be supplied in row major order.
     glUniformMatrix4fv(view, 1, GL_TRUE, LookAt(eye, at, up));
-    glUniformMatrix4fv(projection, 1, GL_TRUE, Perspective(45.0, 1.0, 0.1, 50.0));
+    glUniformMatrix4fv(projection, 1, GL_TRUE, perspective);
     
     if(sample_changed){
         makeTris(surfaces, vertices, norms, sample_level);
@@ -181,11 +184,15 @@ void mykey(unsigned char key, int mousex, int mousey) {
     if (key =='r') {
         theta = 0.0;
         phi = 90.0;
-        r = 20.0;
+        r = DEFAULT_R;
         eye = point4(0.0, 0.0, r, 1.0);
+        
+        sample_level = MIN_LEVEL + 1;
+        sample_changed = true;
+        
         glUniform4fv(eye_pos, 1, eye);
         glUniformMatrix4fv(view, 1, GL_TRUE, LookAt(eye, at, upY));
-        glUniformMatrix4fv(projection, 1, GL_TRUE, Perspective(40.0, 1.0, 1.0, 50.0));
+        glUniformMatrix4fv(projection, 1, GL_TRUE, perspective);
         glutPostRedisplay();
     }
     
@@ -221,7 +228,7 @@ int main(int argc, char** argv) {
 //        std::cerr << "useage: not enough glrender arguements" << std::endl;
 //        return -1;
 //    }
-    char file[] = "bezier.txt";
+    char file[] = "twisted_patch.txt";
     
 //    read_wavefront_file(argv[1], vertices, norms);
     

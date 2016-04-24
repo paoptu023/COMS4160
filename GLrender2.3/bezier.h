@@ -36,7 +36,7 @@ public:
     void sample(int sample_level, vector<point4> &uv_verts, vector<vec4> &uv_norms);
     
     // bezier surface evaluation (get final points)
-    void evaluate(float u, float v, point4 &point, vec4 &norm);
+    void evaluate(float t_u, float t_v, point4 &point, vec4 &norm);
     
     // evaluate in rows or columns, de Casteljau algorithm
     void eval_bez(vector<point4> &array, const double t, point4 &point, vec4 &tan);
