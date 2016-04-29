@@ -18,10 +18,11 @@ varying vec4 norm;
 varying vec4 pos;
 
 void main() {
-    gl_Position = projection * view * vPosition;
+    light_dir = light_position - vPosition;
+    eye_dir   = eye - vPosition;
     
-    light_dir = normalize(light_position - vPosition);
-    eye_dir = normalize(eye - vPosition);
     norm = vNorm;
     pos = vPosition;
-} 
+    
+    gl_Position = projection * view * vPosition;
+}

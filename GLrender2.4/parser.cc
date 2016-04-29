@@ -170,7 +170,7 @@ void makeTris (vector<Bezier> &surfaces, vector<point4> &vertices,
     
     vertices.clear();
     norms.clear();
-    // Triangulate
+    // Triangulate<
     int disp = 0;
     for (int i = 0; i < (int) surfaces.size(); ++i) {
         int samples_u = surfaces[i].getUdegree() * sample_level;

@@ -66,8 +66,10 @@ int lasty = 0;
 
 mat4 perspective = Perspective(40.0, 1.0, 1.0, 50.0);
 
-float coarseness = 2.0;
+float coarseness = 0.0;
 // Location of program objects
+GLuint loc, loc2;
+
 GLuint coarse;
 
 GLuint eye_pos;

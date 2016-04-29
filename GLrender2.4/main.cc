@@ -41,14 +41,14 @@ void init() {
     // this time, we are sending TWO attributes through: the position of each
     // transformed vertex, and the norm we have calculated in tri()
     
-    GLuint loc = glGetAttribLocation(program, "vPosition");
+    loc = glGetAttribLocation(program, "vPosition");
     glEnableVertexAttribArray(loc);
     
     // the vPosition attribute is a series of 4-vecs of floats, starting at the
     // beginning of the buffer
     glVertexAttribPointer(loc, 4, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
 
-    GLuint loc2 = glGetAttribLocation(program, "vNorm");
+    loc2 = glGetAttribLocation(program, "vNorm");
     glEnableVertexAttribArray(loc2);
     glVertexAttribPointer(loc2, 4, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(NumVertices * sizeof(vec4)));
     
@@ -117,13 +117,13 @@ void display( void ) {
         
         glBufferData(GL_ARRAY_BUFFER, 2 * NumVertices * sizeof(vec4), NULL, GL_STATIC_DRAW);
         
-        GLuint loc, loc2;
-        loc = glGetAttribLocation(program, "vPosition");
-        glEnableVertexAttribArray(loc);
-        glVertexAttribPointer(loc, 4, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
+//        GLuint loc, loc2;
+//        loc = glGetAttribLocation(program, "vPosition");
+//        glEnableVertexAttribArray(loc);
+//        glVertexAttribPointer(loc, 4, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
         
-        loc2 = glGetAttribLocation(program, "vNorm");
-        glEnableVertexAttribArray(loc2);
+//        loc2 = glGetAttribLocation(program, "vNorm");
+//        glEnableVertexAttribArray(loc2);
         glVertexAttribPointer(loc2, 4, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(NumVertices * sizeof(vec4)));
         
         glBufferSubData(GL_ARRAY_BUFFER, 0, NumVertices * sizeof(vec4), &vertices[0]);
@@ -255,7 +255,7 @@ int main(int argc, char** argv) {
 //        std::cerr << "useage: not enough glrender arguements" << std::endl;
 //        return -1;
 //    }
-    char file[] = "plane.txt";
+    char file[] = "s_patch.txt";
     bool is_obj = is_wavefront_file(file);
     
     if(is_obj)

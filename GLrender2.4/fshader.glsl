@@ -19,31 +19,36 @@ uniform vec4 material_specular;
 uniform float material_shininess;
 
 void main() {
+    vec4 l = normalize(light_dir);
+    vec4 e = normalize(eye_dir);
+    vec4 n = normalize(norm);
+    
     vec4 material_d = material_diffuse;
     if (coarseness > 0.0) {
         float width = 2.0 / coarseness;
         float x = floor(pos.x / width);
         float y = floor(pos.y / width);
         float z = floor(pos.z / width);
-        // If even sum, white else black
+        // even sum white, else black
         if (mod(x + y + z, 2.0) > 0.0)
-            material_d = vec4(0.96, 0.56, 0.69, 1.0);
+//            material_d = vec4(0.96, 0.56, 0.69, 1.0);
+            material_d = vec4(0.0, 0.0, 0.0, 1.0);
         else
             material_d = vec4(1.0, 1.0, 1.0, 1.0);
     }
     
-    vec4 half_vec = normalize(light_dir + eye_dir);
+    vec4 half_vec = normalize(l + e);
     
     //ambient
     vec4 ambient, diffuse, specular;
     ambient = material_ambient * light_ambient;
     
     // diffuse
-    float cosnl = max(0.0, dot(norm, light_dir));
+    float cosnl = max(0.0, dot(n, l));
     diffuse = (material_d * light_diffuse) * cosnl;
     
     //specular
-    float cosnh = max(0.0, dot(norm, half_vec));
+    float cosnh = max(0.0, dot(n, half_vec));
     specular = (material_specular * light_specular) * pow(cosnh, material_shininess);
     
     // "gl_FragColor" is already defined for us - it's the one thing you have
