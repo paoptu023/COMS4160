@@ -1,7 +1,7 @@
 # Ray Tracer
 A ray tracer starting from scratch in C++.
 
-![chess](https://github.com/paoptu023/COMS4160/blob/master/chess.png=200x150)
+![chess](https://github.com/paoptu023/COMS4160/blob/master/chess.png =200x150)
 
 ### features:
 * points, vectors, spheres, triangles, planes
