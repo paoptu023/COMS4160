@@ -3,7 +3,7 @@ A ray tracer starting from scratch in C++.
 
 <img src="https://github.com/paoptu023/COMS4160/blob/master/chess.png" width="400" height="400">
 
-### features:
+### Features:
 * points, vectors, spheres, triangles, planes
 * point, ambient, and area light sources
 * blinn-phong shading model
