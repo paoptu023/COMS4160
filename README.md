@@ -1,5 +1,8 @@
 # Ray Tracer
-![checkerboard](https://github.com/paoptu023/COMS4160/blob/master/bunny.png)
+A ray tracer starting from scratch in C++.
+
+![chess](https://github.com/paoptu023/COMS4160/blob/master/chess.png)
+
 ### features:
 * points, vectors, spheres, triangles, planes
 * point, ambient, and area light sources
