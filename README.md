@@ -6,7 +6,7 @@ A ray tracer starting from scratch in C++.
 ### features:
 * points, vectors, spheres, triangles, planes
 * point, ambient, and area light sources
-* blinn-phong lighting model
+* blinn-phong shading model
 * diffuse and reflective materials
 * triangle meshes (obj file format)
 * axis-aligned bounding boxes and bvh trees for acceleration
