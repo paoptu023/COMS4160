@@ -1,5 +1,5 @@
 # Ray Tracer
-
+![checkerboard](https://github.com/paoptu023/COMS4160/blob/master/bunny.png)
 ### features:
 * points, vectors, spheres, triangles, planes
 * point, ambient, and area light sources
